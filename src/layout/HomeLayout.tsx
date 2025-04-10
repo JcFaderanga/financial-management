@@ -2,18 +2,18 @@ import React,{ReactNode} from 'react'
 import Header from '../components/header/Header'
 import SideBar from '../components/sideBar/SideBar'
 import { Outlet } from 'react-router-dom'
-interface HomeLayoutProps {
-    children: ReactNode
-}
+import { useMenuStore } from '@/store/useMenuToggle'
 const HomeLayout = () => {
+  const {isMenuActive} =useMenuStore();
   return (
     <section className='flex'>
-        <SideBar/>
-        <div className='w-full h-screen ml-80'>
+      <div className=''>
+          <SideBar/>
+      </div>
+        <div className= {`w-full h-screen ${isMenuActive ? '' : 'lg:ml-80'} `}>
               <Header/>
               <Outlet/>
         </div>
-      
     </section>
   )
 }
