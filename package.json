@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@number-flow/react": "^0.5.10",
     "@supabase/supabase-js": "^2.49.4",
     "@tailwindcss/vite": "^4.1.3",
     "express": "^5.1.0",
+    "number-flow": "^0.5.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",

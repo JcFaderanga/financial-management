@@ -21,9 +21,9 @@ const Header = () => {
   const handleMenuToggle=()=>{
     setMenuIsActive(!isMenuActive)
   }
-console.log(user)
+//console.log(user)
   return (
-    <section className={`border-b border-gray-300 w-full bg-white h-16 sticky top-0 flex items-center justify-between px-4
+    <header className={`border-b border-gray-300 w-full bg-white h-16 sticky top-0 flex items-center justify-between px-4
     ${isMenuActive ? 'hidden lg:flex' : ''}
     `}>
       <div className='flex items-center'>
@@ -40,7 +40,7 @@ console.log(user)
       <button onClick={signOut} className="cursor-pointer text-sm px-4 py-1 rounded ">
         Sign Out
       </button>
-    </section>
+    </header>
   )
 }
 

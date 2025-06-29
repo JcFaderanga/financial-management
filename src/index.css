@@ -4,6 +4,7 @@
 *{
     font-family: "Plus Jakarta Sans", sans-serif;
     font-optical-sizing: auto;
+    box-sizing: border-box;
 }
 :root{
     --white: #ffffff;
@@ -14,3 +15,14 @@
 .border-gray{
     border-color: var(--gray);
 }
+
+.custom-black{
+    color: #1b2124;
+}
+@media (max-width: 1023px) {
+  .box-shadow {
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+                rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+  }
+}
+

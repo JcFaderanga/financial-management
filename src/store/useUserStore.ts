@@ -1,6 +1,5 @@
 import { create } from "zustand";
 
-
 type userState = {
   user: any,
   setUser: (user: any) => void

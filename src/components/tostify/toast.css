@@ -1,0 +1,15 @@
+
+.toast-animation{
+-webkit-animation: fadeInLeft .6s cubic-bezier(0.69,-0.33, 0.23, 1.24); 
+
+}
+    @-webkit-keyframes fadeInLeft {
+  0% {
+      opacity: 0;
+      -webkit-transform: translateY(-100%);
+  }
+  100% {
+      opacity: 1;
+      -webkit-transform: translateY(0);
+  }
+}
