@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useDocumentTitle from "@/hooks/document/useDocTitle";
 import SpentHistory from "@/components/dashboard/SpentHistory";
 import AddItem from "@/components/dashboard/addItem/AddItem";

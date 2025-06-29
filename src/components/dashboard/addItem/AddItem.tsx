@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react'
+import {useState,useEffect} from 'react'
 import CustomInput from '@/components/inputs/CustomInputs'
 import { useSpendings } from '@/store/useSpendingStore'
 import { SubmitButton } from '@/components/button/SubmitButton'

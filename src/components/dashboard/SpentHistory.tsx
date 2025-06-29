@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { CustomTable, CustomRow, CustomData, CustomHeader } from '../tables';
 import { useSpendings } from '@/store/useSpendingStore';
-import { DayAndDate, LongDateFormat } from '@/utils/DateFormat';
+import { LongDateFormat } from '@/utils/DateFormat';
 import { LiaTrashSolid, LiaPenSolid } from "react-icons/lia";
 import { ToastDelete } from '../tostify/Toast';
 import { itemTypes } from '@/types/itemTypes';

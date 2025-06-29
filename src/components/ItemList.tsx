@@ -1,5 +1,3 @@
-import React from 'react'
-
 type item={
     price: string,
     item: string

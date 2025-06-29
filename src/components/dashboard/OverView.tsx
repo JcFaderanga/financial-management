@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useSpendings } from '@/store/useSpendingStore'
 import { itemTypes } from '@/types/itemTypes';
 import NumberFlow from '@number-flow/react'
@@ -9,7 +9,7 @@ const OverView = () => {
     const { spendings } = useSpendings();
     const {date} = useOverviewDateStore();
     const [isSummary, setIsSammary] =useState<boolean>(false)
-    const [currentItems, SetcurrentItems] = useState<itemTypes[]>([]);
+    //const [currentItems, SetcurrentItems] = useState<itemTypes[]>([]);
     if (!spendings) return 'Loading...';
 
     //get all latest items

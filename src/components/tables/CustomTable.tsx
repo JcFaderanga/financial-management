@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 const CustomTable = ({children, className}: {children: ReactNode, className?: string}) => {
   return (
@@ -7,5 +7,6 @@ const CustomTable = ({children, className}: {children: ReactNode, className?: st
     </table>
   )
 }
+
 
 export default CustomTable;

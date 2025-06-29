@@ -51,7 +51,7 @@ export const ToastDelete: React.FC<ToastType> = ({ toastList = [], duration, onC
               <button className="ml-2">x</button>
             </div>
             <div className="h-1.5 bg-red-300 w-full rounded-b overflow-hidden">
-              {/* <Progress duration={duration} /> */}
+              <Progress duration={duration} />
             </div>
           </div>
         </div>

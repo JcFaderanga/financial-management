@@ -1,5 +1,4 @@
-import React,{useState} from 'react'
-import { ItemTypes } from '@/types/NavigationTypes';
+import {useState} from 'react'
 const ITEMS_PER_PAGE = 4;
 const MatchItem = ({
   current,
