@@ -1,4 +1,4 @@
-import { NavType } from "@/types/NavigationTypes";
+import type { NavType } from "@/types/NavigationTypes";
 
 export const navItems: NavType[] = [
     { id: "dashboard", label: "Dashboard", path: "/dashboard", category: "homePage" },

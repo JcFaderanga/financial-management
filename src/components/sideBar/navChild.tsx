@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import { Link } from "react-router-dom";
 import { FaChevronUp ,FaChevronDown } from "react-icons/fa6";
-import { ItemTypes } from '@/types/NavigationTypes';
+import type { ItemTypes } from '@/types/NavigationTypes';
 import { useMenuStore } from "@/store/useMenuToggle";
 const navChild= ({item}:ItemTypes) => {
      const [openDropdown, setOpenDropdown] = useState<string | null>(null);

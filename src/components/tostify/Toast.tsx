@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './toast.css';
 import { LiaTrashSolid } from "react-icons/lia";
-import { itemTypes } from '@/types/itemTypes';
+import type { itemTypes } from '@/types/itemTypes';
 
 interface ToastType {
   toastList?: itemTypes[];

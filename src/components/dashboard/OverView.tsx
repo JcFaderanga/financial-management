@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSpendings } from '@/store/useSpendingStore'
-import { itemTypes } from '@/types/itemTypes';
+import type { itemTypes } from '@/types/itemTypes';
 import NumberFlow from '@number-flow/react'
 import { useOverviewDateStore } from '@/store/useOverviewDate';
 import { LongDateFormat } from '@/utils/DateFormat';

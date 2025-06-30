@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { NavType } from "@/types/NavigationTypes";
+import type { NavType } from "@/types/NavigationTypes";
 import NavChild from "./navChild";
 import { useMenuStore } from "@/store/useMenuToggle";
 const LinkItem = ({

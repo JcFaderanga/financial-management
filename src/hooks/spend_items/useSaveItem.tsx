@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import supabase from '@/lib/supabase'
-import { itemTypes } from '@/types/itemTypes'
-
+import type { itemTypes } from '@/types/itemTypes';
 const useSaveItem = () => {
   const [spendings, setSpendings] = useState<itemTypes[] | null>(null)
   const [error, setError] = useState<Error | null>(null)

@@ -7,6 +7,6 @@ export type NavType = {
   children?: NavType[];
 };
 
-export interface ItemTypes {
+export type ItemTypes =  {
   item: NavType;
 }

@@ -4,7 +4,7 @@ import { useSpendings } from '@/store/useSpendingStore';
 import { LongDateFormat } from '@/utils/DateFormat';
 import { LiaTrashSolid, LiaPenSolid } from "react-icons/lia";
 import { ToastDelete } from '../tostify/Toast';
-import { itemTypes } from '@/types/itemTypes';
+import type { itemTypes } from '@/types/itemTypes';
 import supabase from '@/lib/supabase';
 import { useOverviewDateStore } from '@/store/useOverviewDate';
 // Action buttons (Edit, Delete)
