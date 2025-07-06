@@ -1,4 +1,3 @@
-import React from 'react'
 import { CustomTable, CustomRow, CustomData, CustomHeader } from '../../tables'; 
 import { LiaTrashSolid, LiaPenSolid } from "react-icons/lia";
 import { LongDateFormat } from '@/utils/DateFormat';
