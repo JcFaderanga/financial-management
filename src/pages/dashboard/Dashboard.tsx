@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useDocumentTitle from "@/hooks/document/useDocTitle";
-import SpentHistory from "@/components/dashboard/SpentHistory";
+import SpentHistory from "@/components/dashboard/spentHistory/SpentHistory";
 import AddItem from "@/components/dashboard/addItem/AddItem";
 import { useSpendings } from "@/store/useSpendingStore";
 import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding";
@@ -18,7 +18,7 @@ const {setSpendItems} = useSpendings();
   useDocumentTitle('Dashboard | Finance Management');
   
   return (
-    <div className="lg:flex w-full">
+    <div className="lg:flex w-full border-b border-gray-300">
         <section className="lg:w-2/5  lg:border-r border-gray-300">
             <OverView/>
         </section>

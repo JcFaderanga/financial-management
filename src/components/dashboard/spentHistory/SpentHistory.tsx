@@ -1,29 +1,13 @@
 import  { useEffect, useState } from 'react';
-import { CustomTable, CustomRow, CustomData, CustomHeader } from '../tables';
 import { useSpendings } from '@/store/useSpendingStore';
 import { LongDateFormat } from '@/utils/DateFormat';
-import { LiaTrashSolid, LiaPenSolid } from "react-icons/lia";
-import { ToastDelete } from '../tostify/Toast';
+import { ToastDelete } from '../../tostify/Toast';
 import type { itemTypes } from '@/types/itemTypes';
 import supabase from '@/lib/supabase';
 import { useOverviewDateStore } from '@/store/useOverviewDate';
+import SpentTable from './SpentTable';
 // Action buttons (Edit, Delete)
-const ActionMenu = ({
-  onEdit,
-  onDelete,
-}: {
-  onEdit: () => void;
-  onDelete: () => void;
-}) => (
-  <ul className='flex gap-2'>
-    <li onClick={onEdit} className='p-2 bg-blue-50 rounded-xl cursor-pointer'>
-      <LiaPenSolid className='text-blue-500' />
-    </li>
-    <li onClick={onDelete} className='p-2 bg-red-50 rounded-xl cursor-pointer'>
-      <LiaTrashSolid className='text-red-500' />
-    </li>
-  </ul>
-);
+
 
 const SpentHistory = () => {
   const { spendings, setSpendItems } = useSpendings();
@@ -42,7 +26,7 @@ const SpentHistory = () => {
       const [first, ...rest] = toastList;
       setToastList(rest);
 
-      const updatedList = spendings.filter((item: any) => item.id !== first.id);
+      const updatedList = spendings?.filter((item: any) => item.id !== first.id);
       setSpendItems(updatedList);
       deletePermanent(first.id);
     }, 3000);
@@ -50,9 +34,8 @@ const SpentHistory = () => {
     return () => clearTimeout(timer);
   }, [toastList, spendings, setSpendItems]);
 
-  if (!spendings) return null;
 
-  const latestSpendings = spendings.filter((item: itemTypes)=>{
+  const latestSpendings = spendings?.filter((item: itemTypes)=>{
       const prev = new Date(item?.created_at);
       const now = new Date(date);
 
@@ -64,6 +47,7 @@ const SpentHistory = () => {
   })  
 
   const handleDelete = (item: itemTypes) => {
+    console.log('handle delete', item)
     setToastList(prev => [...prev, item]);
   };
 
@@ -75,9 +59,8 @@ const SpentHistory = () => {
     setToastList(prev => prev.filter(item => item.id !== id));
   };
 
-  console.log(new Date(date))
   return (
-    <div className='w-full px-4 '>
+    <div className='w-full px-4 pb-10'>
       <header className='my-4'>
           <div className='flex justify-between items-center'>
             <strong className='text-2xl custom-black'>Spendings</strong>
@@ -94,41 +77,19 @@ const SpentHistory = () => {
       {toastList.length > 0 && (
         <ToastDelete toastList={toastList} onClick={handleUndo} duration={5} />
       )}
-      <div className='overflow-x-auto'>
-        <CustomTable>
-          <thead className='bg-slate-100'>
-            <CustomRow className='text-sm'>
-              <CustomHeader className='py-3 rounded-tl-2xl'>ID</CustomHeader>
-              <CustomHeader>Category</CustomHeader>
-              <CustomHeader>Title</CustomHeader>
-              <CustomHeader>Price</CustomHeader>
-              <CustomHeader>Date</CustomHeader>
-              <CustomHeader className='rounded-tr-2xl'>Actions</CustomHeader>
-            </CustomRow>
-          </thead>
-          <tbody>
-            {latestSpendings?.map((spent: itemTypes) => {
-              const isHidden = toastList.some(item => item.id === spent.id);
-              if (isHidden) return null;
+      <div className='overflow-x-auto h-full'>
 
-              return (
-                <CustomRow key={spent.id} className='text-sm'>
-                  <CustomData>{spent.id}</CustomData>
-                  <CustomData>{spent.category}</CustomData>
-                  <CustomData>{spent.title}</CustomData>
-                  <CustomData>₱{spent.price}</CustomData>
-                  <CustomData>{LongDateFormat(new Date(spent.created_at!))}</CustomData>
-                  <CustomData>
-                    <ActionMenu
-                      onEdit={() => handleEdit(spent)}
-                      onDelete={() => handleDelete(spent)}
-                    />
-                  </CustomData>
-                </CustomRow>
-              );
-            })}
-          </tbody>
-        </CustomTable>
+        {spendings?
+          <SpentTable 
+              data={latestSpendings}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+              toastList={toastList}
+            /> :<div className='w-full flex justify-center'>
+              <strong className='text-orange-700'>There's no Record Available.</strong>
+            </div>
+         }
+          
       </div>
       {
         latestSpendings?.length > 6 && 

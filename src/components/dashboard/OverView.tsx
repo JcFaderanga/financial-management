@@ -5,15 +5,13 @@ import { useOverviewDateStore } from '@/store/useOverviewDate';
 import { LongDateFormat } from '@/utils/DateFormat';
 import { FaAngleDown,FaAngleUp } from "react-icons/fa6";
 import NumberFlowUI from '../UI/NumberFlow';
+import { FaPen } from "react-icons/fa";
 const OverView = () => {
     const { spendings } = useSpendings();
     const {date,setDate} = useOverviewDateStore();
     const [isSummary, setIsSammary] =useState<boolean>(false)
-    //const [currentItems, SetcurrentItems] = useState<itemTypes[]>([]);
-    if (!spendings) return 'Loading...';
-
-    //get all latest items
-    const latest = spendings.filter((item: itemTypes)=>{
+    const [isDateToEdit, setIsDateToEdit] = useState<boolean>(false)
+    const latest = spendings?.filter((item: itemTypes)=>{
         const prev = new Date(item?.created_at);
         const now = new Date(date);
 
@@ -23,7 +21,7 @@ const OverView = () => {
             prev.getMonth() === now.getMonth()
          )
     })  
-    const grouped = latest.reduce((acc: Record<string, number>, item: any) => {
+    const grouped = latest?.reduce((acc: Record<string, number>, item: any) => {
         if (!acc[item.category]) {
             acc[item.category] = item.price;
         } else {
@@ -32,24 +30,30 @@ const OverView = () => {
         return acc;
     }, {});
 
-    const data_result = Object.entries(grouped).map(([type, price]) => ({
+    const  data_result = spendings ? Object?.entries(grouped)?.map(([type, price]) => ({
         type,
         price
-    }));
+    })) : undefined;
 
-    const total = latest?.reduce(
+    const total = data_result ? latest?.reduce(
         (sum: number, item: itemTypes) => sum + Number(item.price),
         0
-      );
+      ) : 0;
 
+    const filterDate = (date: string) => {
+        setDate(date)
+        setIsDateToEdit(!isDateToEdit)
+    }
   return (
     <div className='pt-4 px-6'>
-        <div className='flex justify-between'>
-            <div>
-                <strong className='custom-black text-2xl'>Overview</strong>
-                <h2 className='text-slate-400'>{LongDateFormat(new Date(date))} Usage</h2>
-            </div>
-            <input onChange={(date)=>setDate(date.target.value) } type='date' className=' py-1 px-4 bg-slate-50 rounded cursor-pointer'/>
+        <div>
+            <strong className='custom-black text-2xl'>Overview</strong>
+            {!isDateToEdit 
+                ?   <h2 className='text-slate-400'>{LongDateFormat(new Date(date))} Usage 
+                        <FaPen onClick={()=>setIsDateToEdit(!isDateToEdit)} className='inline-block mx-1 cursor-pointer' />
+                    </h2>
+                :   <input onChange={(date)=>filterDate(date.target.value) } type='date' className='block py-1 bg-slate-50 rounded cursor-pointer'/>
+            }        
         </div>
         <section className='flex justify-center py-4 lg:py-20 '>
             <div>
@@ -65,10 +69,13 @@ const OverView = () => {
         </section>
         <section className={`${!isSummary ? 'hidden': '' } lg:block py-4`}>
             {
-                data_result?.map((item: any)=>{
-
+            !data_result 
+                ?   <div className='w-full flex justify-center'>
+                        <strong className='text-orange-700'>There's no Record Available.</strong>
+                    </div>
+                :   data_result?.map((item: any)=>{
                     return(
-                        <ul className='flex justify-between py-4 border-t border-gray-300'>
+                        <ul key={item.id} className='flex justify-between py-4 border-t border-gray-300'>
                             <li>{item.type}</li>
                             <div className=' w-1/2 flex justify-between'>
                                 <li>{(item.price / total * 100).toFixed(2)}%</li>
@@ -79,6 +86,8 @@ const OverView = () => {
                 })
             }
         </section>
+        
+    
         <div onClick={()=> setIsSammary(!isSummary)} className='text-center pb-8 lg:hidden'>
             {!isSummary 
                 ? <>Show more <FaAngleDown className='mx-auto'/></> 
