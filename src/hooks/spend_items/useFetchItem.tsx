@@ -12,7 +12,7 @@ const handleFetchTitle = async (title: string) => {
     setLoading(true);
     try {
         const { data, error } = await supabase
-            .from('items')
+            .from('unique_item_list')
             .select('*')
             .ilike('title', `%${title}%`);
 

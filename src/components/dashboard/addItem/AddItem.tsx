@@ -8,13 +8,15 @@ import DotsLoading from '@/components/UI/DotsLoading'
 import { useUserStore } from '@/store/useUserStore'
 import CustomDropdown from '@/components/inputs/CustomDropdown'
 import MatchItem from './MatchItem'
-
+import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
+import useUniqueItemList from '@/hooks/spend_items/useUniqueList'
 const AddItem = () => {
 const {setSpendItems, spendings} =useSpendings();
 const {user} = useUserStore();
+const [addItemIsHidden, setAddItemIsHidden] = useState<boolean>(false);
 const [title, setItem] = useState<string>('');
 const [price, setPrice] = useState<string>('');
-const [category, setCategory] = useState<string>('');
+const [category, setCategory] = useState<string | null>('');
 const [isInputDisabled, setIsInputsDisabled] = useState<boolean>(true);
 const [priceError, setPriceError] = useState<boolean>(false);
 const [categoryError, setCategoryError] = useState<boolean>(false);
@@ -23,65 +25,86 @@ const [isDelay, setDelay ] = useState<boolean>(false);
 const [doneSelect, setDoneSelect] = useState<boolean>(false);
 const {title: fetchedTitles, loading: fetchedLoading, handleFetchTitle} = useFetchItem();
 const {handleSaveItem} = UseSaveItem();
+const {handleUniqueItem} = useUniqueItemList()
 
 useEffect(()=>{
-    setBtnDisable(true)
+    setBtnDisable(true);
+
+    //validation for price value
     if(price && isNaN(Number(price))){
       setBtnDisable(true);
       setPriceError(true);
       return;
     }
+
+    //checkin if title and price is not empty
     if(title && price){
         setBtnDisable(false)
         setPriceError(false);
     }
 
-},[title,price])
+    if(category !== 'Select Category') setCategoryError(false);
+
+},[title,price, category])
 
 const handleSave =async()=>{
-
+  //check if category is null
   if(!category || category === 'Select Category' ) {
       setCategoryError(true);
       return;
   }
     
+    //disable save button when submit
     setBtnDisable(true)
+
+    //create obj for selected inputs 
     const spent = {
       owner: user.id,
-      title: title,
+      title: title.trim().toLowerCase(),
       price: Number(price),
       category: category,
     };
 
+    //save item to db and fetch
     const spentRes = await handleSaveItem(spent);
+
+    //save item as state using zustand
     setSpendItems([...spendings || [], spentRes?.[0]])
 
+    //check if the item is exsisting then save to db if not.
+    handleUniqueItem(spent);
+
+    //reset fields
     setItem('')
     setPrice('')
-    setCategory('Select Category')
+    setCategory(null)
     setBtnDisable(false)
 }
 
+//listen on changes in title
 useEffect(()=>{
     if(!title.trim()) return;
     setDelay(true);
 
+    //fetch matched titles in db after 500 millisecond
+    //prenventing multiple request
     const debounce = setTimeout(()=>{
         handleFetchTitle(title);
         setDelay(false);
     },500);
 
     setDoneSelect(false);
-
     return () => clearTimeout(debounce);
 },[title]);
 
+//set selected matched item to input fields
 const getSelectedItemId = (item: any)=>{
   setItem(item?.title.trim())
   setPrice(item?.price)
   setDoneSelect(true)
 }
 
+//for options in dropdown
 const menu = (val: string) =>{
   setIsInputsDisabled(false);
   setCategory(val);
@@ -89,13 +112,19 @@ const menu = (val: string) =>{
 
   return (
     <>
-      <header className='border-b border-gray-300 py-4'>
-          <strong className='custom-black text-2xl px-3'>Add Item</strong>
+      <header className={`${ addItemIsHidden && 'bg-slate-100'} flex justify-between item-center border-b border-gray-300 py-4 px-4 cursor-pointer`}>
+          <strong className='custom-black text-2xl'>Add Item</strong>
+          {
+            addItemIsHidden 
+            ? <FaAngleUp size={24} className='md:hidden' onClick={()=> setAddItemIsHidden(!addItemIsHidden)}/>
+            : <FaAngleDown size={24} className='md:hidden' onClick={()=> setAddItemIsHidden(!addItemIsHidden)}/>
+          }
+         
       </header>
-      <div className='w-full md:flex justify-between py-4 lg:h-[300px] border-b border-gray-300'>
+      <div className={`${ addItemIsHidden && 'hidden'}  w-full md:flex justify-between py-4 lg:h-[300px] border-b border-gray-300`}>
         <section className='lg:max-w-1/2 w-full flex justify-center md:border-r border-gray-300'>
             <div className='px-4'>
-              <CustomDropdown onChange={menu}/>
+              <CustomDropdown onChange={menu} isActive={category}/>
                 {
                   categoryError ? <p className='text-red-600'>Category cannot be empty.</p> : ""
                 }
