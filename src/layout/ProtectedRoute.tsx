@@ -1,4 +1,5 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAndStoreSession, subscribeToAuthChanges } from '@/utils/authService';
 import { useUserStore } from '@/store/useUserStore';
@@ -7,9 +8,8 @@ interface ProtectedRouteProps {
   children: ReactNode;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
- const setUser = useUserStore((state)=> state.setUser);
-
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const { setUser } = useUserStore();
   const navigate = useNavigate();
   const [checking, setChecking] = useState(true);
 
@@ -18,11 +18,15 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
     const init = async () => {
       const currentSession = await getAndStoreSession();
+
       if (!currentSession) {
-        navigate('/login');
+        if (window.location.pathname !== '/login') {
+          navigate('/login');
+        }
+      } else {
+        setUser(currentSession.user);
       }
-     
-      setUser(currentSession?.user);
+
       unsub = subscribeToAuthChanges();
       setChecking(false);
     };
@@ -32,10 +36,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return () => {
       if (unsub) unsub();
     };
+  }, [navigate, setUser]);
 
-  }, [navigate]);
-
-  if (checking) return null; // Or add a spinner/loading UI
+  if (checking) return null; // Add a spinner here if preferred
 
   return <>{children}</>;
 };
