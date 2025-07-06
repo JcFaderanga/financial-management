@@ -22,9 +22,11 @@ export const subscribeToAuthChanges = () => {
 export const signInWithGoogle = async (): Promise<void> => {
   try {
     const { error } = await supabase.auth.signInWithOAuth({
-       provider: 'google',
-     
-      });
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin, // important for local vs prod
+    },
+});
   if (error) {
     console.error('Error during Google sign-in:', error.message);
   }

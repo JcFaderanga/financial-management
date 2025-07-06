@@ -11,7 +11,10 @@ const HomeLayout = () => {
       </div>
         <div className= {`w-full h-screen ${isMenuActive ? '' : 'lg:ml-80'} `}>
               <Header/>
-              <Outlet/>
+              <div className=''>
+                <Outlet/>
+              </div>
+              
         </div>
     </section>
   )

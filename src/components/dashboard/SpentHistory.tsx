@@ -28,7 +28,7 @@ const ActionMenu = ({
 const SpentHistory = () => {
   const { spendings, setSpendItems } = useSpendings();
   const [toastList, setToastList] = useState<itemTypes[]>([]);
-  const {date, setDate} = useOverviewDateStore();
+  const {date} = useOverviewDateStore();
   // Auto-remove toast and delete item permanently
   useEffect(() => {
     if (toastList.length === 0) return;
@@ -81,7 +81,7 @@ const SpentHistory = () => {
       <header className='my-4'>
           <div className='flex justify-between items-center'>
             <strong className='text-2xl custom-black'>Spendings</strong>
-            <input onChange={(date)=>setDate(date.target.value) } type='date' className=' py-1 px-4 bg-slate-100 rounded'/>
+            
           </div>
           <div className='flex justify-between items-center'>
             

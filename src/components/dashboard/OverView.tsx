@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useSpendings } from '@/store/useSpendingStore'
 import type { itemTypes } from '@/types/itemTypes';
-import NumberFlow from '@number-flow/react'
 import { useOverviewDateStore } from '@/store/useOverviewDate';
 import { LongDateFormat } from '@/utils/DateFormat';
 import { FaAngleDown,FaAngleUp } from "react-icons/fa6";
+import NumberFlowUI from '../UI/NumberFlow';
 const OverView = () => {
     const { spendings } = useSpendings();
-    const {date} = useOverviewDateStore();
+    const {date,setDate} = useOverviewDateStore();
     const [isSummary, setIsSammary] =useState<boolean>(false)
     //const [currentItems, SetcurrentItems] = useState<itemTypes[]>([]);
     if (!spendings) return 'Loading...';
@@ -44,17 +44,26 @@ const OverView = () => {
 
   return (
     <div className='pt-4 px-6'>
-        <strong className='custom-black text-2xl'>Overview</strong>
+        <div className='flex justify-between'>
+            <div>
+                <strong className='custom-black text-2xl'>Overview</strong>
+                <h2 className='text-slate-400'>{LongDateFormat(new Date(date))} Usage</h2>
+            </div>
+            <input onChange={(date)=>setDate(date.target.value) } type='date' className=' py-1 px-4 bg-slate-50 rounded cursor-pointer'/>
+        </div>
         <section className='flex justify-center py-4 lg:py-20 '>
             <div>
                 <p className='text-slate-400 text-center'>Total spending</p>
                 <strong className='text-5xl custom-black '>
-                    ₱<NumberFlow value={total} /> 
+                    <NumberFlowUI 
+                        value={total} 
+                        currency='PHP' 
+                        style='currency'
+                    />
                 </strong>
             </div>
         </section>
         <section className={`${!isSummary ? 'hidden': '' } lg:block py-4`}>
-            <h2 className='text-slate-400'>{LongDateFormat(new Date(date))} Usage</h2>
             {
                 data_result?.map((item: any)=>{
 
