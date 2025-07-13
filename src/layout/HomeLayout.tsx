@@ -2,7 +2,6 @@ import Header from '../components/header/Header'
 import SideBar from '../components/sideBar/SideBar'
 import { Outlet } from 'react-router-dom'
 import { useMenuStore } from '@/store/useMenuToggle'
-import { useModal } from '@/store/useModal'
 const HomeLayout = () => {
   const {isMenuActive} =useMenuStore();
 
