@@ -5,8 +5,6 @@ import { useMenuStore } from '@/store/useMenuToggle'
 import { useModal } from '@/store/useModal'
 const HomeLayout = () => {
   const {isMenuActive} =useMenuStore();
-  const {isModal} = useModal();
-
 
   return (
     <>

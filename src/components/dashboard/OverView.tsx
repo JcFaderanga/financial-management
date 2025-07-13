@@ -4,7 +4,7 @@ import type { itemTypes } from '@/types/itemTypes';
 import { useOverviewDateStore } from '@/store/useOverviewDate';
 import { LongDateFormat } from '@/utils/DateFormat';
 import { FaAngleDown,FaAngleUp } from "react-icons/fa6";
-import NumberFlowUI from '../UI/NumberFlow';
+// import NumberFlowUI from '../UI/NumberFlow';
 import { FaPen } from "react-icons/fa";
 import CustomModal from '../modal/CustomModal';
 import OverViewModal from './modals/OverViewModal';
@@ -14,7 +14,7 @@ const OverView = () => {
     const { spendings,setSpendItems } = useSpendings();
     const [isModal,setModal] = useState<boolean>(false);
     const {handleFetchAllSpendings}=useFetchAllSpending();
-    const {date,setDate} = useOverviewDateStore();
+    //const {date,setDate} = useOverviewDateStore();
     const [isSummary, setIsSammary] =useState<boolean>(false)
     const [isDateToEdit, setIsDateToEdit] = useState<boolean>(false)
     
@@ -55,7 +55,7 @@ const OverView = () => {
     <div className='pt-4 px-6'>
         <div>
             <strong className='custom-black text-2xl'>Overview</strong>
-            <h2 className='text-slate-400'>{LongDateFormat(new Date(date))} Usage 
+            <h2 className='text-slate-400'>{LongDateFormat(new Date())} Usage 
                 <FaPen onClick={()=>setModal(!isModal)} className='inline-block mx-1 cursor-pointer' />
             </h2>
             {isModal &&  
