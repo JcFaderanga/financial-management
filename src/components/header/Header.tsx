@@ -23,7 +23,7 @@ const Header = () => {
   }
 //console.log(user)
   return (
-    <header className={`border-b border-gray-300 w-full bg-white h-16 sticky top-0 flex items-center justify-between px-4
+    <header className={`border-b border-gray-300 w-full bg-white h-16 fixed top-0 flex items-center justify-between px-4
     ${isMenuActive ? 'hidden lg:flex' : ''}
     `}>
       <div className='flex items-center'>

@@ -5,12 +5,14 @@ import AddItem from "@/components/dashboard/addItem/AddItem";
 import { useSpendings } from "@/store/useSpendingStore";
 import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding";
 import OverView from "@/components/dashboard/OverView";
+import { FormatDate } from "@/utils/DateFormat";
 const Dashboard = () => {
 const {handleFetchAllSpendings} = useFetchAllSpending();
 const {setSpendItems} = useSpendings();
+
  useEffect(()=>{
     const fetch = async ()=>{
-      const res = await handleFetchAllSpendings();
+      const res = await handleFetchAllSpendings(FormatDate(new Date()));
       setSpendItems(res);
     }
   fetch();
@@ -29,7 +31,9 @@ const {setSpendItems} = useSpendings();
             <div className="w-full ">
                 <SpentHistory/>
             </div>
+            <div className="h-80 border w-full"></div>
         </section>
+        
     </div>
   );
 };

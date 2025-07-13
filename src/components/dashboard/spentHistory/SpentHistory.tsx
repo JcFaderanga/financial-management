@@ -36,18 +36,7 @@ const SpentHistory = () => {
     return () => clearTimeout(timer);
   }, [toastList, spendings, setSpendItems]);
 
-
-  const latestSpendings = spendings?.filter((item: itemTypes)=>{
-      const prev = new Date(item?.created_at);
-      const now = new Date(date);
-
-        return(
-          prev.getFullYear() === now.getFullYear() &&
-          prev.getDate() === now.getDate() &&
-          prev.getMonth() === now.getMonth()
-        )
-  })  
-
+// console.log('latestSpendings',latestSpendings)
   const handleDelete = (item: itemTypes) => {
     console.log('handle delete', item)
     setToastList(prev => [...prev, item]);
@@ -85,7 +74,7 @@ const SpentHistory = () => {
         <div className='overflow-x-auto h-full'>
           {spendings?
             <SpentTable 
-                data={latestSpendings}
+                data={spendings}
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}
                 toastList={toastList}
@@ -95,7 +84,7 @@ const SpentHistory = () => {
           }
         </div>
         {
-          latestSpendings?.length > 6 && 
+          spendings?.length > 6 && 
             <footer className='flex rounded-b-2xl justify-between py-3 px-4 bg-slate-100'>
               <div>Showing1-6 out of 12 items Show all</div>
               <div className='flex gap-4'>

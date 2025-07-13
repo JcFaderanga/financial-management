@@ -2,21 +2,27 @@ import Header from '../components/header/Header'
 import SideBar from '../components/sideBar/SideBar'
 import { Outlet } from 'react-router-dom'
 import { useMenuStore } from '@/store/useMenuToggle'
+import { useModal } from '@/store/useModal'
 const HomeLayout = () => {
   const {isMenuActive} =useMenuStore();
+  const {isModal} = useModal();
+
+
   return (
-    <section className='flex'>
-      <div className=''>
-          <SideBar/>
-      </div>
-        <div className= {`w-full h-screen ${isMenuActive ? '' : 'lg:ml-80'} `}>
-              <Header/>
-              <div className=''>
-                <Outlet/>
-              </div>
-              
+    <>
+      <section className='flex'>
+        <div className=''>
+            <SideBar/>
         </div>
-    </section>
+          <div className= {`w-full h-screen ${isMenuActive ? '' : 'lg:ml-80'} `}>
+                <Header/>
+                <div className='mt-16 h-full'>
+                  <Outlet/>
+                </div>
+                
+          </div>
+      </section>
+    </>
   )
 }
 
