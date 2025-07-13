@@ -12,7 +12,10 @@ const {setSpendItems} = useSpendings();
 
  useEffect(()=>{
     const fetch = async ()=>{
-      const res = await handleFetchAllSpendings(FormatDate(new Date()));
+      const res = 
+        await handleFetchAllSpendings(
+          FormatDate(new Date())
+        );
       setSpendItems(res);
     }
   fetch();
@@ -31,7 +34,6 @@ const {setSpendItems} = useSpendings();
             <div className="w-full ">
                 <SpentHistory/>
             </div>
-            <div className="h-80 border w-full"></div>
         </section>
         
     </div>

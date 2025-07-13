@@ -1,5 +1,5 @@
 import { ReactNode,useEffect } from "react"
-
+import { FaXmark } from "react-icons/fa6";
 const CustomModal = ({children, onClick}: {children: ReactNode, onClick?: ()=> void}) => {
 
      useEffect(() => {
@@ -15,9 +15,13 @@ const CustomModal = ({children, onClick}: {children: ReactNode, onClick?: ()=> v
   return (
     <section
         className="w-full px-4 h-screen fixed bg-[rgb(0,0,0,.3)] top-0 left-0 flex justify-center items-center">
-        <div className="w-full bg-white rounded ">
-            <div onClick={onClick} className="cursor-pointer">Close</div>
-              {children}  
+        <div className="w-full lg:max-w-96 bg-white rounded ">
+            <div onClick={onClick} className="p-2 flex justify-end cursor-pointer ">
+              <FaXmark size={20} className="text-slate-500"/>
+            </div>
+            <div>
+              {children} 
+            </div>
         </div>
     </section>
   )

@@ -1,20 +1,21 @@
 import { useState,useMemo } from 'react'
 import { useSpendings } from '@/store/useSpendingStore'
 import type { itemTypes } from '@/types/itemTypes';
-//import { useOverviewDateStore } from '@/store/useOverviewDate';
-import { LongDateFormat } from '@/utils/DateFormat';
+import { useOverviewDateStore } from '@/store/useOverviewDate';
+import OverviewDate from '@/hooks/OverviewDate';
 import { FaAngleDown,FaAngleUp } from "react-icons/fa6";
 // import NumberFlowUI from '../UI/NumberFlow';
 import { FaPen } from "react-icons/fa";
 import CustomModal from '../modal/CustomModal';
 import OverViewModal from './modals/OverViewModal';
 import useFetchAllSpending from '@/hooks/spend_items/useFetchAllSpeding';
-
+import type { datePropertyTypes } from '@/types/itemTypes';
 const OverView = () => {
     const { spendings,setSpendItems } = useSpendings();
     const [isModal,setModal] = useState<boolean>(false);
     const {handleFetchAllSpendings}=useFetchAllSpending();
-    //const {date,setDate} = useOverviewDateStore();
+    const {setDate} = useOverviewDateStore();
+    const {dateRange, timeRange} = OverviewDate();
     const [isSummary, setIsSammary] =useState<boolean>(false)
     const [isDateToEdit, setIsDateToEdit] = useState<boolean>(false)
     
@@ -42,22 +43,23 @@ const OverView = () => {
     })) : undefined;
 
    
-    const filterDate = async (date: string | {}) => {
+    const filterDate = async (date: string | datePropertyTypes) => {
         const res = await handleFetchAllSpendings(date)
         setSpendItems(res)
         setIsDateToEdit(!isDateToEdit)
         setModal(!isModal)
-        console.log(res)
+        setDate(date)
         console.log(date)
-        // setDate(date)
     }
+
   return (
     <div className='pt-4 px-6'>
         <div>
             <strong className='custom-black text-2xl'>Overview</strong>
-            <h2 className='text-slate-400'>{LongDateFormat(new Date())} Usage 
+            <h2 className='text-slate-400 text-sm'>{dateRange}  
                 <FaPen onClick={()=>setModal(!isModal)} className='inline-block mx-1 cursor-pointer' />
             </h2>
+            <h2 className='text-slate-400 text-sm'>{timeRange}</h2>
             {isModal &&  
                 <CustomModal onClick={()=> setModal(!isModal)}>
                     <OverViewModal
@@ -85,7 +87,9 @@ const OverView = () => {
                 ?   <div className='w-full flex justify-center'>
                         <strong className='text-orange-700'>There's no Record Available.</strong>
                     </div>
-                :   data_result?.map((item: any, index)=>{
+                :   data_result
+                    ?.sort((a: any, b: any) => b.price - a.price)
+                    .map((item: any, index)=>{
                     return(
                         <ul key={index} className='flex justify-between py-4 border-t border-gray-300'>
                             <li>{item.type}</li>

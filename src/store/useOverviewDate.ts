@@ -1,11 +1,17 @@
 import { create } from "zustand";
+import { datePropertyTypes } from "@/types/itemTypes";
 
 interface dateType {
-  date: string | Date;
-  setDate: (date: string) => void;
+  date: string |datePropertyTypes;
+  setDate: (date: string | datePropertyTypes) => void;
 }
 
 export const useOverviewDateStore = create<dateType>((set) => ({
-  date: new Date(), //default
+  date: {
+    startDate: '',
+    endDate: '',
+    startTime: '',
+    endTime: '',
+  }, //default
   setDate: (date) => set({ date }),
 }));

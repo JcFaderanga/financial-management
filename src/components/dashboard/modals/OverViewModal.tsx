@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { FormatDate } from "@/utils/DateFormat";
+import { datePropertyTypes } from "@/types/itemTypes";
 type ModalProp={
-    onChange: (date: string | {})=> void;
+    onChange: (date: string | datePropertyTypes)=> void;
 }
 const OverViewModal = ({onChange}:ModalProp) => {
     const[startDate, setStartDate] = useState<string>(String(FormatDate(new Date())))
@@ -20,7 +21,7 @@ const OverViewModal = ({onChange}:ModalProp) => {
     }
 
 return (
-    <div className='p-4 w-full '>
+    <div className='px-4 w-full '>
         <section className="border px-4 py-2 rounded border-gray-200 my-1">
             <div className="">
                 <label htmlFor="dateFrom" className="text-sm">Date From</label>
@@ -32,9 +33,9 @@ return (
                 />
             </div>
             <div>
-                <label htmlFor="dateFrom" className="text-sm">Date To</label>
+                <label htmlFor="dateTo" className="text-sm">Date To</label>
                 <input 
-                    id="dateFrom"
+                    id="dateTo"
                     onChange={(date)=>setEndDate(date.target.value)} 
                     type='date' 
                     className='block w-full px-2 py-1 bg-slate-50 rounded cursor-pointer'
@@ -42,28 +43,31 @@ return (
             </div>
         </section>
 
-        <section className="border flex p-2 rounded border-gray-200 my-1">
+        <section className="border px-4 p-2 rounded border-gray-200 my-1">
             <div>
-                <label htmlFor="dateFrom" className="text-sm">Time From</label>
+                <label htmlFor="TimeFrom" className="text-sm">Time From</label>
                 <input 
-                    id="dateFrom"
+                    id="TimeFrom"
                     onChange={(time)=>setStartTime(time.target.value)} 
                     type='time' 
-                    className=' mx-1 py-1 bg-slate-50 rounded cursor-pointer'
+                    className='block w-full px-2 py-1 bg-slate-50 rounded cursor-pointer'
                 />
             </div>
             <div>
-                <label htmlFor="dateFrom" className="text-sm">Time To</label>
+                <label htmlFor="TimeTo" className="text-sm">Time To</label>
                 <input 
-                    id="dateFrom"
+                    id="TimeTo"
                     onChange={(time)=>setEndTime(time.target.value)} 
                     type='time' 
-                    className=' mx-1 py-1 bg-slate-50 rounded cursor-pointer'
+                    className='block w-full px-2 py-1 bg-slate-50 rounded cursor-pointer'
                 />
             </div>
         </section>
-        <button onClick={submitFilter}>Okay</button>
-        
+        <button 
+            onClick={submitFilter} 
+            className="w-full py-2 border rounded my-4 border-slate-500">
+                Okay
+        </button>
     </div>
   )
 }

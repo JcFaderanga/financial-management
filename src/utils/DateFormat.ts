@@ -29,3 +29,12 @@ export const FormatDate=(date: any)=>{
       day: 'numeric' 
     }) : 'Select Date';
   };
+
+  export function formatTo12Hour(time: string): string {
+  return new Date(`1970-01-01T${time}`).toLocaleTimeString([], {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+}
+

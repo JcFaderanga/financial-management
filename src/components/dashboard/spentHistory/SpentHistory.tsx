@@ -1,12 +1,11 @@
 import  { useEffect, useState } from 'react';
 import { useSpendings } from '@/store/useSpendingStore';
-import { LongDateFormat } from '@/utils/DateFormat';
 import { ToastDelete } from '../../tostify/Toast';
 import type { itemTypes } from '@/types/itemTypes';
 import supabase from '@/lib/supabase';
-import { useOverviewDateStore } from '@/store/useOverviewDate';
 import SpentTable from './SpentTable';
 import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
+import OverviewDate from '@/hooks/OverviewDate';
 // Action buttons (Edit, Delete)
 
 
@@ -14,7 +13,7 @@ const SpentHistory = () => {
   const { spendings, setSpendItems } = useSpendings();
   const [toastList, setToastList] = useState<itemTypes[]>([]);
   const [spendingIsHidden, setSpendingIsHidden] = useState<boolean>(false);
-  const {date} = useOverviewDateStore();
+  const {dateRange, timeRange} = OverviewDate();
   // Auto-remove toast and delete item permanently
   useEffect(() => {
     if (toastList.length === 0) return;
@@ -55,9 +54,8 @@ const SpentHistory = () => {
       <header className={` py-4 flex justify-between items-center px-4`}>
             <div>
               <strong className='text-2xl custom-black'>Spendings</strong>
-              <p className='text-sm text-gray-500'>
-                {LongDateFormat(new Date(date))}
-              </p>
+              <p className='text-sm text-gray-400'>{dateRange}</p>
+              <p className='text-sm text-gray-400'>{timeRange}</p>
             </div>
             <div>
               {
