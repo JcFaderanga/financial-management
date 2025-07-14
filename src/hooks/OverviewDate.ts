@@ -7,9 +7,13 @@ const OverviewDate = () => {
     let dateRange = '';
     let timeRange = '';
     if (typeof date === 'object') {
-        if(!date?.startDate || date?.startDate && !date?.endDate){
+        if(!date?.startDate){
             dateRange = LongDateFormat(new Date())
-        }else{
+        }
+        else if(date?.startDate && !date?.endDate){
+          dateRange= LongDateFormat(new Date(date?.startDate));
+        }
+        else{
             dateRange =`${LongDateFormat(new Date(date?.startDate))} 
                 - ${LongDateFormat(new Date(date?.endDate))}` 
         }
