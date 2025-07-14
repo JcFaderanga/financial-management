@@ -95,7 +95,7 @@ const OverView = () => {
                             <li>{item.type}</li>
                             <div className=' w-1/2 flex justify-between'>
                                 <li>{(item.price / total * 100).toFixed(2)}%</li>
-                                <li>₱{item.price}</li>
+                                <li>₱{item.price.toLocaleString()}</li>
                             </div>
                         </ul>
                     )

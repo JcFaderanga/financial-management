@@ -59,7 +59,6 @@ const useFetchAllSpending = () => {
       }
 
       const { data: result, error } = await query;
-      console.log(result);
 
       if (error) {
         console.error('Error fetching spending data:', error);
