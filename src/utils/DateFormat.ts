@@ -24,6 +24,7 @@ export const FormatDate=(date: any)=>{
 
   export const LongDateFormat = (date: any) => {
     return date ? date.toLocaleDateString('en-US', { 
+      timeZone: 'UTC',
       year: 'numeric', 
       month: 'long', 
       day: 'numeric' 

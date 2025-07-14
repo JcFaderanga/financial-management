@@ -51,7 +51,7 @@ const SpentTable = ({data, handleEdit, handleDelete,toastList}:SpentTableProps) 
                   <CustomData>{spent.category}</CustomData>
                   <CustomData>{spent.title}</CustomData>
                   <CustomData>₱{spent?.price?.toLocaleString()}</CustomData>
-                  <CustomData>{LongDateFormat(new Date(spent.created_at!))}</CustomData>
+                  <CustomData>{LongDateFormat(new Date(spent.created_at))}</CustomData>
                   <CustomData>
                     <ActionMenu
                       onEdit={() => handleEdit(spent)}

@@ -29,8 +29,8 @@ const useFetchAllSpending = () => {
       const applyDateRange = (
         start: string,
         end: string,
-        timeStart = 'T00:00:00',
-        timeEnd = 'T23:59:59'
+        timeStart = 'T00:00:00+00',
+        timeEnd = 'T23:59:59+00'
       ) => {
         return query
           .gte('created_at', `${start}${timeStart}`)
