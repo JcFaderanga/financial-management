@@ -23,7 +23,8 @@ const useFetchAllSpending = () => {
       let query = supabase
         .from('items')
         .select('*')
-        .eq('owner', user?.id);
+        .eq('owner', user?.id)
+        .order('created_at', { ascending: false });
 
       const applyDateRange = (
         start: string,
