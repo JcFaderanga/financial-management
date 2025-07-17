@@ -1,4 +1,4 @@
-import { ReactNode,useEffect, useState } from "react"
+import { ReactNode,useEffect } from "react"
 import { FaXmark } from "react-icons/fa6";
 const CustomModal = ({children, hidden, onClick}: {children: ReactNode,hidden: boolean, onClick?: ()=> void}) => {
 
