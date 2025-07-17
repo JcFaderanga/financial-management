@@ -1,11 +1,11 @@
 import supabase from '@/lib/supabase'
 import { useEffect, useState } from 'react'
-import { useSpendings } from '@/store/useSpendingStore'
+
 const GroupSpending = ({ groupId }: { groupId: string | number | undefined }) => {
     const [groupItem, setGroupItem] = useState<any>(null)
-    const { spendings } = useSpendings();
+
     const fetchItemInGroup = async () => {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('grouped_item')
       .select('*, items(*)')
       .eq('id', groupId)
@@ -17,7 +17,7 @@ const GroupSpending = ({ groupId }: { groupId: string | number | undefined }) =>
     if (groupId) {
       fetchItemInGroup()
     }
-  }, [groupId,spendings])
+  }, [groupId])
 
   return (
     <div>
