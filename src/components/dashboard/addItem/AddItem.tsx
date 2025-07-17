@@ -8,15 +8,15 @@ import DotsLoading from '@/components/UI/DotsLoading'
 import { useUserStore } from '@/store/useUserStore'
 import CustomDropdown from '@/components/inputs/CustomDropdown'
 import MatchItem from './MatchItem'
-import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
 import useUniqueItemList from '@/hooks/spend_items/useUniqueList'
+import useFetchGroupItem from '@/hooks/spend_items/useFetchGroupItem'
 const AddItem = () => {
 const {setSpendItems, spendings} =useSpendings();
 const {user} = useUserStore();
-const [addItemIsHidden, setAddItemIsHidden] = useState<boolean>(false);
 const [title, setItem] = useState<string>('');
 const [price, setPrice] = useState<string>('');
 const [category, setCategory] = useState<string | null>('');
+// const [subCategory, setSubCategory] = useState<string>('');
 const [isInputDisabled, setIsInputsDisabled] = useState<boolean>(true);
 const [priceError, setPriceError] = useState<boolean>(false);
 const [categoryError, setCategoryError] = useState<boolean>(false);
@@ -26,7 +26,9 @@ const [doneSelect, setDoneSelect] = useState<boolean>(false);
 const {title: fetchedTitles, loading: fetchedLoading, handleFetchTitle} = useFetchItem();
 const {handleSaveItem} = UseSaveItem();
 const {handleUniqueItem} = useUniqueItemList()
-
+const [isAddingGroup, setIsAddGroup] = useState<boolean>(false);
+ const [selectedGroup, setSelectedGroup] = useState<any>(null); // store checked item IDs
+ 
 useEffect(()=>{
     setBtnDisable(true);
 
@@ -63,6 +65,7 @@ const handleSave =async()=>{
       title: title.trim().toLowerCase(),
       price: Number(price),
       category: category,
+      grouped_in: selectedGroup[0].id
     };
 
     //save item to db and fetch
@@ -110,24 +113,34 @@ const menu = (val: string) =>{
   setCategory(val);
 }
 
+const {group} = useFetchGroupItem();
+  const handleCheckboxChange = (item: any) => {
+    setSelectedGroup(
+      selectedGroup?.some((group: any)=>group?.id === item?.id) || false
+      ?selectedGroup?.filter((itemId:any) => itemId.id !== item?.id)
+      :[item]
+    )
+  };
+
   return (
     <>
-      <header className={`${ addItemIsHidden && 'bg-slate-100'} flex justify-between item-center border-b border-gray-300 py-4 px-4 cursor-pointer`}>
+      <header className={` flex justify-between item-center border-b border-gray-300 py-4 px-4 cursor-pointer`}>
           <strong className='custom-black text-2xl'>Add Item</strong>
-          {
-            addItemIsHidden 
-            ? <FaAngleUp size={24} className='md:hidden' onClick={()=> setAddItemIsHidden(!addItemIsHidden)}/>
-            : <FaAngleDown size={24} className='md:hidden' onClick={()=> setAddItemIsHidden(!addItemIsHidden)}/>
-          }
          
       </header>
-      <div className={`${ addItemIsHidden && 'hidden'}  w-full md:flex justify-between py-4 lg:h-[300px] border-b border-gray-300`}>
-        <section className='lg:max-w-1/2 w-full flex justify-center md:border-r border-gray-300'>
-            <div className='px-4'>
+      <div className={`${isAddingGroup && '!hidden'} w-full md:flex justify-between py-4 border-b border-gray-300`}>
+        <section className='lg:max-w-1/2 w-full flex justify-center md:border-r border-gray-300 '>
+            <div className='px-4 '>
               <CustomDropdown onChange={menu} isActive={category}/>
                 {
                   categoryError ? <p className='text-red-600'>Category cannot be empty.</p> : ""
                 }
+                {/* <CustomInput 
+                    disabled={isInputDisabled} 
+                    value={subCategory} type='string' 
+                    placeholder={'Sub category (Jeep, Lawson etc.)'} 
+                    onChange={setSubCategory}
+                /> */}
                 <CustomInput 
                     disabled={isInputDisabled} 
                     value={title} type='string' 
@@ -143,6 +156,13 @@ const menu = (val: string) =>{
                 {
                   priceError ? <p className='text-red-600'>Invalid price value.</p> : ""
                 }
+                {selectedGroup?.map((grouped:any)=>{
+                  return <span >Add to <span className='text-green-700'>{grouped?.title}</span></span>
+                })}
+                
+                <div className='underline py-2' onClick={()=>setIsAddGroup(!isAddingGroup)}>Add in a group</div>
+                
+
                 <SubmitButton 
                     onClick={handleSave} 
                     disabled={btnDisable}
@@ -162,6 +182,26 @@ const menu = (val: string) =>{
             )}
         </section>
       </div>
+      <section className={`${!isAddingGroup ? '!hidden' : 'block'} p-4`}>
+        <div className='pointer'>Create new group</div>
+            <div className=' py-2 flex justify-between items-center'>
+              {group?.map((item: any) => (
+                <div key={item.id} className="" onClick={() => handleCheckboxChange(item)}>
+                  <input
+                    type="checkbox"
+                    onChange={() => {}}
+                    checked={(selectedGroup || [])?.some((group: any)=>group?.id === item.id)}
+                   
+                  />
+                  <span className="px-2">
+                    <span className="text-slate-600">[{item.category}]</span> {item.title}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <button className='w-full py-1 rounded cursor-pointer bg-slate-200' onClick={()=>setIsAddGroup(!isAddingGroup)}>Okay</button>
+      </section>
+        
   </>
   )
 }

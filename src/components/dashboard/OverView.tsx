@@ -60,13 +60,13 @@ const OverView = () => {
                 <FaPen onClick={()=>setModal(!isModal)} className='inline-block mx-1 cursor-pointer' />
             </h2>
             <h2 className='text-slate-400 text-sm'>{timeRange}</h2>
-            {isModal &&  
-                <CustomModal onClick={()=> setModal(!isModal)}>
+                <CustomModal 
+                    hidden={isModal}
+                    onClick={()=> setModal(!isModal)}>
                     <OverViewModal
                         onChange={filterDate}
                     />
-                </CustomModal>
-            }        
+                </CustomModal>  
         </div>
         <section className='flex justify-center py-4 lg:py-20 '>
             <div>

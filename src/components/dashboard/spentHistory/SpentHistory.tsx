@@ -6,14 +6,22 @@ import supabase from '@/lib/supabase';
 import SpentTable from './SpentTable';
 import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
 import OverviewDate from '@/hooks/OverviewDate';
+import CustomModal from '@/components/modal/CustomModal';
+import SpentEdit from './SpentEdit';
 // Action buttons (Edit, Delete)
 
-
+type IsEditProps={
+  status: boolean,
+  item: itemTypes
+}
 const SpentHistory = () => {
   const { spendings, setSpendItems } = useSpendings();
   const [toastList, setToastList] = useState<itemTypes[]>([]);
+  const [isItemEdit, setIsItemEdit] = useState<IsEditProps>({status: false, item: {} });
   const [spendingIsHidden, setSpendingIsHidden] = useState<boolean>(false);
   const {dateRange, timeRange} = OverviewDate();
+
+
   // Auto-remove toast and delete item permanently
   useEffect(() => {
     if (toastList.length === 0) return;
@@ -41,9 +49,10 @@ const SpentHistory = () => {
     setToastList(prev => [...prev, item]);
   };
 
-  const handleEdit = (item: itemTypes) => {
-    console.log('Edit ID:', item);
-  };
+  // const handleEdit = (item: itemTypes) => {
+  //   console.log('Edit ID:', item);
+  //   setIsItemEdit(!isItemEdit)
+  // };
 
   const handleUndo = (id: string | number | undefined) => {
     setToastList(prev => prev.filter(item => item.id !== id));
@@ -73,7 +82,7 @@ const SpentHistory = () => {
           {spendings?
             <SpentTable 
                 data={spendings}
-                handleEdit={handleEdit}
+                handleEdit={(prev => setIsItemEdit({status: true, item: prev}))}
                 handleDelete={handleDelete}
                 toastList={toastList}
               /> :<div className='w-full flex justify-center'>
@@ -91,10 +100,18 @@ const SpentHistory = () => {
               </div>
             </footer>
         }
-        
       </div>
+
+      {/* Modal */}
+     
+        <CustomModal 
+        hidden={isItemEdit?.status}
+        onClick={()=>setIsItemEdit({...isItemEdit, status: !isItemEdit.status})}>
+          <SpentEdit itemProps={isItemEdit?.item}/>
+        </CustomModal>
+        
     </div>
-  );
+  ); 
 };
 
 export default SpentHistory;

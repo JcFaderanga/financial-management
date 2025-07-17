@@ -15,7 +15,7 @@ const CustomDropdown = ({ onChange, isActive }: DropDownProps) => {
     'Food', 'Load', 'Education', 'Games', 'Social',
     'Transportation', 'Bills', 'Gifts', 'Lottery',
     'Shopping', 'Phone', 'Wants', 'Hotel', 'Others',
-    'Staycation'
+    'Staycation', 'Payments'
   ];
 
   useEffect(() => {

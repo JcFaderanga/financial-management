@@ -5,6 +5,7 @@ export type itemTypes={
     price?: number | string,
     category?: string,
     location?: string,
+    grouped_in?: string | number ,
     created_at?: any,
 }
 

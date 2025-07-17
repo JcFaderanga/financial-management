@@ -1,9 +1,9 @@
 
 interface inputProps {
-  value:string;
+  value:string | number;
   type: string;
-  placeholder: string;
-  disabled: boolean;
+  placeholder?: string;
+  disabled?: boolean;
   onChange: (val: string) => void;
 }
 
