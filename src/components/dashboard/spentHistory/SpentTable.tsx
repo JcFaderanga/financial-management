@@ -2,20 +2,25 @@ import { CustomTable, CustomRow, CustomData, CustomHeader } from '../../tables';
 import { LiaTrashSolid, LiaPenSolid } from "react-icons/lia";
 import { LongDateFormat } from '@/utils/DateFormat';
 import { itemTypes } from '@/types/itemTypes';
-
+import { MdOutlineFolderOpen } from "react-icons/md";
 type SpentTableProps = {
   data: itemTypes[];
   toastList: any;
   handleEdit: (spent: itemTypes)=> void;
   handleDelete: (spent: itemTypes)=> void;
+  handleGroup: (spent: itemTypes)=> void;
 }
 
 const ActionMenu = ({
   onEdit,
   onDelete,
+  onGroup,
+  isGrouped,
 }: {
   onEdit: () => void;
   onDelete: () => void;
+  onGroup: () => void;
+  isGrouped: any
 }) => (
   <ul className='flex gap-2'>
     <li onClick={onEdit} className='p-2 bg-blue-50 rounded-xl cursor-pointer'>
@@ -24,10 +29,16 @@ const ActionMenu = ({
     <li onClick={onDelete} className='p-2 bg-red-50 rounded-xl cursor-pointer'>
       <LiaTrashSolid className='text-red-500' />
     </li>
+    {isGrouped &&
+        <li onClick={onGroup} className='p-2 bg-orange-50 rounded-xl cursor-pointer'>
+          <MdOutlineFolderOpen className='text-orange-500' />
+        </li>
+    }
+   
   </ul>
 );
 
-const SpentTable = ({data, handleEdit, handleDelete,toastList}:SpentTableProps) => {
+const SpentTable = ({data, handleEdit, handleDelete,handleGroup,toastList}:SpentTableProps) => {
   return (
     <CustomTable>
           <thead className='bg-slate-100'>
@@ -56,6 +67,8 @@ const SpentTable = ({data, handleEdit, handleDelete,toastList}:SpentTableProps) 
                     <ActionMenu
                       onEdit={() => handleEdit(spent)}
                       onDelete={() => handleDelete(spent)}
+                      onGroup={() => handleGroup(spent)}
+                      isGrouped={spent?.grouped_in}
                     />
                   </CustomData>
                 </CustomRow>

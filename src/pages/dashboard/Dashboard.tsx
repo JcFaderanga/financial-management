@@ -12,7 +12,7 @@ import CustomModal from "@/components/modal/CustomModal";
 //import { useUserStore } from '@/store/useUserStore'
 const Dashboard = () => {
 const {handleFetchAllSpendings} = useFetchAllSpending();
-const {setSpendItems} = useSpendings();
+const {setSpendItems, spendings} = useSpendings();
 // const [totalSpent, setTotalSpent] = useState<number | string>('')
 const [addItemModal, setAddItemModal] = useState<boolean>(false);
 //const { user } = useUserStore();
@@ -27,6 +27,10 @@ const [addItemModal, setAddItemModal] = useState<boolean>(false);
   fetch();
   },[])
 
+
+useEffect(()=>{
+  setAddItemModal(false)
+},[spendings])
 //use for fetching overall total spendings
 // useEffect(()=>{
 //     const fetchTotal = async ()=>{

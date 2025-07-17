@@ -8,16 +8,18 @@ import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
 import OverviewDate from '@/hooks/OverviewDate';
 import CustomModal from '@/components/modal/CustomModal';
 import SpentEdit from './SpentEdit';
+import GroupSpending from './GroupSpending';
 // Action buttons (Edit, Delete)
 
-type IsEditProps={
+type ActionProps={
   status: boolean,
   item: itemTypes
 }
 const SpentHistory = () => {
   const { spendings, setSpendItems } = useSpendings();
   const [toastList, setToastList] = useState<itemTypes[]>([]);
-  const [isItemEdit, setIsItemEdit] = useState<IsEditProps>({status: false, item: {} });
+  const [isItemEdit, setIsItemEdit] = useState<ActionProps>({status: false, item: {} });
+  const [isViewGrouped, setIsViewGrouped] = useState<ActionProps>({status: false, item: {} });
   const [spendingIsHidden, setSpendingIsHidden] = useState<boolean>(false);
   const {dateRange, timeRange} = OverviewDate();
 
@@ -58,6 +60,7 @@ const SpentHistory = () => {
     setToastList(prev => prev.filter(item => item.id !== id));
   };
 
+
   return (
     <div className={`${spendingIsHidden && 'bg-slate-100'}`}>
       <header className={` py-4 flex justify-between items-center px-4`}>
@@ -84,6 +87,7 @@ const SpentHistory = () => {
                 data={spendings}
                 handleEdit={(prev => setIsItemEdit({status: true, item: prev}))}
                 handleDelete={handleDelete}
+                handleGroup={(prev => setIsViewGrouped({status: true, item: prev}))}
                 toastList={toastList}
               /> :<div className='w-full flex justify-center'>
                 <strong className='text-orange-700'>There's no Record Available.</strong>
@@ -102,12 +106,17 @@ const SpentHistory = () => {
         }
       </div>
 
-      {/* Modal */}
+      {/* Modals */}
      
         <CustomModal 
         hidden={isItemEdit?.status}
         onClick={()=>setIsItemEdit({...isItemEdit, status: !isItemEdit.status})}>
           <SpentEdit itemProps={isItemEdit?.item}/>
+        </CustomModal>
+        <CustomModal 
+        hidden={isViewGrouped?.status}
+        onClick={()=>setIsViewGrouped({...isViewGrouped, status: !isViewGrouped.status})}>
+          <GroupSpending groupId={isViewGrouped?.item?.grouped_in}/>
         </CustomModal>
         
     </div>
