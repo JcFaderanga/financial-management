@@ -9,7 +9,7 @@ import { useUserStore } from '@/store/useUserStore'
 import CustomDropdown from '@/components/inputs/CustomDropdown'
 import MatchItem from './MatchItem'
 import useUniqueItemList from '@/hooks/spend_items/useUniqueList'
-import Addgroup from './Addgroup'
+import AddGroup from './AddGroup'
 const AddItem = () => {
 const {setSpendItems, spendings} =useSpendings();
 const {user} = useUserStore();
@@ -186,7 +186,7 @@ const menu = (val: string) =>{
         </section>
       </div>
       <section className={`${!isAddingGroup ? '!hidden' : 'block'} pb-4`}>
-          <Addgroup 
+          <AddGroup 
             handleCheckboxChange={handleCheckboxChange}
             selectedGroup={selectedGroup}
             setIsAddGroup={()=>setIsAddGroup(!isAddingGroup)}
