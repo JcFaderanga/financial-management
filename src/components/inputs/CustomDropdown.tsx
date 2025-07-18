@@ -1,34 +1,31 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 interface DropDownProps {
   value?: string;
-  type?: string;
-  placeholder?: string;
-  isActive: any;
+  isActive: boolean;
   onChange: (val: string) => void;
 }
 
-const CustomDropdown = ({ onChange, isActive }: DropDownProps) => {
-  const [selected, setSelected] = useState("Select Category");
+const CustomDropdown: React.FC<DropDownProps> = ({ value, isActive, onChange }) => {
+  const [selected, setSelected] = useState<string>(value || "");
 
   const category = [
-    'Food', 'Load', 'Education', 'Games', 'Social',
-    'Transportation', 'Bills', 'Gifts', 'Lottery',
-    'Shopping', 'Phone', 'Wants', 'Hotel', 'Others',
-    'Staycation', 'Payments'
+    "Bills", "Education", "Food", "Games", "Gifts", "Hotel", "Load", "Lottery",
+    "Others", "Payments", "Phone", "Shopping", "Social", "Staycation",
+    "Transportation", "Wants"
   ];
 
   useEffect(() => {
     if (!isActive) {
-      setSelected("Select Category");
-      onChange("Select Category");
+      setSelected("");
+      onChange("");
     }
-  }, [isActive]);
+  }, [isActive, onChange]);
 
-  const handleSelect = (val: string) => {
+  const handleSelect = useCallback((val: string) => {
     setSelected(val);
     onChange(val);
-  };
+  }, [onChange]);
 
   return (
     <div>
@@ -37,7 +34,9 @@ const CustomDropdown = ({ onChange, isActive }: DropDownProps) => {
         onChange={(e) => handleSelect(e.target.value)}
         className="border px-3 py-2 w-full my-2 rounded-xl border-gray-400"
       >
-        <option disabled>Select Category</option>
+        <option value="" disabled>
+          Select Category
+        </option>
         {category.sort().map((word) => (
           <option key={word} value={word}>
             {word}
@@ -48,4 +47,4 @@ const CustomDropdown = ({ onChange, isActive }: DropDownProps) => {
   );
 };
 
-export default CustomDropdown;
+export default React.memo(CustomDropdown);

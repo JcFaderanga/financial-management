@@ -1,4 +1,4 @@
-
+import React from 'react';
 interface inputProps {
   value:string | number;
   type: string;
@@ -21,4 +21,4 @@ const StringInput = ({ value, type, placeholder,disabled, onChange }: inputProps
   );
 };
 
-export default StringInput;
+export default React.memo(StringInput);

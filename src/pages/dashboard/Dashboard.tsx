@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 import useDocumentTitle from "@/hooks/document/useDocTitle";
 import SpentHistory from "@/components/dashboard/spentHistory/SpentHistory";
 import AddItem from "@/components/dashboard/addItem/AddItem";
@@ -76,4 +76,4 @@ useEffect(()=>{
   );
 };
 
-export default Dashboard;
+export default React.memo(Dashboard);
