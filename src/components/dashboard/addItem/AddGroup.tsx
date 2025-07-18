@@ -5,7 +5,7 @@ import useFetchGroupItem from '@/hooks/spend_items/useFetchGroupItem'
 import supabase from '@/lib/supabase'
 import { SubmitButton } from '@/components/button/SubmitButton'
 import { useUserStore } from '@/store/useUserStore'
-const Addgroup = ({
+const AddGroup = ({
     handleCheckboxChange,
     setIsAddGroup,
     selectedGroup
@@ -105,4 +105,4 @@ const Addgroup = ({
   )
 }
 
-export default Addgroup
+export default AddGroup
