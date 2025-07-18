@@ -65,7 +65,7 @@ const handleSave =async()=>{
       title: title.trim().toLowerCase(),
       price: Number(price),
       category: category,
-      grouped_in: selectedGroup[0].id
+      grouped_in:selectedGroup ? selectedGroup[0]?.id : null
     };
 
     //save item to db and fetch
@@ -125,7 +125,9 @@ const {group} = useFetchGroupItem();
   return (
     <>
       <header className={` flex justify-between item-center border-b border-gray-300 py-4 px-4 cursor-pointer`}>
-          <strong className='custom-black text-2xl'>Add Item</strong>
+          <strong className='custom-black text-2xl'>
+            <span>Add Item</span>
+          </strong>
          
       </header>
       <div className={`${isAddingGroup && '!hidden'} w-full md:flex justify-between py-4 border-b border-gray-300`}>
@@ -156,8 +158,8 @@ const {group} = useFetchGroupItem();
                 {
                   priceError ? <p className='text-red-600'>Invalid price value.</p> : ""
                 }
-                {selectedGroup?.map((grouped:any)=>{
-                  return <span >Add to <span className='text-green-700'>{grouped?.title}</span></span>
+                {selectedGroup?.map((grouped:any, index: number)=>{
+                  return <span key={index}>Add to <span  className='text-green-700'>{grouped?.title}</span></span>
                 })}
                 
                 <div className='underline py-2' onClick={()=>setIsAddGroup(!isAddingGroup)}>Add in a group</div>
@@ -183,7 +185,7 @@ const {group} = useFetchGroupItem();
         </section>
       </div>
       <section className={`${!isAddingGroup ? '!hidden' : 'block'} p-4`}>
-        <div className='pointer'>Create new group</div>
+        {/* <div className='pointer'>Create new group</div> */}
             <div className=' py-2 flex justify-between items-center'>
               {group?.map((item: any) => (
                 <div key={item.id} className="" onClick={() => handleCheckboxChange(item)}>
