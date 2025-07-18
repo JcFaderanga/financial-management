@@ -57,7 +57,14 @@ useEffect(()=>{
           <div className="p-4 border-b border-slate-300">
             <button 
               className="px-4 py-2 bg-slate-100 rounded-lg cursor-pointer"
-              onClick={()=>setAddItemModal(!addItemModal)}>Add Item</button>
+              onClick={()=>setAddItemModal(!addItemModal)}>
+                Add Item
+            </button>
+            {/* <button 
+              className="px-4 py-2 bg-slate-100 rounded-lg cursor-pointer mx-2"
+              onClick={()=>setAddItemModal(!addItemModal)}>
+                Grouped Items
+            </button> */}
               {/* <h1>Total: {totalSpent}</h1> */}
           </div>
           

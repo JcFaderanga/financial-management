@@ -1,7 +1,8 @@
 
-export const SubmitButton = ({onClick, disabled}:{
+export const SubmitButton = ({title, onClick, disabled}:{
+    title: string;
     onClick: ()=> void,
-    disabled: boolean
+    disabled?: boolean
 }) => {
   return (
     <button
@@ -10,7 +11,7 @@ export const SubmitButton = ({onClick, disabled}:{
         className={`cursor-pointer w-full
         ${disabled ?'bg-gray-300 ' :'bg-blue-500'}
              px-4 py-2 rounded-xl text-white font-bold`}
-    >Save
+    >{title}
     </button>
   )
 }

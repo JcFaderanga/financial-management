@@ -9,7 +9,7 @@ import { useUserStore } from '@/store/useUserStore'
 import CustomDropdown from '@/components/inputs/CustomDropdown'
 import MatchItem from './MatchItem'
 import useUniqueItemList from '@/hooks/spend_items/useUniqueList'
-import useFetchGroupItem from '@/hooks/spend_items/useFetchGroupItem'
+import Addgroup from './Addgroup'
 const AddItem = () => {
 const {setSpendItems, spendings} =useSpendings();
 const {user} = useUserStore();
@@ -27,7 +27,7 @@ const {title: fetchedTitles, loading: fetchedLoading, handleFetchTitle} = useFet
 const {handleSaveItem} = UseSaveItem();
 const {handleUniqueItem} = useUniqueItemList()
 const [isAddingGroup, setIsAddGroup] = useState<boolean>(false);
- const [selectedGroup, setSelectedGroup] = useState<any>(null); // store checked item IDs
+const [selectedGroup, setSelectedGroup] = useState<any>(null); // store checked item IDs
  
 useEffect(()=>{
     setBtnDisable(true);
@@ -113,7 +113,7 @@ const menu = (val: string) =>{
   setCategory(val);
 }
 
-const {group} = useFetchGroupItem();
+
   const handleCheckboxChange = (item: any) => {
     setSelectedGroup(
       selectedGroup?.some((group: any)=>group?.id === item?.id) || false
@@ -166,6 +166,7 @@ const {group} = useFetchGroupItem();
                 
 
                 <SubmitButton 
+                    title='Save'
                     onClick={handleSave} 
                     disabled={btnDisable}
                 />
@@ -184,24 +185,13 @@ const {group} = useFetchGroupItem();
             )}
         </section>
       </div>
-      <section className={`${!isAddingGroup ? '!hidden' : 'block'} p-4`}>
-        {/* <div className='pointer'>Create new group</div> */}
-            <div className=' py-2 flex justify-between items-center'>
-              {group?.map((item: any) => (
-                <div key={item.id} className="" onClick={() => handleCheckboxChange(item)}>
-                  <input
-                    type="checkbox"
-                    onChange={() => {}}
-                    checked={(selectedGroup || [])?.some((group: any)=>group?.id === item.id)}
-                   
-                  />
-                  <span className="px-2">
-                    <span className="text-slate-600">[{item.category}]</span> {item.title}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <button className='w-full py-1 rounded cursor-pointer bg-slate-200' onClick={()=>setIsAddGroup(!isAddingGroup)}>Okay</button>
+      <section className={`${!isAddingGroup ? '!hidden' : 'block'} pb-4`}>
+          <Addgroup 
+            handleCheckboxChange={handleCheckboxChange}
+            selectedGroup={selectedGroup}
+            setIsAddGroup={()=>setIsAddGroup(!isAddingGroup)}
+          />
+         
       </section>
         
   </>
