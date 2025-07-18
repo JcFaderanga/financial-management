@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 
 interface DropDownProps {
   value?: string;
-  isActive: boolean;
+  isActive: any;
   onChange: (val: string) => void;
 }
 
