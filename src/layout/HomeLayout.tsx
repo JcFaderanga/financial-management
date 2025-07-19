@@ -11,7 +11,7 @@ const HomeLayout = () => {
         <div className=''>
             <SideBar/>
         </div>
-          <div className= {`w-full h-screen ${isMenuActive ? '' : 'lg:ml-80'} `}>
+          <div className= {`w-full h-screen ${isMenuActive ? '' : 'lg:ml-[18%]'} `}>
                 <Header/>
                 <div className='mt-16 h-full'>
                   <Outlet/>

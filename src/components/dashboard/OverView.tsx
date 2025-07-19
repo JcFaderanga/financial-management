@@ -103,7 +103,7 @@ const OverView = () => {
                 key={item.type}
                 onClick={() => updateGroup(item)}
                 className={`${
-                  item.exclude && 'opacity-50'
+                  item.exclude && 'bg-slate-50'
                 } flex justify-between py-4 px-2 border-t border-gray-300 cursor-pointer hover:bg-slate-50`}
               >
                 <div className="flex">

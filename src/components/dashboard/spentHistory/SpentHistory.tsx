@@ -47,7 +47,6 @@ const SpentHistory = () => {
 
 // console.log('latestSpendings',latestSpendings)
   const handleDelete = (item: itemTypes) => {
-    console.log('handle delete', item)
     setToastList(prev => [...prev, item]);
   };
 
@@ -111,7 +110,7 @@ const SpentHistory = () => {
         <CustomModal 
         hidden={isItemEdit?.status}
         onClick={()=>setIsItemEdit({...isItemEdit, status: !isItemEdit.status})}>
-          <SpentEdit itemProps={isItemEdit?.item}/>
+          <SpentEdit itemProps={isItemEdit?.item} setIsItemEdit={()=>setIsItemEdit({...isItemEdit, status: !isItemEdit.status})}/>
         </CustomModal>
         <CustomModal 
         hidden={isViewGrouped?.status}

@@ -21,7 +21,7 @@ const OverViewModal = ({onChange}:ModalProp) => {
     }
 
 return (
-    <div className=' px-4 w-80 lg:w-96 '>
+    <div className=' px-4 w-80 lg:w-96 mx-auto'>
         <section className="border px-4 py-2 rounded border-gray-200 my-1">
             <div className="">
                 <label htmlFor="dateFrom" className="text-sm">Date From</label>
