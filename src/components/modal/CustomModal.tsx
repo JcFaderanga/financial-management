@@ -17,8 +17,8 @@ const CustomModal = ({children, hidden, onClick}: {children: ReactNode,hidden: b
   return (
     <section
         className={`${hidden ? 'fixed' : ' hidden'}
-         w-full px-4 h-screen bg-[rgb(0,0,0,.3)] inset-0`}>
-        <div className=" bg-white rounded mt-40 max-w-200 mx-auto">
+         w-full px-4 h-screen bg-[rgb(0,0,0,.3)] inset-0 overflow-scroll`}>
+        <div className=" bg-white rounded mt-4 max-w-200 mx-auto">
             <div onClick={onClick} className="p-2 flex justify-end cursor-pointer ">
               <FaXmark size={20} className="text-slate-500"/>
             </div>

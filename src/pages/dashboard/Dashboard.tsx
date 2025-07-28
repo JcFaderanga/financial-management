@@ -7,6 +7,7 @@ import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding";
 import OverView from "@/components/dashboard/OverView";
 import { FormatDate } from "@/utils/DateFormat";
 import CustomModal from "@/components/modal/CustomModal";
+import SpentCalendar from "@/components/dashboard/SpentCalendar";
 // import { itemTypes } from "@/types/itemTypes";
 // import supabase from "@/lib/supabase";
 //import { useUserStore } from '@/store/useUserStore'
@@ -49,7 +50,8 @@ useEffect(()=>{
 
   useDocumentTitle('Dashboard | Finance Management');
   return (
-    <div className="lg:flex w-full border-b border-gray-300">
+    <>
+    <div className="lg:flex w-full border-b border-gray-300 mx-auto">
         <section className="lg:w-2/5  lg:border-r border-gray-300">
             <OverView/>
         </section>
@@ -77,9 +79,14 @@ useEffect(()=>{
             <div className="w-full ">
                 <SpentHistory/>
             </div>
+            
         </section>
-        
     </div>
+    <div >
+       <SpentCalendar/>
+    </div>
+    
+    </>
   );
 };
 

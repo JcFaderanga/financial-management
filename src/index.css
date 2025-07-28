@@ -31,3 +31,17 @@
   display: none;
   -webkit-appearance: none;
 }
+
+.fc .fc-event {
+  border: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+
+
+/* Optional: rounded corners for cleaner look */
+.fc .fc-daygrid-day-frame {
+  border-radius: 5px;
+  overflow:hidden;
+}

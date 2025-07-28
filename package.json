@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.18",
+    "@fullcalendar/react": "^6.1.18",
     "@number-flow/react": "^0.5.10",
     "@supabase/supabase-js": "^2.50.2",
     "@tailwindcss/vite": "^4.1.11",

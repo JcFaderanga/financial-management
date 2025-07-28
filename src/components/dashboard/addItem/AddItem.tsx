@@ -10,6 +10,7 @@ import CustomDropdown from '@/components/inputs/CustomDropdown'
 import MatchItem from './MatchItem'
 import useUniqueItemList from '@/hooks/spend_items/useUniqueList'
 import AddGroup from './AddGroup'
+import { itemTypes } from '@/types/itemTypes'
 const AddItem = () => {
 const {setSpendItems, spendings} =useSpendings();
 const {user} = useUserStore();
@@ -60,7 +61,7 @@ const handleSave =async()=>{
     setBtnDisable(true)
 
     //create obj for selected inputs 
-    const spent = {
+    const spent: itemTypes = {
       owner: user.id,
       title: title.trim().toLowerCase(),
       price: Number(price),
@@ -128,7 +129,6 @@ const menu = (val: string) =>{
           <strong className='custom-black text-2xl'>
             <span>Add Item</span>
           </strong>
-         
       </header>
       <div className={`${isAddingGroup && '!hidden'} w-full md:flex justify-between py-4 border-b border-gray-300`}>
         <section className='lg:max-w-1/2 w-full flex justify-center md:border-r border-gray-300 '>

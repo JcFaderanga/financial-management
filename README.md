@@ -53,5 +53,5 @@ export default tseslint.config({
 })
 ```
 
-
+install npm install @fullcalendar/react @fullcalendar/daygrid
 
