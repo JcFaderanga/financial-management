@@ -11,12 +11,14 @@ import CustomModal from "@/components/modal/CustomModal";
 // import supabase from "@/lib/supabase";
 //import { useUserStore } from '@/store/useUserStore'
 const OverView = () => {
-const {handleFetchAllSpendings} = useFetchAllSpending();
+const {handleFetchAllSpendings, data} = useFetchAllSpending();
 const {setSpendItems} = useSpendings();
 // const [totalSpent, setTotalSpent] = useState<number | string>('')
 const [addItemModal, setAddItemModal] = useState<boolean>(false);
 //const { user } = useUserStore();
  useEffect(()=>{
+
+  if(data) return;
     const fetch = async ()=>{
       const res = 
         await handleFetchAllSpendings(

@@ -7,7 +7,17 @@ const useUniqueItemList = () => {
 //   const [error, setError] = useState<Error | null>(null)
 //   const [loading, setLoading] = useState<boolean>(false)
 
+
   const handleUniqueItem = async (item: itemTypes) => {
+
+    const filteredItem: itemTypes = {
+      owner: item.owner,
+      title: item.title,
+      price: item.price,
+      location: item.location,
+      category: item.category,
+    };
+
     const query = supabase.from('unique_item_list');
 
     const {data, error} = await query.select('*');
@@ -15,12 +25,12 @@ const useUniqueItemList = () => {
 
     setUniqueSpendings(data);
     const ItemIsExisting = data?.some(
-        (current)=> current.title === item.title 
-        && current.price === item.price
+        (current)=> current.title === filteredItem.title 
+        && current.price === filteredItem.price
     );
     
     if(!ItemIsExisting){
-       let {error} = await query.insert(item)
+       let {error} = await query.insert(filteredItem)
        if(error) throw new Error(error.message)
     };
   }
