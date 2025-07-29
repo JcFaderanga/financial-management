@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Dashboard from '@/pages/dashboard/Dashboard';
+import Overview from '@/pages/dashboard/Overview';
 import Page404 from '@/pages/Page404';
 import Login from '@/pages/auth/Login';
 import HomeLayout from '@/layout/HomeLayout';
@@ -9,7 +9,7 @@ import Transaction from '@/pages/transaction/Transaction';
 import Liabilities from '@/pages/Liabilities/Liabilities';
 import Bills from '@/pages/bills/Bills';
 import ProtectedRoute from './layout/ProtectedRoute';
-
+import SpendingAnalysis from './pages/dashboard/SpendingAnalysis';
 function App() {
   return (
     <BrowserRouter>
@@ -26,8 +26,9 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route index element={<Navigate to="/dashboard/overview" replace />} />
+          <Route path="dashboard/overview" element={<Overview />} />
+          <Route path="dashboard/spending_analysis" element={<SpendingAnalysis />} />
           <Route path="accounts/banks" element={<BankAccounts />} />
           <Route path="accounts/socials" element={<SocialAccounts />} />
           <Route path="bills" element={<Bills />} />

@@ -1,7 +1,16 @@
 import type { NavType } from "@/types/NavigationTypes";
 
 export const navItems: NavType[] = [
-    { id: "dashboard", label: "Dashboard", path: "/dashboard", category: "homePage" },
+    { 
+      id: "dashboard",
+      label: "Dashboard",
+      path: "/dashboard",
+      category: "homePage",
+      children: [
+        { id: "overview", label: "Overview", path: "/dashboard/overview", category: "homePage" },
+        { id: "spedingCalendar", label: "Spending Analysis", path: "/dashboard/spending_analysis", category: "homePage" },
+      ],
+    },
     {
       id: "accounts",
       label: "Accounts",

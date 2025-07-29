@@ -54,4 +54,5 @@ export default tseslint.config({
 ```
 
 install npm install @fullcalendar/react @fullcalendar/daygrid
-
+npm install date-fns
+npm install react-spinners
