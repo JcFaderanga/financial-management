@@ -1,11 +1,20 @@
-import { ReactNode } from 'react'
+import React,{ ReactNode } from 'react'
 
-const CustomRow = ({children, className}: {children: ReactNode, className?: string}) => {
+const CustomRow = (
+  {
+    children,
+    className,
+    onClick
+  }:{
+    children: ReactNode,
+    className?: string,
+    onClick: () => void
+  }) => {
   return (
-    <tr className={`border-b border-gray-100 custom-black ${className ?? className}`}>
+    <tr onClick={onClick} className={`border-b border-gray-100 custom-black ${className ?? className}`}>
         {children}
     </tr>
   )
 }
 
-export default CustomRow
+export default React.memo(CustomRow)

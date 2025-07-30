@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from "react";
+import React,{ useEffect,useState } from "react";
 import useDocumentTitle from "@/hooks/document/useDocTitle";
 import SpentHistory from "@/components/dashboard/spentHistory/SpentHistory";
 import AddItem from "@/components/dashboard/addItem/AddItem";
@@ -7,15 +7,14 @@ import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding";
 import OverViewPage from "@/components/dashboard/OverView";
 import { FormatDate } from "@/utils/DateFormat";
 import CustomModal from "@/components/modal/CustomModal";
+import SpentSummary from "@/components/dashboard/SpentSummary";
 // import { itemTypes } from "@/types/itemTypes";
 // import supabase from "@/lib/supabase";
-//import { useUserStore } from '@/store/useUserStore'
 const OverView = () => {
 const {handleFetchAllSpendings} = useFetchAllSpending();
 const {setSpendItems,spendings} = useSpendings();
-// const [totalSpent, setTotalSpent] = useState<number | string>('')
 const [addItemModal, setAddItemModal] = useState<boolean>(false);
-//const { user } = useUserStore();
+
  useEffect(()=>{
 
     const fetch = async ()=>{
@@ -36,9 +35,9 @@ const [addItemModal, setAddItemModal] = useState<boolean>(false);
   },[])
 
 
-useEffect(()=>{
-  setAddItemModal(false)
-},[])
+// useEffect(()=>{
+//   setAddItemModal(false)
+// },[])
 //use for fetching overall total spendings
 // useEffect(()=>{
 //     const fetchTotal = async ()=>{
@@ -53,39 +52,42 @@ useEffect(()=>{
 //   fetchTotal();
 //   },[spendings])
 
- 
+  useDocumentTitle('Dashboard - Overview | Finance Management');
 
-  useDocumentTitle('Dashboard | Finance Management');
   return (
-    <div className=" mx-auto">
-    <div className="lg:flex w-full border-b border-gray-300 mx-auto">
-        <section className="lg:w-2/5  lg:border-r border-gray-300">
-            <OverViewPage/>
-        </section>
-        <section className="w-full box-shadow">
-          <div className="p-4 border-b border-slate-300">
-            <button 
-              className="px-4 py-2 bg-slate-100 rounded-lg cursor-pointer"
-              onClick={()=>setAddItemModal(!addItemModal)}>
-                Add Item
-            </button>
-          </div>
-            <CustomModal
+    <>
+    <div className="max-w-7xl mx-auto lg:flex py-5 px-4">
+        <div className=" w-full lg:max-w-2/3 mx-auto">
+            <section className="border border-gray-300 rounded-xl px-4 py-4 ">
+                <OverViewPage/>
+            </section>
+
+            <div className="p-4 border-b border-slate-300">
+                <button 
+                    className="px-4 py-2 bg-slate-100 rounded-lg cursor-pointer"
+                    onClick={()=>setAddItemModal(!addItemModal)}>
+                      Add Item
+                </button>
+            </div>
+
+            <section className="w-full border rounded-xl px-4 my-4 border-gray-300">
+                <SpentHistory/>
+            </section>
+        </div>
+    <div className="w-full lg:px-4 lg:max-w-1/3">
+        <div className="border border-gray-300  p-4 rounded-xl ">
+            <strong className="custom-black">Spent summary</strong>
+            <SpentSummary/>
+        </div>
+    </div>
+         <CustomModal
               hidden={addItemModal} 
               onClick={()=>setAddItemModal(!addItemModal)}
-            >
-                <AddItem/>
-            </CustomModal>
-            <div className="w-full ">
-                <SpentHistory/>
-            </div>
-            
-        </section>
+          >
+              <AddItem/>
+          </CustomModal>  
     </div>
-    <div >
-    </div>
-    
-    </div>
+    </>
   );
 };
 

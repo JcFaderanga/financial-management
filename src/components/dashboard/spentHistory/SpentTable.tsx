@@ -1,6 +1,8 @@
-import { CustomTable, CustomRow, CustomData, CustomHeader } from '../../tables'; 
+import { CustomTable, CustomRow, CustomData } from '../../tables'; 
 import { LiaTrashSolid, LiaPenSolid } from "react-icons/lia";
+import { useActionItem } from '@/store/useActionItem';
 import { LongDateFormat } from '@/utils/DateFormat';
+
 import { itemTypes } from '@/types/itemTypes';
 import { MdOutlineFolderOpen } from "react-icons/md";
 type SpentTableProps = {
@@ -11,7 +13,7 @@ type SpentTableProps = {
   handleGroup: (spent: itemTypes)=> void;
 }
 
-const ActionMenu = ({
+export const ActionMenu = ({
   onEdit,
   onDelete,
   onGroup,
@@ -22,60 +24,79 @@ const ActionMenu = ({
   onGroup: () => void;
   isGrouped: any
 }) => (
-  <ul className='flex gap-2'>
-    <li onClick={onEdit} className='p-2 bg-blue-50 rounded-xl cursor-pointer'>
-      <LiaPenSolid className='text-blue-500' />
+  <ul className='flex gap-2 justify-center'>
+    
+    <li onClick={onEdit} className='w-full py-2 bg-blue-50 rounded-xl cursor-pointer flex items-center justify-center px-4'>
+        <LiaPenSolid className='text-blue-500' /> <span className='pl-2 text-blue-500'>Edit</span>
     </li>
-    <li onClick={onDelete} className='p-2 bg-red-50 rounded-xl cursor-pointer'>
-      <LiaTrashSolid className='text-red-500' />
+    
+    <li onClick={onDelete} className='w-full py-2 bg-red-50 rounded-xl cursor-pointer flex items-center justify-center px-4'>
+      <LiaTrashSolid className='text-red-500' /> <span className='pl-2 text-red-500'>Delete</span>
     </li>
     {isGrouped &&
-        <li onClick={onGroup} className='p-2 bg-orange-50 rounded-xl cursor-pointer'>
-          <MdOutlineFolderOpen className='text-orange-500' />
+        <li onClick={onGroup} className='w-full py-2 bg-orange-50 rounded-xl cursor-pointer flex items-center justify-center px-4'>
+          <MdOutlineFolderOpen className='text-orange-500' /> <span className='pl-2 text-orange-500'>Grouped</span>
         </li>
     }
    
   </ul>
 );
 
-const SpentTable = ({data, handleEdit, handleDelete,handleGroup,toastList}:SpentTableProps) => {
+//{data, handleEdit, handleDelete,handleGroup,toastList}
+const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:SpentTableProps) => {
+  const {setSelected,selected} = useActionItem()
+  console.log(selected)
+
+  const selectRow =(item: any)=>{
+      console.log(item)
+      setSelected(selected === item ? null : item)
+  }
   return (
-    <CustomTable>
-          <thead className='bg-slate-100'>
-            <CustomRow className='text-sm'>
-              <CustomHeader className='py-3 rounded-tl-2xl'>ID</CustomHeader>
-              <CustomHeader>Category</CustomHeader>
-              <CustomHeader>Title</CustomHeader>
-              <CustomHeader>Price</CustomHeader>
-              <CustomHeader>Date</CustomHeader>
-              <CustomHeader className='rounded-tr-2xl'>Actions</CustomHeader>
-            </CustomRow>
-          </thead>
+    <>
+    <CustomTable className=''>
           <tbody>
             {data?.map((spent: itemTypes) => {
               const isHidden = toastList?.some((item: any) => item.id === spent.id);
               if (isHidden) return null;
 
               return (
-                <CustomRow key={spent.id} className='text-sm'>
-                  <CustomData>{spent.id}</CustomData>
-                  <CustomData>{spent.category}</CustomData>
-                  <CustomData>{spent.title}</CustomData>
-                  <CustomData>₱{spent?.price?.toLocaleString()}</CustomData>
-                  <CustomData>{LongDateFormat(new Date(spent.created_at))}</CustomData>
-                  <CustomData>
-                    <ActionMenu
-                      onEdit={() => handleEdit(spent)}
-                      onDelete={() => handleDelete(spent)}
-                      onGroup={() => handleGroup(spent)}
-                      isGrouped={spent?.grouped_in}
-                    />
+                <CustomRow 
+                    key={spent.id} 
+                    className={`${selected?.id === spent.id && 'bg-blue-50'} cursor-pointer hover:bg-slate-50`} 
+                    onClick={() =>selectRow(spent)}
+                >
+                  <CustomData className='pl-2'>
+                      <div>
+                          <strong className='text-xs'>{spent.category}</strong>
+                          <p className='text-sm md:text-base'>{spent.title}</p>
+                      </div>
+                  </CustomData>
+                  <CustomData  className='text-right pr-2'>
+                      <div>
+                          <strong className='text-xs'>{LongDateFormat(new Date(spent.created_at))}</strong>
+                          <p className='text-sm md:text-base text-red-600 font-semibold'>-₱{spent?.price?.toLocaleString()}</p>
+                      </div>
                   </CustomData>
                 </CustomRow>
               );
             })}
           </tbody>
         </CustomTable>
+        {
+      
+      selected && 
+      <div className="w-full fixed flex justify-center bottom-0 border-t border-gray-300 py-4 left-0 bg-white box-shadow ">
+          <div className='p-2 w-2/3 max-w-xl '>
+              <ActionMenu
+                  onEdit={() => handleEdit(selected)}
+                  onDelete={() => handleDelete(selected)}
+                  onGroup={() => handleGroup(selected)}
+                  isGrouped={selected?.grouped_in}
+              />
+          </div>
+      </div>
+    }
+        </>
   )
 }
 

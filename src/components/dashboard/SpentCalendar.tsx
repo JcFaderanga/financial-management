@@ -28,8 +28,7 @@ const SpentCalendar = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
   const [direction, setDirection] = useState<"left" | "right">("left")
- console.log(loading)
-  
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -200,7 +199,7 @@ const SpentCalendar = () => {
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d, index) => (
                 <div
                   key={index}
-                  className="text-sm text-center font-semibold border border-gray-300 rounded py-1"
+                  className="text-sm text-center font-semibold border border-gray-300 rounded-lg py-1"
                 >
                   {d}
                 </div>
@@ -214,7 +213,7 @@ const SpentCalendar = () => {
                     onClick={() => date && handleDataSelect(date)}
                     key={idx}
                     className={`
-                      h-12 md:h-24 rounded md:border text-center overflow-hidden
+                      h-12 md:h-24 rounded-xl md:border text-center overflow-hidden
                       ${amount ? 'border-[#eb4b6d] !bg-[rgba(255,201,201,0.1)]' : 'border-gray-300'}
                       flex flex-col justify-between p-1 text-sm hover:!bg-gray-100 cursor-pointer
                       ${date ? 'bg-white' : 'bg-transparent border-none'}
@@ -242,7 +241,7 @@ const SpentCalendar = () => {
       <div className="font-semibold lg:pt-11 text-sm lg:w-2/6 text-gray-600 mt-1">
         <div
           onClick={()=>handleMonthSelect()} 
-          className='border border-gray-300 px-4 py-7 lg:ml-4 rounded custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
+          className='border border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
           <div>
             Total this month
             <div className="text-[#eb4b6d] text-2xl font-bold">-₱{String(monthlyTotal?.toLocaleString())}</div>
@@ -251,7 +250,7 @@ const SpentCalendar = () => {
         </div>
         <div 
           onClick={()=> handleSelectAll()}
-          className='border border-gray-300 px-4 py-7 lg:ml-4 rounded custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
+          className='border border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
           <div>
             Over all total
             <div className="text-[#eb4b6d] text-2xl font-bold">-₱{String(allTotal?.toLocaleString())}</div>

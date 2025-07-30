@@ -4,13 +4,13 @@ import { ToastDelete } from '../../tostify/Toast';
 import type { itemTypes } from '@/types/itemTypes';
 import supabase from '@/lib/supabase';
 import SpentTable from './SpentTable';
-import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
+// import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
 import OverviewDate from '@/hooks/OverviewDate';
 import CustomModal from '@/components/modal/CustomModal';
 import SpentEdit from './SpentEdit';
 import GroupSpending from './GroupSpending';
 // Action buttons (Edit, Delete)
-
+import { useActionItem } from '@/store/useActionItem';
 type ActionProps={
   status: boolean,
   item: itemTypes
@@ -20,10 +20,14 @@ const SpentHistory = () => {
   const [toastList, setToastList] = useState<itemTypes[]>([]);
   const [isItemEdit, setIsItemEdit] = useState<ActionProps>({status: false, item: {} });
   const [isViewGrouped, setIsViewGrouped] = useState<ActionProps>({status: false, item: {} });
-  const [spendingIsHidden, setSpendingIsHidden] = useState<boolean>(false);
+  const [spendingIsHidden] = useState<boolean>(false);
   const {dateRange, timeRange} = OverviewDate();
+  const {setSelected} = useActionItem()
 
-
+  useEffect(()=>{
+    if(!isItemEdit.status)
+    setSelected(null)
+  },[isItemEdit])
   // Auto-remove toast and delete item permanently
   useEffect(() => {
     if (toastList.length === 0) return;
@@ -62,21 +66,16 @@ const SpentHistory = () => {
 
   return (
     <div className={`${spendingIsHidden && 'bg-slate-100'}`}>
-      <header className={` py-4 flex justify-between items-center px-4`}>
-            <div>
-              <strong className='text-2xl custom-black'>Spendings</strong>
-              <p className='text-sm text-gray-400'>{dateRange}</p>
+      <header className={` py-4 flex justify-between items-center`}>
+          
+              <strong className='text-xl custom-black'>Spendings</strong>
+              <div>
+                <p className='text-sm text-gray-400'>{dateRange}</p>
               <p className='text-sm text-gray-400'>{timeRange}</p>
-            </div>
-            <div>
-              {
-              spendingIsHidden
-              ? <FaAngleUp size={24} className='md:hidden' onClick={()=> setSpendingIsHidden(!spendingIsHidden)}/>
-              : <FaAngleDown size={24} className='md:hidden' onClick={()=> setSpendingIsHidden(!spendingIsHidden)}/>
-            }
-            </div>
+              </div>
+              
       </header>
-      <div className={`${spendingIsHidden && 'hidden'} w-full px-4 pb-10`}>
+      <div className={`${spendingIsHidden && 'hidden'} w-full pb-10`}>
         {toastList.length > 0 && (
           <ToastDelete toastList={toastList} onClick={handleUndo} duration={5} />
         )}
@@ -93,16 +92,16 @@ const SpentHistory = () => {
               </div>
           }
         </div>
-        {
+        {/* {
           spendings?.length > 6 && 
-            <footer className='flex rounded-b-2xl justify-between py-3 px-4 bg-slate-100'>
+            <footer className='flex rounded-b-2xl justify-between py-3 bg-slate-100'>
               <div>Showing1-6 out of 12 items Show all</div>
               <div className='flex gap-4'>
                   <div className='text-blue-500'>{`Preview`}</div>
                   <div className='text-blue-500'>{`Next`}</div>
               </div>
             </footer>
-        }
+        } */}
       </div>
 
       {/* Modals */}
