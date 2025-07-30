@@ -18,12 +18,13 @@ import {
 import { ClipLoader } from 'react-spinners';
 const SpentCalendar = () => {
   const {data,handleFetchAllSpendings} = useFetchAllSpending();
+  const {setSpendItems} = useSpendings();
   const [spendingData, setSpendingData] = useState<Record<string, number>>({})
   const [allTotal, setAllTotal] = useState<number>(0)
   const [monthlyTotal, setMonthlyTotal] = useState<number>(0)
   const [currentMonth, setCurrentMonth] = useState<string | Date>(new Date())
   const [loading, setLoading] = useState<boolean>(false);
-  const {setSpendItems} = useSpendings();
+  
   const navigate = useNavigate()
 
   useEffect(()=>{
@@ -82,7 +83,7 @@ const SpentCalendar = () => {
 async function handleDataSelect(date: string){
   setLoading(true)
   const res = await handleFetchAllSpendings(FormatDate(date));
-  setSpendItems(res)
+  setSpendItems(res || [])
   navigate(`/dashboard/overview`);
   setLoading(false)
 }

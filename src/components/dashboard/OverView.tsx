@@ -55,7 +55,7 @@ const OverView = () => {
 
   const filterDate = async (date: string | datePropertyTypes) => {
     const res = await handleFetchAllSpendings(date);
-    setSpendItems(res);
+    setSpendItems?.(res);
     setIsDateToEdit(!isDateToEdit);
     setModal(!isModal);
     setDate(date);
@@ -89,7 +89,7 @@ const OverView = () => {
           <strong className="text-5xl custom-black">₱{String(totalOverview?.toLocaleString())}</strong>
         </div>
       </section>
-
+      {
       <section className={`${!isSummary ? 'hidden' : ''} lg:block py-4`}>
         {!grouped || grouped.length === 0 ? (
           <div className="w-full flex justify-center">
@@ -118,6 +118,8 @@ const OverView = () => {
             ))
         )}
       </section>
+      }
+     
 
       <div onClick={() => setIsSummary(!isSummary)} className="text-center pb-8 lg:hidden">
         {!isSummary ? (

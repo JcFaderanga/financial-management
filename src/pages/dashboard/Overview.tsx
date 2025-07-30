@@ -11,22 +11,28 @@ import CustomModal from "@/components/modal/CustomModal";
 // import supabase from "@/lib/supabase";
 //import { useUserStore } from '@/store/useUserStore'
 const OverView = () => {
-const {handleFetchAllSpendings, data} = useFetchAllSpending();
-const {setSpendItems} = useSpendings();
+const {handleFetchAllSpendings} = useFetchAllSpending();
+const {setSpendItems,spendings} = useSpendings();
 // const [totalSpent, setTotalSpent] = useState<number | string>('')
 const [addItemModal, setAddItemModal] = useState<boolean>(false);
 //const { user } = useUserStore();
  useEffect(()=>{
 
-  if(data) return;
     const fetch = async ()=>{
-      const res = 
-        await handleFetchAllSpendings(
+      const res = await handleFetchAllSpendings(
           FormatDate(new Date())
         );
-      setSpendItems(res);
+        if(res){
+          setSpendItems?.(res);
+        }
     }
-  fetch();
+
+    //prevent "handleFetchAllSpendings" to re-fetch if speding is not null or empty
+    //use for SpentCalendar when user select a date, "setSpendItems" wont change
+    if(!spendings){
+      fetch();
+    }
+  
   },[])
 
 
@@ -63,14 +69,7 @@ useEffect(()=>{
               onClick={()=>setAddItemModal(!addItemModal)}>
                 Add Item
             </button>
-            {/* <button 
-              className="px-4 py-2 bg-slate-100 rounded-lg cursor-pointer mx-2"
-              onClick={()=>setAddItemModal(!addItemModal)}>
-                Grouped Items
-            </button> */}
-              {/* <h1>Total: {totalSpent}</h1> */}
           </div>
-          
             <CustomModal
               hidden={addItemModal} 
               onClick={()=>setAddItemModal(!addItemModal)}
