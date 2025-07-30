@@ -140,9 +140,9 @@ const SpentCalendar = () => {
   return (
     <div className='p-4 lg:flex'>
       <div className="w-full lg:max-w-2/3">
-        <div className="flex lg:justify-between mb-1">
+        <div className="flex justify-between mb-1">
           <div>
-            <div className='font-bold text-2xl custom-black'>Spending calendar</div>
+            <div className='font-bold text-xl custom-black'>Spending calendar</div>
           </div>
 
           <div className='flex items-center'>
