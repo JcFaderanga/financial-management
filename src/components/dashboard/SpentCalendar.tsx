@@ -174,7 +174,7 @@ const SpentCalendar = () => {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.1 }}
               className="grid grid-cols-7 gap-2 mt-4"
             >
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d, index) => (
