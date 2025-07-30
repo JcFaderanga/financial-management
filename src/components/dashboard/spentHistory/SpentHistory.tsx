@@ -11,6 +11,7 @@ import SpentEdit from './SpentEdit';
 import GroupSpending from './GroupSpending';
 // Action buttons (Edit, Delete)
 import { useActionItem } from '@/store/useActionItem';
+import { NoRecord } from '@/components/NoRecord';
 type ActionProps={
   status: boolean,
   item: itemTypes
@@ -51,7 +52,9 @@ const SpentHistory = () => {
 
 // console.log('latestSpendings',latestSpendings)
   const handleDelete = (item: itemTypes) => {
+    setSelected(null);
     setToastList(prev => [...prev, item]);
+    
   };
 
   // const handleEdit = (item: itemTypes) => {
@@ -80,15 +83,15 @@ const SpentHistory = () => {
           <ToastDelete toastList={toastList} onClick={handleUndo} duration={5} />
         )}
         <div className='overflow-x-auto h-full'>
-          {spendings?
+          { spendings && spendings?.length > 0 ?
             <SpentTable 
                 data={spendings}
                 handleEdit={(prev => setIsItemEdit({status: true, item: prev}))}
                 handleDelete={handleDelete}
                 handleGroup={(prev => setIsViewGrouped({status: true, item: prev}))}
                 toastList={toastList}
-              /> :<div className='w-full flex justify-center'>
-                <strong className='text-orange-700'>There's no Record Available.</strong>
+              /> : <div className='w-full flex justify-center'>
+                <NoRecord/>
               </div>
           }
         </div>

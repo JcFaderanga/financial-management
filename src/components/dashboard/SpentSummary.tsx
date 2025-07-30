@@ -2,6 +2,7 @@ import { useState,useEffect } from "react";
 import { useSpendings } from '@/store/useSpendingStore';
 import { itemTypes } from "@/types/itemTypes";
 import { useOverviewTotal } from "@/store/useOverviewTotal";
+import { NoRecord } from "../NoRecord";
 type GroupedItem = {
     type: string;
     price: number;
@@ -50,7 +51,7 @@ useEffect(() => {
     <section className="">
         {!grouped || grouped.length === 0 ? (
           <div className="w-full flex justify-center">
-            <strong className="text-orange-700">There's no Record Available.</strong>
+            <NoRecord/>
           </div>
         ) : (
           grouped

@@ -45,10 +45,8 @@ export const ActionMenu = ({
 //{data, handleEdit, handleDelete,handleGroup,toastList}
 const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:SpentTableProps) => {
   const {setSelected,selected} = useActionItem()
-  console.log(selected)
 
   const selectRow =(item: any)=>{
-      console.log(item)
       setSelected(selected === item ? null : item)
   }
   return (
