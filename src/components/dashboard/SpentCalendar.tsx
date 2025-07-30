@@ -28,7 +28,8 @@ const SpentCalendar = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
   const [direction, setDirection] = useState<"left" | "right">("left")
-
+ console.log(loading)
+  
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -93,21 +94,34 @@ const SpentCalendar = () => {
     setTouchStartX(null)
   }
 
-  async function handleDataSelect(date: string) {
+  async function setDate(date: string | {} ){
     setLoading(true)
-    const res = await handleFetchAllSpendings(FormatDate(date))
+    const res = await handleFetchAllSpendings(date)
+
     setSpendItems(res || [])
+    
     navigate(`/dashboard/overview`)
-    setLoading(false)
+
+    setTimeout(()=> setLoading(false), 1000)
+  }
+  
+  function handleDataSelect(date: string) {
+    setDate(date)
   }
 
-  if (loading) {
-    return (
-      <div className='w-full h-screen flex justify-center py-20'>
-        <ClipLoader color="#000000" size={30} />
-      </div>
-    )
+  function handleMonthSelect() {
+    const monthStart = FormatDate(startOfMonth(currentMonth))
+    const monthEnd = FormatDate(endOfMonth(currentMonth))
+    setDate({
+          startDate: monthStart,
+          endDate: monthEnd,
+        })
   }
+  
+  function handleSelectAll() {
+      console.log('OVER ALL TOTAL')
+  }
+
 
   const days = eachDayOfInterval({
     start: startOfMonth(currentMonth),
@@ -137,6 +151,14 @@ const SpentCalendar = () => {
     return formatted.length > num ? formatted.slice(0, num) + '...' : formatted
   }
 
+  
+  if (loading) {
+    return (
+      <div className='w-full h-screen flex justify-center py-20'>
+        <ClipLoader color="#000000" size={30} />
+      </div>
+    )
+  }
   return (
     <div className='p-4 lg:flex'>
       <div className="w-full lg:max-w-2/3">
@@ -220,14 +242,18 @@ const SpentCalendar = () => {
       </div>
 
       <div className="font-semibold lg:pt-11 text-sm lg:w-2/6 text-gray-600 mt-1">
-        <div className='border border-gray-300 px-4 py-7 lg:ml-4 rounded custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
+        <div
+          onClick={()=>handleMonthSelect()} 
+          className='border border-gray-300 px-4 py-7 lg:ml-4 rounded custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
           <div>
             Total this month
             <div className="text-[#eb4b6d] text-2xl font-bold">-₱{String(monthlyTotal?.toLocaleString())}</div>
           </div>
           <FaAngleRight size={18} />
         </div>
-        <div className='border border-gray-300 px-4 py-7 lg:ml-4 rounded custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
+        <div 
+          onClick={()=> handleSelectAll()}
+          className='border border-gray-300 px-4 py-7 lg:ml-4 rounded custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
           <div>
             Over all total
             <div className="text-[#eb4b6d] text-2xl font-bold">-₱{String(allTotal?.toLocaleString())}</div>
