@@ -94,19 +94,17 @@ const SpentCalendar = () => {
     setTouchStartX(null)
   }
 
-  async function setDate(date: string | {} ){
+  async function setDate(date: string | {}){
     setLoading(true)
     const res = await handleFetchAllSpendings(date)
-
-    setSpendItems(res || [])
-    
+    setSpendItems(date === 'all' ? data : res || [])
     navigate(`/dashboard/overview`)
-
     setTimeout(()=> setLoading(false), 1000)
   }
   
   function handleDataSelect(date: string) {
-    setDate(date)
+    const dateToString: string = FormatDate(date);
+    setDate(dateToString)
   }
 
   function handleMonthSelect() {
@@ -119,7 +117,7 @@ const SpentCalendar = () => {
   }
   
   function handleSelectAll() {
-      console.log('OVER ALL TOTAL')
+      setDate('all');
   }
 
 
