@@ -2,10 +2,10 @@ import { CustomTable, CustomRow, CustomData } from '../../tables';
 import { LiaTrashSolid, LiaPenSolid } from "react-icons/lia";
 import { useActionItem } from '@/store/useActionItem';
 import { LongDateFormat } from '@/utils/DateFormat';
-
 import { itemTypes } from '@/types/itemTypes';
 import { MdOutlineFolderOpen } from "react-icons/md";
 import { useSpendingExcluded } from '@/store/useSpendingStore';
+import { useCategoryColors } from '@/store/useCatogoryColors';
 type SpentTableProps = {
   data: itemTypes[];
   toastList: any;
@@ -47,6 +47,7 @@ export const ActionMenu = ({
 const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:SpentTableProps) => {
   const {setSelected,selected} = useActionItem()
   const {excluded} = useSpendingExcluded();
+  const {colors: categoryColors} = useCategoryColors();
   const selectRow =(item: any)=>{
       setSelected(selected === item ? null : item)
   }
@@ -54,31 +55,36 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
     <>
     <CustomTable className=''>
           <tbody>
-            {data?.map((spent: itemTypes) => {
+           {data?.map((spent: itemTypes) => {
               const isHidden = toastList?.some((item: any) => item.id === spent.id);
               if (isHidden) return null;
 
+              const catBg = categoryColors.find(c => c.category === spent.category)?.color;
+
               return (
                 <CustomRow 
-                    key={spent.id} 
-                    className={`
-                        ${selected?.id === spent.id && 'bg-blue-50'} 
-                        cursor-pointer hover:bg-slate-50
-                        ${excluded?.includes(spent?.category)&& 'hidden'}
-                        `} 
-                    onClick={() =>selectRow(spent)}
+                  key={spent.id} 
+                  className={`
+                    ${selected?.id === spent.id && 'bg-blue-50'} 
+                    cursor-pointer hover:bg-slate-50
+                    ${excluded?.includes(spent?.category) && 'hidden'}
+                  `} 
+                  onClick={() => selectRow(spent)}
                 >
                   <CustomData className='pl-2'>
-                      <div>
-                          <strong className='text-xs'>{spent.category}</strong>
-                          <p className='text-sm md:text-base'>{spent.title}</p>
+                    <div>
+                      <div className='flex items-center'>
+                        <span className={`h-2 w-2 rounded-full mr-1`} style={{ backgroundColor: catBg }} />
+                        <strong className='text-xs' >{spent.category}</strong>
                       </div>
+                      <p className='text-sm md:text-base'>{spent.title}</p>
+                    </div>
                   </CustomData>
-                  <CustomData  className='text-right pr-2'>
-                      <div>
-                          <strong className='text-xs'>{LongDateFormat(new Date(spent.created_at))}</strong>
-                          <p className='text-sm md:text-base text-red-600 font-semibold'>-₱{spent?.price?.toLocaleString()}</p>
-                      </div>
+                  <CustomData className='text-right pr-2'>
+                    <div>
+                      <strong className='text-xs'>{LongDateFormat(new Date(spent.created_at))}</strong>
+                      <p className='text-sm md:text-base text-red-400 font-semibold'>-₱{spent?.price?.toLocaleString()}</p>
+                    </div>
                   </CustomData>
                 </CustomRow>
               );
