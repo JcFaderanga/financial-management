@@ -215,7 +215,7 @@ const SpentCalendar = () => {
                     key={idx}
                     className={`
                       h-12 md:h-24 rounded-xl md:border text-center overflow-hidden
-                      ${amount ? 'border-[rgba(235,75,109,.5)] !bg-[rgba(255,201,201,0.01)]' : 'border-gray-300'}
+                      ${amount ? 'border-gray-300 !bg-slate-50 ' : 'border-gray-300'}
                       flex flex-col justify-between p-1 text-sm hover:!bg-gray-100 cursor-pointer
                       ${date ? 'bg-white' : 'bg-transparent border-none'}
                       
