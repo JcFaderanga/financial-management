@@ -5,6 +5,7 @@ import { LongDateFormat } from '@/utils/DateFormat';
 
 import { itemTypes } from '@/types/itemTypes';
 import { MdOutlineFolderOpen } from "react-icons/md";
+import { useSpendingExcluded } from '@/store/useSpendingStore';
 type SpentTableProps = {
   data: itemTypes[];
   toastList: any;
@@ -45,7 +46,7 @@ export const ActionMenu = ({
 //{data, handleEdit, handleDelete,handleGroup,toastList}
 const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:SpentTableProps) => {
   const {setSelected,selected} = useActionItem()
-
+  const {excluded} = useSpendingExcluded();
   const selectRow =(item: any)=>{
       setSelected(selected === item ? null : item)
   }
@@ -60,7 +61,11 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
               return (
                 <CustomRow 
                     key={spent.id} 
-                    className={`${selected?.id === spent.id && 'bg-blue-50'} cursor-pointer hover:bg-slate-50`} 
+                    className={`
+                        ${selected?.id === spent.id && 'bg-blue-50'} 
+                        cursor-pointer hover:bg-slate-50
+                        ${excluded?.includes(spent?.category)&& 'hidden'}
+                        `} 
                     onClick={() =>selectRow(spent)}
                 >
                   <CustomData className='pl-2'>
