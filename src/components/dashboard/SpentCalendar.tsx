@@ -17,7 +17,7 @@ import {
 } from 'date-fns'
 import { ClipLoader } from 'react-spinners'
 import { motion, AnimatePresence } from 'framer-motion'
-
+import DoughnutChart from "../charts/Doughnut";
 const SpentCalendar = () => {
   const { data, handleFetchAllSpendings } = useFetchAllSpending()
   const { setSpendItems } = useSpendings()
@@ -30,7 +30,7 @@ const SpentCalendar = () => {
   const [direction, setDirection] = useState<"left" | "right">("left")
 
   const navigate = useNavigate()
-
+  console.log(data)
   useEffect(() => {
     async function _() {
       setLoading(true)
@@ -156,6 +156,7 @@ const SpentCalendar = () => {
       </div>
     )
   }
+
   return (
     <div className='p-4 lg:flex'>
       <div className="w-full lg:max-w-2/3">
@@ -183,7 +184,7 @@ const SpentCalendar = () => {
         <div
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="overflow-hidden"
+          className="overflow-hidden h-[384px] md:h-auto"
         >
           <AnimatePresence custom={direction} mode="wait">
             <motion.div
@@ -214,9 +215,10 @@ const SpentCalendar = () => {
                     key={idx}
                     className={`
                       h-12 md:h-24 rounded-xl md:border text-center overflow-hidden
-                      ${amount ? 'border-[#eb4b6d] !bg-[rgba(255,201,201,0.1)]' : 'border-gray-300'}
+                      ${amount ? 'border-[rgba(235,75,109,.5)] !bg-[rgba(255,201,201,0.01)]' : 'border-gray-300'}
                       flex flex-col justify-between p-1 text-sm hover:!bg-gray-100 cursor-pointer
                       ${date ? 'bg-white' : 'bg-transparent border-none'}
+                      
                     `}
                   >
                     <div className="font-bold text-sm md:text-right ">
@@ -244,19 +246,33 @@ const SpentCalendar = () => {
           className='border border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
           <div>
             Total this month
-            <div className="text-[#eb4b6d] text-2xl font-bold">-₱{String(monthlyTotal?.toLocaleString())}</div>
+            <div className="text-[#eb4b6d] text-2xl font-bold">₱{String(monthlyTotal?.toLocaleString())}</div>
           </div>
           <FaAngleRight size={18} />
         </div>
-        <div 
-          onClick={()=> handleSelectAll()}
-          className='border border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
-          <div>
-            Over all total
-            <div className="text-[#eb4b6d] text-2xl font-bold">-₱{String(allTotal?.toLocaleString())}</div>
+
+        <div className='lg:ml-4 border border-gray-300 rounded-xl '>
+          <div 
+            onClick={()=> handleSelectAll()}
+            className=' px-4 py-4 custom-black flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
+            <div>
+              Over all total
+              <div className="text-[#eb4b6d] text-2xl font-bold">₱{String(allTotal?.toLocaleString())}</div>
+            </div>
+            <FaAngleRight size={18} />
           </div>
-          <FaAngleRight size={18} />
+
+          {
+            data && data.length !== 0 && 
+            <div className='max-h-2/3 flex  justify-center pt-4 pb-10'> 
+                <DoughnutChart data={data} />
+            </div>
+        
+          }
+          
         </div>
+
+        
       </div>
     </div>
   )

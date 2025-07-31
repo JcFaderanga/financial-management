@@ -3,6 +3,7 @@ import { useSpendings } from '@/store/useSpendingStore';
 import { itemTypes } from "@/types/itemTypes";
 import { useOverviewTotal } from "@/store/useOverviewTotal";
 import { NoRecord } from "../NoRecord";
+
 type GroupedItem = {
     type: string;
     price: number;
@@ -12,8 +13,11 @@ const SpentSummary = () => {
     const { spendings } = useSpendings();
     const {setTotal} = useOverviewTotal();
     const [grouped, setNewGroup] = useState<GroupedItem[] | null>(null);
+  //calc total value total spending
   const totalSpending = spendings?.reduce((sum: number, item: itemTypes) => sum + Number(item.price), 0) || 0;
-useEffect(() => {
+
+  //Group item by catergory
+  useEffect(() => {
     const groupedMap = spendings?.reduce((acc: Record<string, number>, item: any) => {
       if (!acc[item.category]) {
         acc[item.category] = item.price;
