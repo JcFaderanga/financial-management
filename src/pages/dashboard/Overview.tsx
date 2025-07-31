@@ -34,24 +34,6 @@ const [addItemModal, setAddItemModal] = useState<boolean>(false);
   
   },[])
 
-
-// useEffect(()=>{
-//   setAddItemModal(false)
-// },[])
-//use for fetching overall total spendings
-// useEffect(()=>{
-//     const fetchTotal = async ()=>{
-//       const {data, error} = await supabase
-//           .from('items')
-//           .select('*')
-//           .eq('owner', user?.id);
-//       if(error) console.log(error);
-//        const total = data?.reduce((sum: number, item: itemTypes) => sum + Number(item.price), 0);
-//        setTotalSpent(total)
-//     }
-//   fetchTotal();
-//   },[spendings])
-
   useDocumentTitle('Dashboard - Overview | Finance Management');
 
   return (
@@ -61,25 +43,30 @@ const [addItemModal, setAddItemModal] = useState<boolean>(false);
             <section className="border border-gray-300 rounded-xl px-4 py-4 ">
                 <OverViewPage/>
             </section>
-
-            <div className="p-4 border-b border-slate-300">
+            
+            <div className="p-4 ">
                 <button 
                     className="px-4 py-2 bg-slate-100 rounded-lg cursor-pointer"
                     onClick={()=>setAddItemModal(!addItemModal)}>
                       Add Item
                 </button>
             </div>
-
+            <div className="w-full lg:px-4 lg:max-w-1/3">
+                <div className="border border-gray-300  p-4 rounded-xl lg:hidden">
+                    <strong className="custom-black">Spent summary</strong>
+                    <SpentSummary/>
+                </div>
+            </div>
             <section className="w-full border rounded-xl px-4 my-4 border-gray-300">
                 <SpentHistory/>
             </section>
         </div>
-    <div className="w-full lg:px-4 lg:max-w-1/3">
-        <div className="border border-gray-300  p-4 rounded-xl ">
-            <strong className="custom-black">Spent summary</strong>
-            <SpentSummary/>
+        <div className="w-full hidden lg:block lg:px-4 lg:max-w-1/3">
+            <div className="border border-gray-300  p-4 rounded-xl ">
+                <strong className="custom-black">Spent summary</strong>
+                <SpentSummary/>
+            </div>
         </div>
-    </div>
          <CustomModal
               hidden={addItemModal} 
               onClick={()=>setAddItemModal(!addItemModal)}
