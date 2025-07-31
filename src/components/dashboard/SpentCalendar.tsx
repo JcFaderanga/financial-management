@@ -18,6 +18,7 @@ import {
 import { ClipLoader } from 'react-spinners'
 import { motion, AnimatePresence } from 'framer-motion'
 import DoughnutChart from "../charts/Doughnut";
+import { useOverviewDateStore } from '@/store/useOverviewDate'
 const SpentCalendar = () => {
   const { data, handleFetchAllSpendings } = useFetchAllSpending()
   const { setSpendItems } = useSpendings()
@@ -28,9 +29,8 @@ const SpentCalendar = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
   const [direction, setDirection] = useState<"left" | "right">("left")
-
+  const {setDate: setStoreDate} = useOverviewDateStore()
   const navigate = useNavigate()
-  console.log(data)
   useEffect(() => {
     async function _() {
       setLoading(true)
@@ -100,23 +100,49 @@ const SpentCalendar = () => {
     navigate(`/dashboard/overview`)
     setTimeout(()=> setLoading(false), 1000)
   }
-  
-  function handleDataSelect(date: string) {
-    const dateToString: string = FormatDate(date);
-    setDate(dateToString)
+
+  //handleDateSelect function use to select specific date
+  function handleDateSelect(date: string) {
+
+    setDate(FormatDate(date))
+    setStoreDate(FormatDate(date))
   }
 
+  //handleMonthSelect function use to select current month data
   function handleMonthSelect() {
     const monthStart = FormatDate(startOfMonth(currentMonth))
     const monthEnd = FormatDate(endOfMonth(currentMonth))
-    setDate({
-          startDate: monthStart,
-          endDate: monthEnd,
-        })
+
+    let date_range = {
+        startDate: monthStart,
+        endDate: monthEnd,
+    }
+
+    setStoreDate(date_range)
+    setDate(date_range)
   }
   
+  //handleSelectAll function use to select all data
   function handleSelectAll() {
-      setDate('all');
+
+    //first item in the array is the most reccent or last item
+    //data[0] select first index(most reccent or latest item inserted to DB)
+    const lastItem= data[0];
+
+    //last item in the array is the first item
+    //data[data.length - 1] select last index(very first item inserted to DB)
+    const firstItem= data[data.length - 1];
+
+    //select created_at col to get item date timestamp
+    //only need for displaying first and last date
+    setStoreDate({
+        startDate: firstItem.created_at,
+        endDate:  lastItem.created_at,
+    })
+
+    //passing string arguments for conditional logic inside setDate
+    //all means getting all data from DB
+    setDate('all');
   }
 
 
@@ -211,7 +237,7 @@ const SpentCalendar = () => {
 
                 return (
                   <div
-                    onClick={() => date && handleDataSelect(date)}
+                    onClick={() => date && handleDateSelect(date)}
                     key={idx}
                     className={`
                       h-12 md:h-24 rounded-xl md:border text-center overflow-hidden

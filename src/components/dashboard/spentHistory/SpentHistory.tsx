@@ -74,7 +74,7 @@ const SpentHistory = () => {
               <strong className='text-xl custom-black'>Spendings</strong>
               <div>
                 <p className='text-sm text-gray-400'>{dateRange}</p>
-              <p className='text-sm text-gray-400'>{timeRange}</p>
+                <p className='text-sm text-gray-400'>{timeRange}</p>
               </div>
               
       </header>

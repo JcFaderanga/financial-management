@@ -1,11 +1,15 @@
 import { LongDateFormat,formatTo12Hour } from "../utils/DateFormat";
 import { useOverviewDateStore } from "@/store/useOverviewDate";
-
 const OverviewDate = () => {
     const {date} = useOverviewDateStore();
 
     let dateRange = '';
     let timeRange = '';
+
+    if(typeof date === 'string'){
+        dateRange = LongDateFormat(new Date(date));
+    }
+
     if (typeof date === 'object') {
         if(!date?.startDate){
             dateRange = LongDateFormat(new Date())
@@ -23,6 +27,8 @@ const OverviewDate = () => {
                 - ${formatTo12Hour(date?.endTime)}` ;
         }
     }
+
+    
   return {dateRange,timeRange}
 }
 
