@@ -3,7 +3,8 @@ import { useSpendings, useSpendingExcluded } from '@/store/useSpendingStore';
 import { itemTypes } from "@/types/itemTypes";
 import { useOverviewTotal } from "@/store/useOverviewTotal";
 import { NoRecord } from "../NoRecord";
-
+import DoughnutChart from "../charts/Doughnut";
+import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
 type GroupedItem = {
   type: string;
   price: number;
@@ -16,6 +17,7 @@ const SpentSummary = () => {
   const { setTotal } = useOverviewTotal();
   const [grouped, setNewGroup] = useState<GroupedItem[] | null>(null);
   const [allSelected, setAllSelected] = useState<boolean>(true);
+  const [thisCompHidden, setThisCompHidden] = useState<boolean>(false)
 
   // Memoized total spending for percentage calculation
   const totalSpending = useMemo(() => {
@@ -84,51 +86,73 @@ const SpentSummary = () => {
 };
 
   return (
-    <section>
-      <div className="px-2 pt-2 text-sm text-gray-500 cursor-pointer" onClick={setAll}>
-        <input
-          type="checkbox"
-          checked={allSelected}
-          readOnly
-          onClick={()=> setAll()}
-        />
-        <i className="px-1">Select all</i>
+    <>
+    <div className="flex justify-between items-center">
+        <strong className="custom-black">Spent summary</strong>
+        {
+          thisCompHidden 
+          ? <FaAngleDown 
+              className="cursor-pointer" 
+              onClick={()=>setThisCompHidden(!thisCompHidden)}
+            />
+          : <FaAngleUp 
+              className="cursor-pointer" 
+              onClick={()=>setThisCompHidden(!thisCompHidden)}
+            />
+        }
       </div>
-
+    <section className={`${thisCompHidden && 'hidden'}`}>
       {!grouped || grouped.length === 0 ? (
         <div className="w-full flex justify-center">
           <NoRecord />
         </div>
       ) : (
-        grouped
-          ?.sort((a, b) => b.price - a.price)
-          .map(item => (
-            <div
-              key={item.type}
-              onClick={() => updateGroup(item)}
-              className={`${
-                  item.exclude && 'bg-slate-50'
-                } flex justify-between py-2 px-2 border-b border-gray-100 nth-last-[1]:border-none cursor-pointer hover:bg-slate-50`}
-            >
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={!item.exclude}
-                  readOnly
-                  
-                />
-                <div className="px-1 text-sm">{item.type}</div>
-              </div>
-              <div className="text-end">
-                <div className="font-semibold text-sm">₱{item.price.toLocaleString()}</div>
-                <div className="text-sm text-gray-400">
-                  {((item.price / totalSpending) * 100).toFixed(2)}%
+        <>
+          <div className='max-h-2/3 flex justify-center pt-4'> 
+              <DoughnutChart data={spendings} />
+          </div>
+          <div className="px-2 pt-2 text-sm text-gray-500 cursor-pointer" onClick={setAll}>
+            <input
+              type="checkbox"
+              checked={allSelected}
+              readOnly
+              onClick={()=> setAll()}
+            />
+            <i className="px-1">Select all</i>
+          </div>
+        {
+          grouped
+            ?.sort((a, b) => b.price - a.price)
+            .map(item => (
+              <div
+                key={item.type}
+                onClick={() => updateGroup(item)}
+                className={`${
+                    item.exclude && 'bg-slate-50'
+                  } flex justify-between py-2 px-2 border-b border-gray-100 nth-last-[1]:border-none cursor-pointer hover:bg-slate-50`}
+              >
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={!item.exclude}
+                    readOnly
+                    
+                  />
+                  <div className="px-1 text-sm">{item.type}</div>
+                </div>
+                <div className="text-end">
+                  <div className="font-semibold text-sm">₱{item.price.toLocaleString()}</div>
+                  <div className="text-sm text-gray-400">
+                    {((item.price / totalSpending) * 100).toFixed(2)}%
+                  </div>
                 </div>
               </div>
-            </div>
           ))
+        }
+        </>
       )}
     </section>
+  </>
   );
 };
 

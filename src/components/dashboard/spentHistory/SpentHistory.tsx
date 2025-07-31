@@ -70,13 +70,11 @@ const SpentHistory = () => {
   return (
     <div className={`${spendingIsHidden && 'bg-slate-100'}`}>
       <header className={` py-4 flex justify-between items-center`}>
-          
-              <strong className='text-xl custom-black'>Spendings</strong>
-              <div>
-                <p className='text-sm text-gray-400'>{dateRange}</p>
-                <p className='text-sm text-gray-400'>{timeRange}</p>
-              </div>
-              
+          <strong className='custom-black'>Spendings</strong>
+          <div>
+              <p className='text-sm text-gray-400'>{dateRange}</p>
+              <p className='text-sm text-gray-400'>{timeRange}</p>
+          </div>
       </header>
       <div className={`${spendingIsHidden && 'hidden'} w-full pb-10`}>
         {toastList.length > 0 && (

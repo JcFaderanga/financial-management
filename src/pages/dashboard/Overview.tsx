@@ -8,6 +8,7 @@ import OverViewPage from "@/components/dashboard/OverView";
 import { FormatDate } from "@/utils/DateFormat";
 import CustomModal from "@/components/modal/CustomModal";
 import SpentSummary from "@/components/dashboard/SpentSummary";
+
 // import { itemTypes } from "@/types/itemTypes";
 // import supabase from "@/lib/supabase";
 const OverView = () => {
@@ -44,7 +45,7 @@ const [addItemModal, setAddItemModal] = useState<boolean>(false);
                 <OverViewPage/>
             </section>
             
-            <div className="p-4 ">
+            <div className="py-4 ">
                 <button 
                     className="px-4 py-2 bg-slate-100 rounded-lg cursor-pointer"
                     onClick={()=>setAddItemModal(!addItemModal)}>
@@ -52,8 +53,7 @@ const [addItemModal, setAddItemModal] = useState<boolean>(false);
                 </button>
             </div>
             <div className="w-full lg:px-4 lg:max-w-1/3">
-                <div className="border border-gray-300  p-4 rounded-xl lg:hidden">
-                    <strong className="custom-black">Spent summary</strong>
+                <div className="border border-gray-300 p-4 rounded-xl lg:hidden">
                     <SpentSummary/>
                 </div>
             </div>
@@ -62,8 +62,7 @@ const [addItemModal, setAddItemModal] = useState<boolean>(false);
             </section>
         </div>
         <div className="w-full hidden lg:block lg:px-4 lg:max-w-1/3">
-            <div className="border border-gray-300  p-4 rounded-xl ">
-                <strong className="custom-black">Spent summary</strong>
+            <div className="border border-gray-300 p-4 rounded-xl ">
                 <SpentSummary/>
             </div>
         </div>
