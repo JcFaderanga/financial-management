@@ -70,10 +70,10 @@ const SpentSummary = () => {
               >
                 <div className="flex items-center">
                   <input type="radio" checked={!item.exclude} readOnly />
-                  <li className="px-1">{item.type}</li>
+                  <li className="px-1 text-sm">{item.type}</li>
                 </div>
                 <div className="">
-                  <li className="font-semibold text-end">₱{item.price.toLocaleString()}</li>
+                  <li className="font-semibold text-sm text-end">₱{item.price.toLocaleString()}</li>
                   <li className="text-sm text-end text-gray-400">{((item.price / totalSpending) * 100).toFixed(2)}%</li>
                 </div>
               </ul>
