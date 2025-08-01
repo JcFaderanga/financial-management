@@ -9,6 +9,7 @@ import OverViewModal from './modals/OverViewModal';
 import useFetchAllSpending from '@/hooks/spend_items/useFetchAllSpeding';
 import type { datePropertyTypes } from '@/types/itemTypes';
 import { useOverviewTotal } from '@/store/useOverviewTotal';
+import NumberFlowUI from '../UI/NumberFlow';
 const OverView = () => {
   const { setSpendItems } = useSpendings();
   const [isModal, setModal] = useState<boolean>(false);
@@ -46,7 +47,13 @@ const OverView = () => {
       <section className="flex">
         <div>
           
-          <strong className="text-2xl md:text-3xl custom-black">₱{total.toLocaleString()}</strong>
+          <strong className="text-2xl md:text-3xl custom-black">
+            <NumberFlowUI
+              value={total}
+              currency='PHP'
+              style='currency'
+             />
+            </strong>
         </div>
       </section>
 

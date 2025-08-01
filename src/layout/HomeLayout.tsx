@@ -8,12 +8,15 @@ const HomeLayout = () => {
   return (
     <>
       <section className='flex'>
-        <div className=''>
+        <div className='relative z-50'>
             <SideBar/>
         </div>
           <div className= {`w-full h-screen ${isMenuActive ? '' : 'lg:ml-[18%]'} `}>
+            <div className='relative z-40'>
                 <Header/>
-                <div className='mt-16 h-full'>
+            </div>
+                
+                <div className='mt-16 h-full relative z-10'>
                   <Outlet/>
                 </div>
                 

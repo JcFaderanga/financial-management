@@ -19,6 +19,7 @@ import { ClipLoader } from 'react-spinners'
 import { motion, AnimatePresence } from 'framer-motion'
 import DoughnutChart from "../charts/Doughnut";
 import { useOverviewDateStore } from '@/store/useOverviewDate'
+import NumberFlowUI from '../UI/NumberFlow'
 const SpentCalendar = () => {
   const { data, handleFetchAllSpendings } = useFetchAllSpending()
   const { setSpendItems } = useSpendings()
@@ -272,7 +273,13 @@ const SpentCalendar = () => {
           className='border border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
           <div>
             Total this month
-            <div className="text-[#eb4b6d] text-2xl font-bold">₱{String(monthlyTotal?.toLocaleString())}</div>
+            <div className="text-[#eb4b6d] text-2xl font-bold">
+              <NumberFlowUI
+                  value={monthlyTotal}
+                  currency='PHP'
+                  style='currency'
+                />
+            </div>
           </div>
           <FaAngleRight size={18} />
         </div>
@@ -283,7 +290,13 @@ const SpentCalendar = () => {
             className=' px-4 py-4 custom-black flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
             <div>
               Over all total
-              <div className="text-[#eb4b6d] text-2xl font-bold">₱{String(allTotal?.toLocaleString())}</div>
+              <div className="text-[#eb4b6d] text-2xl font-bold">
+                <NumberFlowUI
+                  value={allTotal}
+                  currency='PHP'
+                  style='currency'
+                />
+              </div>
             </div>
             <FaAngleRight size={18} />
           </div>
