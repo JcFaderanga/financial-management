@@ -31,10 +31,15 @@ const Header = () => {
             ? <FaAlignLeft onClick={handleMenuToggle} className='text-slate-500 mr-4 cursor-pointer' size={20}/>
             : <FaAlignRight onClick={handleMenuToggle} className='text-slate-500 mr-4 cursor-pointer' size={20}/>
         }
-        
 
-        <img src={user.user_metadata.avatar_url} className='rounded-full w-10' alt="Profile" />
-        <span className='text-sm px-2'>{user.user_metadata.full_name}</span>
+        {user.id === '75eacadc-8e39-425a-adda-56712083d51a' 
+            ? 'Demo Account' 
+            :  <>
+                <img src={user.user_metadata.avatar_url} className='rounded-full w-10' alt="Profile" />
+                <span className='text-sm px-2'>{user.user_metadata.full_name}</span>
+              </>
+        }
+       
       </div>
          
       <button onClick={signOut} className="cursor-pointer text-sm px-4 py-1 rounded ">

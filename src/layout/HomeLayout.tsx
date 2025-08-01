@@ -1,29 +1,30 @@
-import Header from '../components/header/Header'
-import SideBar from '../components/sideBar/SideBar'
-import { Outlet } from 'react-router-dom'
-import { useMenuStore } from '@/store/useMenuToggle'
+import Header from '../components/header/Header';
+import SideBar from '../components/sideBar/SideBar';
+import { Outlet } from 'react-router-dom';
+import { useMenuStore } from '@/store/useMenuToggle';
+import { useModal } from '@/store/useModal';
+
 const HomeLayout = () => {
-  const {isMenuActive} =useMenuStore();
-
+  const { isModal } = useModal();
+  const { isMenuActive } = useMenuStore();
+  console.log(isModal)
   return (
-    <>
-      <section className='flex'>
-        <div className='relative z-50'>
-            <SideBar/>
-        </div>
-          <div className= {`w-full h-screen ${isMenuActive ? '' : 'lg:ml-[18%]'} `}>
-            <div className='relative z-40'>
-                <Header/>
-            </div>
-                
-                <div className='mt-16 h-full relative z-10'>
-                  <Outlet/>
-                </div>
-                
-          </div>
-      </section>
-    </>
-  )
-}
+    <section className="flex">
+      <div className={isModal ? 'relative z-50' : ''}>
+        <SideBar />
+      </div>
 
-export default HomeLayout
+      <div className={`w-full h-screen ${isMenuActive ? '' : 'lg:ml-[18%]'}`}>
+        <div className={isModal ? 'relative z-40' : ''}>
+          <Header />
+        </div>
+
+        <div className="relative z-10 mt-16 h-full">
+          <Outlet />
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default HomeLayout;

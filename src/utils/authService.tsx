@@ -45,3 +45,20 @@ export const signOut = async () => {
     console.log('catch', error.message)
   }
 }
+
+export const signInDemo = async (): Promise<void>=>{
+
+   try {
+    const {error} =await supabase.auth.signInWithPassword({
+            email: "demo@example.com",
+            password: "demo123",
+    })
+
+    if(error) throw new Error(error.message);
+
+    window.location.href = "/dashboard/overview"; 
+  } catch (error: any) {
+    console.error('catch', error.message)
+  }
+    
+}
