@@ -12,7 +12,7 @@ import GroupSpending from './GroupSpending';
 // Action buttons (Edit, Delete)
 import { useActionItem } from '@/store/useActionItem';
 import { NoRecord } from '@/components/NoRecord';
-import { useCategoryColors } from '@/store/useCatogoryColors';
+
 type ActionProps={
   status: boolean,
   item: itemTypes
@@ -25,8 +25,6 @@ const SpentHistory = () => {
   const [spendingIsHidden] = useState<boolean>(false);
   const {dateRange, timeRange} = OverviewDate();
   const {setSelected} = useActionItem()
-  const {colors}=useCategoryColors()
-  console.log(colors)
   useEffect(()=>{
     if(!isItemEdit.status)
     setSelected(null)

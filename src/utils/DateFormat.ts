@@ -1,4 +1,5 @@
 export const FormatDate=(date: any)=>{
+
   const setDate = new Date(date);
   const yyyy = setDate.getFullYear()
   const mm = String(setDate.getMonth() + 1).padStart(2, '0')
@@ -40,3 +41,22 @@ export const FormatDate=(date: any)=>{
   });
 }
 
+//2025-08-01 04:53:29.122000+00
+export function FormattedUTCDate(date: string) {
+  
+  const selectedDate = FormatDate(date)
+
+  if(selectedDate === "NaN-NaN-NaN") return 'invalid date';
+  
+  const now = new Date();
+
+  const pad = (n:any, width = 2) => String(n).padStart(width, '0');
+  const hours = pad(now.getUTCHours());
+  const minutes = pad(now.getUTCMinutes());
+  const seconds = pad(now.getUTCSeconds());
+  
+  const milliseconds = now.getUTCMilliseconds(); // e.g., 122
+  const microseconds = pad(milliseconds * 1000, 6); // convert to microseconds (3 extra digits)
+
+  return `${selectedDate} ${hours}:${minutes}:${seconds}.${microseconds}+00`;
+}

@@ -11,6 +11,9 @@ import MatchItem from './MatchItem'
 import useUniqueItemList from '@/hooks/spend_items/useUniqueList'
 import AddGroup from './AddGroup'
 import { itemTypes } from '@/types/itemTypes'
+import OverviewDate from '@/hooks/OverviewDate'
+import { FormattedUTCDate } from '@/utils/DateFormat'
+
 const AddItem = () => {
 const {setSpendItems, spendings} =useSpendings();
 const {user} = useUserStore();
@@ -29,7 +32,8 @@ const {handleSaveItem} = UseSaveItem();
 const {handleUniqueItem} = useUniqueItemList()
 const [isAddingGroup, setIsAddGroup] = useState<boolean>(false);
 const [selectedGroup, setSelectedGroup] = useState<any>(null); // store checked item IDs
- 
+const {dateRange} = OverviewDate();
+
 useEffect(()=>{
     setBtnDisable(true);
 
@@ -52,11 +56,18 @@ useEffect(()=>{
 
 const handleSave =async()=>{
   //check if category is null
+  
   if(!category || category === 'Select Category' ) {
       setCategoryError(true);
       return;
   }
+
+  if(FormattedUTCDate(dateRange) === 'invalid date'){
+      alert(dateRange+ ' is not a valid date.')
+      return;
+  }
     
+
     //disable save button when submit
     setBtnDisable(true)
 
@@ -66,7 +77,8 @@ const handleSave =async()=>{
       title: title.trim().toLowerCase(),
       price: Number(price),
       category: category,
-      grouped_in:selectedGroup ? selectedGroup[0]?.id : null
+      grouped_in:selectedGroup ? selectedGroup[0]?.id : null,
+      created_at: FormattedUTCDate(dateRange)
     };
 
     //save item to db and fetch

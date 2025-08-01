@@ -7,7 +7,7 @@ import { useModal } from '@/store/useModal';
 const HomeLayout = () => {
   const { isModal } = useModal();
   const { isMenuActive } = useMenuStore();
-  console.log(isModal)
+
   return (
     <section className="flex">
       <div className={isModal ? 'relative z-50' : ''}>

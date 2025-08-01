@@ -8,12 +8,13 @@ import OverViewPage from "@/components/dashboard/OverView";
 import { FormatDate } from "@/utils/DateFormat";
 import CustomModal from "@/components/modal/CustomModal";
 import SpentSummary from "@/components/dashboard/SpentSummary";
-
+import OverviewDate from "@/hooks/OverviewDate";
+import { FormattedUTCDate } from "@/utils/DateFormat";
 const OverView = () => {
   const { handleFetchAllSpendings } = useFetchAllSpending();
   const { setSpendItems, spendings } = useSpendings();
   const [addItemModal, setAddItemModal] = useState<boolean>(false);
-
+  const {dateRange} = OverviewDate();
   useEffect(() => {
     const fetch = async () => {
       const res = await handleFetchAllSpendings(FormatDate(new Date()));
@@ -39,14 +40,18 @@ const OverView = () => {
         </section>
 
         {/* Add Item Button */}
-        <div>
-          <button
-            className="px-4 py-2 bg-slate-100 rounded-lg hover:bg-slate-200"
-            onClick={() => setAddItemModal(!addItemModal)}
-          >
-            Add Item
-          </button>
-        </div>
+        {
+          FormattedUTCDate(dateRange) !== 'invalid date' &&
+          <div>
+              <button
+                className="px-4 py-2 bg-slate-100 rounded-lg hover:bg-slate-200"
+                onClick={() => setAddItemModal(!addItemModal)}
+              >
+                Add Item
+              </button>
+          </div>
+        }
+        
 
         {/* Mobile Summary */}
         <div className="lg:hidden border border-gray-300 p-4 rounded-xl">
