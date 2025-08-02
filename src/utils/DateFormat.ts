@@ -1,5 +1,5 @@
+//2025-08-01 
 export const FormatDate=(date: any)=>{
-
   const setDate = new Date(date);
   const yyyy = setDate.getFullYear()
   const mm = String(setDate.getMonth() + 1).padStart(2, '0')
@@ -33,7 +33,7 @@ export const FormatDate=(date: any)=>{
     }) : 'Select Date';
   };
 
-  export function formatTo12Hour(time: string): string {
+  export function formatTo12Hour(time: string) {
   return new Date(`1970-01-01T${time}`).toLocaleTimeString([], {
     hour: 'numeric',
     minute: '2-digit',
@@ -42,7 +42,7 @@ export const FormatDate=(date: any)=>{
 }
 
 //2025-08-01 04:53:29.122000+00
-export function FormattedUTCDate(date: string) {
+export function FormattedUTCDate(date: string | Date) {
   
   const selectedDate = FormatDate(date)
 
@@ -54,9 +54,10 @@ export function FormattedUTCDate(date: string) {
   const hours = pad(now.getUTCHours());
   const minutes = pad(now.getUTCMinutes());
   const seconds = pad(now.getUTCSeconds());
-  
-  const milliseconds = now.getUTCMilliseconds(); // e.g., 122
-  const microseconds = pad(milliseconds * 1000, 6); // convert to microseconds (3 extra digits)
+  const milliseconds = now.getUTCMilliseconds();
+  const microseconds = pad(milliseconds * 1000, 6); 
 
-  return `${selectedDate} ${hours}:${minutes}:${seconds}.${microseconds}+00`;
+  const formatedDate = `${selectedDate} ${hours}:${minutes}:${seconds}.${microseconds}+00`;
+
+  return formatedDate;
 }
