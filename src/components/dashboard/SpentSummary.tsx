@@ -128,7 +128,7 @@ const SpentSummary = () => {
                 key={item.type}
                 onClick={() => updateGroup(item)}
                 className={`${
-                    item.exclude && 'bg-slate-50'
+                    item.exclude && 'opacity-30'
                   } flex justify-between py-2 px-2 border-b border-gray-100 nth-last-[1]:border-none cursor-pointer hover:bg-slate-50`}
               >
                 <div className="flex items-center">
