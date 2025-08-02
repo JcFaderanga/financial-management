@@ -3,7 +3,7 @@ import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io"
 import { FaAngleRight } from "react-icons/fa6"
 import { itemTypes } from '@/types/itemTypes'
 import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding"
-import { FormatDate } from '@/utils/DateFormat'
+import { FormatDate, MonthToNumber } from '@/utils/DateFormat'
 import { useNavigate } from 'react-router-dom'
 import { useSpendings } from '@/store/useSpendingStore'
 import {
@@ -186,25 +186,48 @@ const SpentCalendar = () => {
 
   return (
     <div className='p-4 lg:flex'>
-      <div className="w-full lg:max-w-2/3">
-        <div className="flex justify-between mb-1">
+      <div
+          onClick={()=>handleMonthSelect()}
+          className='border-b pb-5 border-gray-200 lg:ml-4 lg:hidden
+          custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
           <div>
-            <div className='font-bold text-xl custom-black'>Spending calendar</div>
+            <strong className='text-sm'>Total this month</strong>
+            <div className="text-[#eb4b6d] text-2xl font-bold">
+              <NumberFlowUI
+                  value={monthlyTotal}
+                  currency='PHP'
+                  style='currency'
+                />
+            </div>
+          </div>
+          <FaAngleRight size={18} />
+      </div>
+      <div className="w-full lg:max-w-2/3">
+        <div className="flex justify-between items-center mb-1">
+          <div className=''>
+            <div className='font-bold custom-black text-sm'>Spending calendar</div>
           </div>
 
-          <div className='flex items-center'>
-            <button onClick={handlePrev} className='pr-1 cursor-pointer'>
-              <IoMdArrowDropleft />
+          <div className='flex items-center gap-1'>
+            <button onClick={handlePrev} className='cursor-pointer border border-gray-300 h-7 px-1 rounded-md'>
+              <IoMdArrowDropleft size={20}/>
             </button>
-            <h2 className="text-sm text-center">
-              {format(currentMonth, 'MMMM')}
-            </h2>
-            <button onClick={handleNext} className='pl-1 cursor-pointer'>
-              <IoMdArrowDropright />
+            <div className='cursor-pointer border border-gray-300 flex justify-center items-center gap-0.5 rounded-md h-7 w-18 lg:w-30 font-bold'>
+                
+                <span className="text-xs hidden lg:flex">
+                  {format(currentMonth, 'MMMM')}
+                </span>
+                <span className="text-xs lg:hidden">
+                  {MonthToNumber(format(currentMonth, 'MMMM'))} /
+                </span>
+
+                <span className="text-xs">
+                  {format(currentMonth, 'yyyy')}
+                </span>
+            </div>
+            <button onClick={handleNext} className='cursor-pointer border border-gray-300 h-7 px-1 rounded-md'>
+              <IoMdArrowDropright size={20}/>
             </button>
-            <h2 className="text-sm text-center">
-              {format(currentMonth, 'yyyy')}
-            </h2>
           </div>
         </div>
 
@@ -270,7 +293,8 @@ const SpentCalendar = () => {
       <div className="font-semibold lg:pt-11 text-sm lg:w-2/6 text-gray-600 mt-1">
         <div
           onClick={()=>handleMonthSelect()} 
-          className='border border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
+          className='border border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 hidden lg:flex
+          justify-between items-center hover:bg-gray-50 cursor-pointer'>
           <div>
             Total this month
             <div className="text-[#eb4b6d] text-2xl font-bold">
@@ -284,7 +308,7 @@ const SpentCalendar = () => {
           <FaAngleRight size={18} />
         </div>
 
-        <div className='lg:ml-4 border border-gray-300 rounded-xl '>
+        <div className='lg:ml-4 border-t lg:border border-gray-300 lg:rounded-xl '>
           <div 
             onClick={()=> handleSelectAll()}
             className=' px-4 py-4 custom-black flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
