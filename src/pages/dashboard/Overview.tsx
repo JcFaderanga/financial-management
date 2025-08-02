@@ -63,7 +63,7 @@ const OverView = () => {
         </section>
       </div>
 
-      {/* Right Column (Desktop Only) */}
+      {/* Right Column (Desktop Only) */} 
       <div className="hidden lg:block sticky top-20 h-fit self-start z-10">
         <section className="bg-white border border-gray-300 rounded-xl p-4 mb-4 ">
           <OverViewPage />
