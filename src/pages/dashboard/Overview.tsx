@@ -14,7 +14,7 @@ const OverView = () => {
   const { handleFetchAllSpendings } = useFetchAllSpending();
   const { setSpendItems, spendings } = useSpendings();
   const [addItemModal, setAddItemModal] = useState<boolean>(false);
-  const { dateRange } = OverviewDate();
+  const { dateRange,timeRange } = OverviewDate();
 
   useEffect(() => {
     const fetch = async () => {
@@ -35,6 +35,11 @@ const OverView = () => {
     <div className="max-w-7xl mx-auto px-4 py-6 grid lg:grid-cols-3 gap-4 min-h-screen">
       {/* Left Column (spans 2 columns on large screens) */}
       <div className="lg:col-span-2 space-y-4">
+
+         <div className="lg:hidden">
+              <p className='text-sm text-gray-400'>{dateRange}</p>
+              <p className='text-sm text-gray-400'>{timeRange}</p>
+          </div>
         {/* Overview Section */}
         <section className="bg-white border border-gray-300 rounded-xl p-4 lg:hidden">
           <OverViewPage />
