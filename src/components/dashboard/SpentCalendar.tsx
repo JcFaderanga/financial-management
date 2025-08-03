@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io"
 import { FaAngleRight } from "react-icons/fa6"
-import { itemTypes } from '@/types/itemTypes'
 import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding"
 import { FormatDate, MonthToNumber } from '@/utils/DateFormat'
 import { useNavigate } from 'react-router-dom'
@@ -20,6 +19,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import DoughnutChart from "../charts/Doughnut";
 import { useOverviewDateStore } from '@/store/useOverviewDate'
 import NumberFlowUI from '../UI/NumberFlow'
+import { CalulateTotal } from '@/utils/itemFormat'
 const SpentCalendar = () => {
   const { data, handleFetchAllSpendings } = useFetchAllSpending()
   const { setSpendItems } = useSpendings()
@@ -42,8 +42,9 @@ const SpentCalendar = () => {
   }, [])
 
   useEffect(() => {
-    const total = data?.reduce((sum: number, item: itemTypes) => sum + Number(item?.price), 0)
-    setAllTotal(total)
+
+    //Over all total
+    setAllTotal(CalulateTotal(data))
 
     const totalsByDate: Record<string, number> = {}
     let monthTotal = 0

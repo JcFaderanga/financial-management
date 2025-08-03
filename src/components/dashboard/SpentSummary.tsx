@@ -1,10 +1,10 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useSpendings, useSpendingExcluded } from '@/store/useSpendingStore';
-import { itemTypes } from "@/types/itemTypes";
 import { useOverviewTotal } from "@/store/useOverviewTotal";
 import { NoRecord } from "../NoRecord";
 import DoughnutChart from "../charts/Doughnut";
 import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
+import { CategoryAndPrice,CalulateTotal } from "@/utils/itemFormat";
 type GroupedItem = {
   type: string;
   price: number;
@@ -19,29 +19,15 @@ const SpentSummary = () => {
   const [allSelected, setAllSelected] = useState<boolean>(true);
   const [thisCompHidden, setThisCompHidden] = useState<boolean>(false)
 
-  // Memoized total spending for percentage calculation
-  const totalSpending = useMemo(() => {
-    return spendings?.reduce((sum: number, item: itemTypes) => sum + Number(item.price), 0) || 0;
-  }, [spendings]);
-
   // Group spendings by category
   useEffect(() => {
-    const groupedMap = spendings?.reduce((acc: Record<string, number>, item: any) => {
-      if (!acc[item.category]) {
-        acc[item.category] = item.price;
-      } else {
-        acc[item.category] += item.price;
-      }
-      return acc;
-    }, {});
 
-    const result: GroupedItem[] = Object.entries(groupedMap || {}).map(([type, price]) => ({
-      type,
-      price: Number(price),
-      exclude: false,
-    }));
+    // const category_price = GroupByCategoryAndPrice(spendings);
+    const category_price = new CategoryAndPrice(spendings);
+    const newData = category_price.groupToArray();
 
-    setNewGroup(result);
+    setNewGroup(newData);
+
   }, [spendings]);
 
   // Update excluded categories for filtering
@@ -143,7 +129,7 @@ const SpentSummary = () => {
                 <div className="text-end">
                   <div className="font-semibold text-sm">₱{item.price.toLocaleString()}</div>
                   <div className="text-sm text-gray-400">
-                    {((item.price / totalSpending) * 100).toFixed(2)}%
+                    {((item.price / CalulateTotal(spendings)) * 100).toFixed(2)}%
                   </div>
                 </div>
               </div>
