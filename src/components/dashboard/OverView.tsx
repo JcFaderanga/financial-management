@@ -29,15 +29,15 @@ const OverView = () => {
   };
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center ">
       <div>
-        <strong className="custom-black md:text-xl">Overview</strong>
+        <strong className="text-dark md:text-xl dark:text-white">Overview</strong>
         <p className="text-slate-400">Total spending</p>
         {/* <h2 className="text-slate-400 text-sm">
           {dateRange}
           <FaPen onClick={() => setModal(!isModal)} className="inline-block mx-1 cursor-pointer" />
         </h2> */}
-        <h2 className="text-slate-400 text-sm">{timeRange}</h2>
+        <h2 className="text-slate-400 text-sm ">{timeRange}</h2>
 
         <CustomModal hidden={isModal} onClick={() => setModal(!isModal)}>
           <OverViewModal onChange={filterDate} />
@@ -47,7 +47,7 @@ const OverView = () => {
       <section className="flex">
         <div>
           
-          <strong className="text-2xl md:text-3xl custom-black">
+          <strong className="text-2xl md:text-3xl text-dark dark:text-white ">
             <NumberFlowUI
               value={total}
               currency='PHP'

@@ -66,12 +66,12 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
                   key={spent.id} 
                   className={`
                     ${selected?.id === spent.id && 'bg-blue-50'} 
-                    cursor-pointer hover:bg-slate-50
+                    cursor-pointer hover:bg-slate-50 dark:hover:bg-light-dark dark:border-light-dark
                     ${excluded?.includes(spent?.category) && 'hidden'}
                   `} 
                   onClick={() => selectRow(spent)}
                 >
-                  <CustomData className='pl-2'>
+                  <CustomData className='pl-2 dark:text-white'>
                     <div>
                       <div className='flex items-center'>
                         <span className={`h-2 w-2 rounded-full mr-1`} style={{ backgroundColor: catBg }} />
@@ -80,7 +80,7 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
                       <p className='text-sm md:text-base'>{spent.title}</p>
                     </div>
                   </CustomData>
-                  <CustomData className='text-right pr-2'>
+                  <CustomData className='text-right pr-2 dark:text-white'>
                     <div>
                       <strong className='text-xs'>{LongDateFormat(new Date(spent.created_at))}</strong>
                       <p className='text-sm md:text-base text-red-400 font-semibold'>-₱{spent?.price?.toLocaleString()}</p>
@@ -94,7 +94,7 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
         {
       
       selected && 
-      <div className="w-full fixed flex justify-center bottom-0 border-t border-gray-300 py-4 left-0 bg-white box-shadow ">
+      <div className="w-full fixed flex justify-center bottom-0 border-t border-gray-300  py-4 left-0 bg-white box-shadow ">
           <div className='p-2 w-2/3 max-w-xl '>
               <ActionMenu
                   onEdit={() => handleEdit(selected)}

@@ -10,6 +10,8 @@ scan({
 createRoot(document.getElementById('root')!).render(
   
   <StrictMode>
-    <App />
+    <div className="dark:bg-dark">
+        <App />
+    </div>
   </StrictMode>,
 )

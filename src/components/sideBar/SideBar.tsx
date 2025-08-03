@@ -3,7 +3,7 @@ import { useMenuStore } from "@/store/useMenuToggle";
 import LinkItem from "./LinkItem";
 import { navItems } from "./NavPaths";
 import { FaAlignRight } from "react-icons/fa6";
-
+import { signOut } from '@/utils/authService'
 const Sidebar = () => {
   const {isMenuActive,setMenuIsActive}= useMenuStore();
   const homePage = navItems.filter((item) => item.category === "homePage");
@@ -14,15 +14,19 @@ const Sidebar = () => {
   }
   return (
     <section className={`fixed w-full top-0 lg:w-[18%] left-0 lg:fixed min-h-screen bg-white text-white p-4 border-r border-gray-300
+    dark:bg-dark
     ${isMenuActive ? 'w-full block lg:hidden ' : 'hidden lg:block lg:w-80 '}
     `}>
-      <div className="h-14 border ">
+      <div className="h-14 border dark:border-dark">
         <FaAlignRight onClick={handleMenuToggle} className='text-slate-500 mr-4 cursor-pointer lg:hidden float-end' size={20}/>
       </div>
       <nav className="flex flex-col space-y-1">
         <LinkItem navs={homePage} title="HOME PAGE" />
         <LinkItem navs={reports} title="REPORTS" />
       </nav>
+      <button onClick={signOut} className="cursor-pointer text-sm px-4 py-1 rounded mt-20 bg-blue-100 text-dark">
+        Sign Out
+      </button>
     </section>
   );
 };

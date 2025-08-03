@@ -74,7 +74,7 @@ const SpentSummary = () => {
   return (
     <>
     <div className="flex justify-between items-center">
-        <strong className="custom-black">Spent summary</strong>
+        <strong className="text-dark dark:text-white">Spent summary</strong>
         {
           thisCompHidden 
           ? <FaAngleDown 
@@ -115,7 +115,7 @@ const SpentSummary = () => {
                 onClick={() => updateGroup(item)}
                 className={`${
                     item.exclude && 'opacity-30'
-                  } flex justify-between py-2 px-2 border-b border-gray-100 nth-last-[1]:border-none cursor-pointer hover:bg-slate-50`}
+                  } flex justify-between py-2 px-2 border-b border-gray-100 dark:border-light-dark nth-last-[1]:border-none cursor-pointer hover:bg-slate-50`}
               >
                 <div className="flex items-center">
                   <input

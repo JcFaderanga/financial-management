@@ -32,7 +32,7 @@ const OverView = () => {
   useDocumentTitle("Dashboard - Overview | Finance Management");
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 grid lg:grid-cols-3 gap-4 min-h-screen">
+    <div className="max-w-7xl mx-auto px-4 py-6 grid lg:grid-cols-3 gap-4 min-h-screen dark:bg-dark dark:text-white transition">
       {/* Left Column (spans 2 columns on large screens) */}
       <div className="lg:col-span-2 space-y-4">
 
@@ -41,15 +41,15 @@ const OverView = () => {
               <p className='text-sm text-gray-400'>{timeRange}</p>
           </div>
         {/* Overview Section */}
-        <section className="bg-white border border-gray-300 rounded-xl p-4 lg:hidden">
+        <section className="bg-white dark:bg-transparent border dark:border-light-dark border-gray-300 rounded-xl p-4 lg:hidden">
           <OverViewPage />
         </section>
 
         {/* Add Item Button */}
         {FormattedUTCDate(dateRange) !== "invalid date" && (
-          <div className="border border-gray-300 rounded-xl px-4 py-5.5 ">
+          <div className="border border-gray-300 dark:border-light-dark dark:lg:bg-medium-dark rounded-xl px-4 py-5.5 ">
             <button
-              className="px-6 py-2 bg-slate-100 rounded-lg hover:bg-slate-200"
+              className="px-6 py-2 bg-slate-100 rounded-lg hover:bg-slate-200 dark:bg-medium-dark dark:text-white"
               onClick={() => setAddItemModal(!addItemModal)}
             >
               Add Item
@@ -58,23 +58,23 @@ const OverView = () => {
         )}
 
         {/* Mobile Summary */}
-        <div className="lg:hidden border border-gray-300 p-4 rounded-xl bg-white">
+        <div className="lg:hidden border border-gray-300 dark:border-light-dark dark:lg:bg-medium-dark p-4 rounded-xl bg-white dark:bg-transparent" >
           <SpentSummary />
         </div>
 
         {/* Spend History */}
-        <section className="border border-gray-300 rounded-xl p-4 bg-white">
+        <section className="border border-gray-300 dark:border-light-dark dark:lg:bg-medium-dark rounded-xl p-4 bg-white dark:bg-transparent">
           <SpentHistory />
         </section>
       </div>
 
       {/* Right Column (Desktop Only) */} 
       <div className="hidden lg:block sticky top-20 h-fit self-start z-10">
-        <section className="bg-white border border-gray-300 rounded-xl p-4 mb-4 ">
+        <section className="bg-white border border-gray-300 dark:bg-dark dark:border-light-dark dark:lg:bg-medium-dark rounded-xl p-4 mb-4 ">
           <OverViewPage />
         </section>
 
-        <div className="border border-gray-300 p-4 rounded-xl bg-white">
+        <div className="border border-gray-300 dark:bg-dark dark:border-light-dark dark:lg:bg-medium-dark p-4 rounded-xl bg-white">
           <SpentSummary />
         </div>
       </div>

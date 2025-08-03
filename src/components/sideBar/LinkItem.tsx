@@ -35,8 +35,8 @@ const LinkItem = ({
             to={item.path}
             onClick={menuToggle}
             aria-current={isActive ? "page" : undefined}
-            className={`px-4 py-1.5 text-sm rounded-lg transition-colors text-black ${
-              isActive ? "bg-blue-100 text-blue-500" : "hover:bg-gray-100"
+            className={`px-4 py-1.5 text-sm rounded-lg transition-colors text-black dark:text-white ${
+              isActive ? "bg-blue-100 text-blue-500  dark:bg-medium-dark" : "hover:bg-gray-100 dark:hover:bg-light-dark"
             }`}
           >
             {item.label}

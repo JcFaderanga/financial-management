@@ -179,20 +179,21 @@ const SpentCalendar = () => {
   
   if (loading) {
     return (
-      <div className='w-full h-screen flex justify-center py-20'>
-        <ClipLoader color="#000000" size={30} />
+      <div className='w-full h-screen flex justify-center py-20 dark:text-white'>
+        <span className='dark:hidden'><ClipLoader size={30} /></span>
+        <span className='hidden dark:block'><ClipLoader color={'#ffffff'} size={30} /></span>
       </div>
     )
   }
 
   return (
-    <div className='p-4 lg:flex'>
+    <div className='p-4 lg:flex dark:bg-dark transition'>
       <div
           onClick={()=>handleMonthSelect()}
           className='border-b pb-5 border-gray-200 lg:ml-4 lg:hidden
           custom-black mb-4 flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
           <div>
-            <strong className='text-sm'>Total this month</strong>
+            <strong className='text-sm dark:text-white'>Total this month</strong>
             <div className="text-[#eb4b6d] text-2xl font-bold">
               <NumberFlowUI
                   value={monthlyTotal}
@@ -201,32 +202,34 @@ const SpentCalendar = () => {
                 />
             </div>
           </div>
-          <FaAngleRight size={18} />
+          <div className='dark:text-white'>
+            <FaAngleRight size={18} />
+          </div>
       </div>
       <div className="w-full lg:max-w-2/3">
         <div className="flex justify-between items-center mb-1">
           <div className=''>
-            <div className='font-bold custom-black text-sm'>Spending calendar</div>
+            <div className='font-bold text-dark text-sm dark:text-white'>Spending calendar</div>
           </div>
 
           <div className='flex items-center gap-1'>
-            <button onClick={handlePrev} className='cursor-pointer border border-gray-300 h-7 px-1 rounded-md'>
+            <button onClick={handlePrev} className='cursor-pointer border border-gray-300 h-7 px-1 rounded-md dark:text-white'>
               <IoMdArrowDropleft size={20}/>
             </button>
             <div className='cursor-pointer border border-gray-300 flex justify-center items-center gap-0.5 rounded-md h-7 w-18 lg:w-30 font-bold'>
                 
-                <span className="text-xs hidden lg:flex">
+                <span className="text-xs hidden lg:flex dark:text-white">
                   {format(currentMonth, 'MMMM')}
                 </span>
-                <span className="text-xs lg:hidden">
+                <span className="text-xs lg:hidden dark:text-white">
                   {MonthToNumber(format(currentMonth, 'MMMM'))} /
                 </span>
 
-                <span className="text-xs">
+                <span className="text-xs dark:text-white">
                   {format(currentMonth, 'yyyy')}
                 </span>
             </div>
-            <button onClick={handleNext} className='cursor-pointer border border-gray-300 h-7 px-1 rounded-md'>
+            <button onClick={handleNext} className='cursor-pointer border border-gray-300 h-7 px-1 rounded-md dark:text-white'>
               <IoMdArrowDropright size={20}/>
             </button>
           </div>
@@ -251,7 +254,7 @@ const SpentCalendar = () => {
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d, index) => (
                 <div
                   key={index}
-                  className="text-sm text-center font-semibold border border-gray-300 rounded-lg py-1"
+                  className="text-sm text-center font-semibold border border-gray-300 rounded-lg py-1 dark:border-gray-800 dark:text-white dark:bg-medium-dark"
                 >
                   {d}
                 </div>
@@ -265,20 +268,20 @@ const SpentCalendar = () => {
                     onClick={() => date && handleDateSelect(date)}
                     key={idx}
                     className={`
-                      h-12 md:h-24 rounded-xl md:border text-center overflow-hidden
-                      ${amount ? ' border-red-300 !bg-red-50 ' : 'border-gray-300'}
-                      flex flex-col justify-between p-1 text-sm hover:!bg-gray-100 cursor-pointer
-                      ${date ? 'bg-white' : 'bg-transparent border-none'}
+                      h-12 md:h-24 rounded-xl md:border dark:border-none text-center overflow-hidden
+                      ${amount ? ' border-red-300 !bg-red-50 dark:!bg-[#292021]' : 'border-gray-300'}
+                      flex flex-col justify-between p-1 text-sm hover:!bg-gray-100 dark:hover:!bg-[#414141] cursor-pointer
+                      ${date ? 'bg-white dark:bg-medium-dark' : 'bg-transparent border-none'}
                       
                     `}
                   >
-                    <div className="font-bold text-sm md:text-right ">
+                    <div className="font-bold text-sm md:text-right dark:text-white">
                       {date ? format(date, 'd') : ''}
                     </div>
                     {amount && (
-                      <div className="text-[#eb4b6d] font-semibold py-1 text-[8px] md:text-sm ">
+                      <div className="text-[#eb4b6d] font-semibold py-1 text-[8px] md:text-sm">
                         -<span className='hidden md:inline-block'>₱</span>
-                        <span className='sm:hidden'>{String(formatNumberDisplay(5, amount))}</span>
+                        <span className='sm:hidden '>{String(formatNumberDisplay(5, amount))}</span>
                         <span className='hidden sm:inline'>{String(formatNumberDisplay(8, amount))}</span>
                       </div>
                     )}
@@ -294,9 +297,9 @@ const SpentCalendar = () => {
       <div className="font-semibold lg:pt-11 text-sm lg:w-2/6 text-gray-600 mt-1">
         <div
           onClick={()=>handleMonthSelect()} 
-          className='border border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 hidden lg:flex
-          justify-between items-center hover:bg-gray-50 cursor-pointer'>
-          <div>
+          className='border dark:border-none border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 hidden lg:flex dark:bg-medium-dark
+          justify-between items-center hover:bg-gray-50 dark:hover:!bg-[#414141] cursor-pointer '>
+          <div className='dark:text-white'>
             Total this month
             <div className="text-[#eb4b6d] text-2xl font-bold">
               <NumberFlowUI
@@ -306,14 +309,16 @@ const SpentCalendar = () => {
                 />
             </div>
           </div>
-          <FaAngleRight size={18} />
+          <div className='dark:text-white'>
+            <FaAngleRight size={18} />
+          </div>
         </div>
 
-        <div className='lg:ml-4 border-t lg:border border-gray-300 lg:rounded-xl '>
+        <div className='lg:ml-4 border-t lg:border border-gray-300 lg:rounded-xl dark:border-none dark:lg:bg-medium-dark transition'>
           <div 
             onClick={()=> handleSelectAll()}
-            className=' px-4 py-4 custom-black flex justify-between items-center hover:bg-gray-50 cursor-pointer'>
-            <div>
+            className=' px-4 py-4 custom-black flex justify-between items-center hover:bg-gray-50 dark:hover:!bg-[#414141] cursor-pointer'>
+            <div className='dark:text-white'>
               Over all total
               <div className="text-[#eb4b6d] text-2xl font-bold">
                 <NumberFlowUI
@@ -323,7 +328,9 @@ const SpentCalendar = () => {
                 />
               </div>
             </div>
+            <div className='dark:text-white'>
             <FaAngleRight size={18} />
+          </div>
           </div>
 
           {

@@ -7,7 +7,7 @@ const HomeLayout = () => {
   const { isMenuActive } = useMenuStore();
 
   return (
-    <section className="flex">
+    <section className="flex dark:bg-dark transition">
       <div className={'relative z-50'}>
         <SideBar />
       </div>
@@ -17,7 +17,7 @@ const HomeLayout = () => {
           <Header />
         </div>
 
-        <div className="relative z-10 mt-16 h-full">
+        <div className="relative z-10 mt-16 h-full dark:bg-dark">
           <Outlet />
         </div>
       </div>
