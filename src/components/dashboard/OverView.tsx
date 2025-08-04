@@ -29,15 +29,15 @@ const OverView = () => {
   };
 
   return (
-    <div className="flex justify-between items-center ">
+    <div className="flex items-center justify-between ">
       <div>
         <strong className="text-dark md:text-xl dark:text-white">Overview</strong>
         <p className="text-slate-400">Total spending</p>
-        {/* <h2 className="text-slate-400 text-sm">
+        {/* <h2 className="text-sm text-slate-400">
           {dateRange}
           <FaPen onClick={() => setModal(!isModal)} className="inline-block mx-1 cursor-pointer" />
         </h2> */}
-        <h2 className="text-slate-400 text-sm ">{timeRange}</h2>
+        <h2 className="text-sm text-slate-400 ">{timeRange}</h2>
 
         <CustomModal hidden={isModal} onClick={() => setModal(!isModal)}>
           <OverViewModal onChange={filterDate} />

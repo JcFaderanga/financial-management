@@ -29,13 +29,13 @@ const GroupSpending = ({ groupId }: { groupId: string | number | undefined }) =>
         )
 
         return (
-          <div key={group.id} className="mb-4 p-2 px-4 rounded w-full">
-            <div className="border-b border-slate-300 pb-4 flex justify-between">
-              <h2 className="font-bold text-xl">
+          <div key={group.id} className="w-full p-2 px-4 mb-4 rounded">
+            <div className="flex justify-between pb-4 border-b border-slate-300">
+              <h2 className="text-xl font-bold">
                 {group.title}{' '}
                 <span className="text-slate-400">{`[${group.category}]`}</span>
               </h2>
-              <h2 className="font-semibold text-lg text-green-600">
+              <h2 className="text-lg font-semibold text-green-600">
                 ₱{totalPrice.toLocaleString()}
               </h2>
             </div>

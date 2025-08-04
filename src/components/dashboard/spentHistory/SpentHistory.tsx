@@ -80,7 +80,7 @@ const SpentHistory = () => {
         {toastList.length > 0 && (
           <ToastDelete toastList={toastList} onClick={handleUndo} duration={5} />
         )}
-        <div className='overflow-x-auto h-full'>
+        <div className='h-full overflow-x-auto'>
           { spendings && spendings?.length > 0 ?
             <SpentTable 
                 data={spendings}
@@ -88,14 +88,14 @@ const SpentHistory = () => {
                 handleDelete={handleDelete}
                 handleGroup={(prev => setIsViewGrouped({status: true, item: prev}))}
                 toastList={toastList}
-              /> : <div className='w-full flex justify-center'>
+              /> : <div className='flex justify-center w-full'>
                 <NoRecord/>
               </div>
           }
         </div>
         {/* {
           spendings?.length > 6 && 
-            <footer className='flex rounded-b-2xl justify-between py-3 bg-slate-100'>
+            <footer className='flex justify-between py-3 rounded-b-2xl bg-slate-100'>
               <div>Showing1-6 out of 12 items Show all</div>
               <div className='flex gap-4'>
                   <div className='text-blue-500'>{`Preview`}</div>

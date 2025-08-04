@@ -17,14 +17,14 @@ const Sidebar = () => {
     dark:bg-dark
     ${isMenuActive ? 'w-full block lg:hidden ' : 'hidden lg:block lg:w-80 '}
     `}>
-      <div className="h-14 border dark:border-dark">
-        <FaAlignRight onClick={handleMenuToggle} className='text-slate-500 mr-4 cursor-pointer lg:hidden float-end' size={20}/>
+      <div className="border h-14 dark:border-dark">
+        <FaAlignRight onClick={handleMenuToggle} className='mr-4 cursor-pointer text-slate-500 lg:hidden float-end' size={20}/>
       </div>
       <nav className="flex flex-col space-y-1">
         <LinkItem navs={homePage} title="HOME PAGE" />
         <LinkItem navs={reports} title="REPORTS" />
       </nav>
-      <button onClick={signOut} className="cursor-pointer text-sm px-4 py-1 rounded mt-20 bg-blue-100 text-dark">
+      <button onClick={signOut} className="px-4 py-1 mt-20 text-sm bg-blue-100 rounded cursor-pointer text-dark">
         Sign Out
       </button>
     </section>

@@ -4,7 +4,7 @@ const SpendingAnalysis = () => {
 
     useDocumentTitle('Dashboard - Spent analysis | Finance Management');
   return (
-    <div className='max-w-7xl mx-auto'>
+    <div className='mx-auto max-w-7xl'>
         <SpentCalendar/>
     </div>
   )

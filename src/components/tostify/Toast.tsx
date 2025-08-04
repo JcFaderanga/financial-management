@@ -33,18 +33,18 @@ const Progress: React.FC<{ duration: number }> = ({ duration }) => {
 
 export const ToastDelete: React.FC<ToastType> = ({ toastList = [], duration, onClick }) => {
   return (
-    <div className="absolute top-10 right-5 space-y-2">
+    <div className="absolute space-y-2 top-10 right-5">
       {toastList.map((item) => (
         <div key={item.id} className="flex justify-end toast-animation">
           <div className="rounded bg-[#e23e32] text-white w-fit grid shadow-lg">
             <div className="flex items-center px-4 py-2">
-              <div className="bg-white rounded-2xl p-1">
+              <div className="p-1 bg-white rounded-2xl">
                 <LiaTrashSolid size={18} className="text-red-600" />
               </div>
               <h3 className="pl-2 pr-8">{item.title}</h3>
               <button
                 onClick={() => onClick?.(item.id)}
-                className="bg-red-400 px-4 py-1 rounded-xl ml-2"
+                className="px-4 py-1 ml-2 bg-red-400 rounded-xl"
               >
                 Undo
               </button>

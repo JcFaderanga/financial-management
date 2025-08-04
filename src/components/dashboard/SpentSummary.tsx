@@ -73,7 +73,7 @@ const SpentSummary = () => {
 
   return (
     <>
-    <div className="flex justify-between items-center">
+    <div className="flex items-center justify-between">
         <strong className="text-dark dark:text-white">Spent summary</strong>
         {
           thisCompHidden 
@@ -89,12 +89,12 @@ const SpentSummary = () => {
       </div>
     <section className={`${thisCompHidden && 'hidden'}`}>
       {!grouped || grouped.length === 0 ? (
-        <div className="w-full flex justify-center">
+        <div className="flex justify-center w-full">
           <NoRecord />
         </div>
       ) : (
         <>
-          <div className='max-h-2/3 flex justify-center pt-4'> 
+          <div className='flex justify-center pt-4 max-h-2/3'> 
               <DoughnutChart data={spendings} />
           </div>
           <div className="px-2 pt-2 text-sm text-gray-500 cursor-pointer" onClick={setAll}>
@@ -127,7 +127,7 @@ const SpentSummary = () => {
                   <div className="px-1 text-sm">{item.type}</div>
                 </div>
                 <div className="text-end">
-                  <div className="font-semibold text-sm">₱{item.price.toLocaleString()}</div>
+                  <div className="text-sm font-semibold">₱{item.price.toLocaleString()}</div>
                   <div className="text-sm text-gray-400">
                     {((item.price / CalulateTotal(spendings)) * 100).toFixed(2)}%
                   </div>

@@ -43,21 +43,21 @@ const [dark, setDark] = useState(() => {
     `}>
       <div className='flex items-center'>
         {isMenuActive 
-            ? <FaAlignLeft onClick={handleMenuToggle} className='text-slate-500 mr-4 cursor-pointer' size={20}/>
-            : <FaAlignRight onClick={handleMenuToggle} className='text-slate-500 mr-4 cursor-pointer' size={20}/>
+            ? <FaAlignLeft onClick={handleMenuToggle} className='mr-4 cursor-pointer text-slate-500' size={20}/>
+            : <FaAlignRight onClick={handleMenuToggle} className='mr-4 cursor-pointer text-slate-500' size={20}/>
         }
 
         {user.id === '75eacadc-8e39-425a-adda-56712083d51a' 
-            ? <span className='text-sm px-2 dark:text-white'>Demo Account</span>
+            ? <span className='px-2 text-sm dark:text-white'>Demo Account</span>
             :  <>
-                <img src={user.user_metadata.avatar_url} className='rounded-full w-10' alt="Profile" />
-                <span className='text-sm px-2 dark:text-white'>{user.user_metadata.full_name}</span>
+                <img src={user.user_metadata.avatar_url} className='w-10 rounded-full' alt="Profile" />
+                <span className='px-2 text-sm dark:text-white'>{user.user_metadata.full_name}</span>
               </>
         }
        
       </div>
          
-        <div  onClick={() => setDark(!dark)} className='cursor-pointer bg-blue-100 dark:bg-light-dark rounded-2xl flex px-1 py-1'>
+        <div  onClick={() => setDark(!dark)} className='flex px-1 py-1 bg-blue-100 cursor-pointer dark:bg-light-dark rounded-2xl'>
           <span className='opacity-0 dark:opacity-100 bg-blue-50 rounded-full p-0.5'>🌙</span> 
           <span className='dark:opacity-0 bg-blue-50 rounded-full p-0.5'>☀️</span>
 

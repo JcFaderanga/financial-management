@@ -138,12 +138,12 @@ const menu = (val: string) =>{
   return (
     <>
       <header className={` flex justify-between item-center border-b border-gray-300 py-4 px-4 cursor-pointer`}>
-          <strong className='custom-black text-2xl'>
+          <strong className='text-2xl custom-black'>
             <span>Add Item</span>
           </strong>
       </header>
       <div className={`${isAddingGroup && '!hidden'} w-full md:flex justify-between py-4 border-b border-gray-300`}>
-        <section className='lg:max-w-1/2 w-full flex justify-center md:border-r border-gray-300 '>
+        <section className='flex justify-center w-full border-gray-300 lg:max-w-1/2 md:border-r '>
             <div className='px-4 '>
               <CustomDropdown onChange={menu} isActive={category}/>
                 {
@@ -174,7 +174,7 @@ const menu = (val: string) =>{
                   return <span key={index}>Add to <span  className='text-green-700'>{grouped?.title}</span></span>
                 })}
                 
-                <div className='underline py-2' onClick={()=>setIsAddGroup(!isAddingGroup)}>Add in a group</div>
+                <div className='py-2 underline' onClick={()=>setIsAddGroup(!isAddingGroup)}>Add in a group</div>
                 
 
                 <SubmitButton 

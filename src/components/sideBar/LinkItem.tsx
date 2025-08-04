@@ -21,7 +21,7 @@ const LinkItem = ({
 
   return (
     <>
-      <h1 className="text-slate-300 font-bold px-4 text-sm">{title}</h1>
+      <h1 className="px-4 text-sm font-bold text-slate-300">{title}</h1>
       {navs.map((item) => {
         const isActive = location.pathname.startsWith(item.path);
 

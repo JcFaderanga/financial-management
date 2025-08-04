@@ -80,7 +80,7 @@ const SpentEdit = ({itemProps,setIsItemEdit}:{itemProps: itemTypes,setIsItemEdit
 
   return (
     <div className='p-4'>
-        <section className=' w-full'>
+        <section className='w-full '>
             <div className=''>
                 <CustomInput 
                     value={item?.title || ''} 

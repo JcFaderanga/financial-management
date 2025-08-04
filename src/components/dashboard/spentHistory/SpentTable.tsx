@@ -25,17 +25,17 @@ export const ActionMenu = ({
   onGroup: () => void;
   isGrouped: any
 }) => (
-  <ul className='flex gap-2 justify-center'>
+  <ul className='flex justify-center gap-2'>
     
-    <li onClick={onEdit} className='w-full py-2 bg-blue-50 rounded-xl cursor-pointer flex items-center justify-center px-4'>
+    <li onClick={onEdit} className='flex items-center justify-center w-full px-4 py-2 cursor-pointer bg-blue-50 rounded-xl'>
         <LiaPenSolid className='text-blue-500' /> <span className='pl-2 text-blue-500'>Edit</span>
     </li>
     
-    <li onClick={onDelete} className='w-full py-2 bg-red-50 rounded-xl cursor-pointer flex items-center justify-center px-4'>
+    <li onClick={onDelete} className='flex items-center justify-center w-full px-4 py-2 cursor-pointer bg-red-50 rounded-xl'>
       <LiaTrashSolid className='text-red-500' /> <span className='pl-2 text-red-500'>Delete</span>
     </li>
     {isGrouped &&
-        <li onClick={onGroup} className='w-full py-2 bg-orange-50 rounded-xl cursor-pointer flex items-center justify-center px-4'>
+        <li onClick={onGroup} className='flex items-center justify-center w-full px-4 py-2 cursor-pointer bg-orange-50 rounded-xl'>
           <MdOutlineFolderOpen className='text-orange-500' /> <span className='pl-2 text-orange-500'>Grouped</span>
         </li>
     }
@@ -80,10 +80,10 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
                       <p className='text-sm md:text-base'>{spent.title}</p>
                     </div>
                   </CustomData>
-                  <CustomData className='text-right pr-2 dark:text-white'>
+                  <CustomData className='pr-2 text-right dark:text-white'>
                     <div>
                       <strong className='text-xs'>{LongDateFormat(new Date(spent.created_at))}</strong>
-                      <p className='text-sm md:text-base text-red-400 font-semibold'>-₱{spent?.price?.toLocaleString()}</p>
+                      <p className='text-sm font-semibold text-red-400 md:text-base'>-₱{spent?.price?.toLocaleString()}</p>
                     </div>
                   </CustomData>
                 </CustomRow>
@@ -94,8 +94,8 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
         {
       
       selected && 
-      <div className="w-full fixed flex justify-center bottom-0 border-t border-gray-300  py-4 left-0 bg-white box-shadow ">
-          <div className='p-2 w-2/3 max-w-xl '>
+      <div className="fixed bottom-0 left-0 flex justify-center w-full py-4 bg-white border-t border-gray-300 box-shadow ">
+          <div className='w-2/3 max-w-xl p-2 '>
               <ActionMenu
                   onEdit={() => handleEdit(selected)}
                   onDelete={() => handleDelete(selected)}

@@ -76,17 +76,17 @@ const AddGroup = ({
     }
   return (
     <div>
-        <div className='border-b border-slate-300 py-2 px-4'>
+        <div className='px-4 py-2 border-b border-slate-300'>
             <button 
                 onClick={()=> setIsAdding(!isAdding)}
-                className='py-1 px-4 bg-slate-200 rounded'>
+                className='px-4 py-1 rounded bg-slate-200'>
                     Create new group
             </button>
         </div>
         <div className='px-4'>
-            <div className=' py-2  my-2'>
+            <div className='py-2 my-2 '>
                 {group?.map((item: any) => (
-                    <div key={item.id} className="py-2 my-1 px-4 bg-slate-50" onClick={() => handleCheckboxChange(item)}>
+                    <div key={item.id} className="px-4 py-2 my-1 bg-slate-50" onClick={() => handleCheckboxChange(item)}>
                     <input
                         type="checkbox"
                         onChange={() => {}}
