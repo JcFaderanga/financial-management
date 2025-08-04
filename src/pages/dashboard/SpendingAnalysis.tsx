@@ -4,6 +4,7 @@ import SpentCalendar from '@/components/dashboard/spendingAnalysis/SpentCalendar
 import useDocumentTitle from '@/hooks/document/useDocTitle';
 import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding"
 import MonthlyChart from '@/components/dashboard/spendingAnalysis/MonthlyChart';
+// import BarChart from '@/components/charts/BarChart';
 import { useAllSpendingData } from '@/store/useSpendingStore';
 import { ClipLoader } from 'react-spinners'
 const SpendingAnalysis = () => {
