@@ -19,7 +19,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import DoughnutChart from "../charts/Doughnut";
 import { useOverviewDateStore } from '@/store/useOverviewDate'
 import NumberFlowUI from '../UI/NumberFlow'
-import { CalulateTotal } from '@/utils/itemFormat'
+import { CalulateTotal,TotalPerDayAndMonth } from '@/utils/itemFormat'
+
 const SpentCalendar = () => {
   const { data, handleFetchAllSpendings } = useFetchAllSpending()
   const { setSpendItems } = useSpendings()
@@ -46,25 +47,11 @@ const SpentCalendar = () => {
     //Over all total
     setAllTotal(CalulateTotal(data))
 
-    const totalsByDate: Record<string, number> = {}
-    let monthTotal = 0
+    const date = new TotalPerDayAndMonth( data, currentMonth );
+    
+    setSpendingData(date.getTotalPerDay())
+    setMonthlyTotal(date.getTotalPerMonth())
 
-    const monthStart = startOfMonth(currentMonth)
-    const monthEnd = endOfMonth(currentMonth)
-
-    data?.forEach((item: any) => {
-      const dateOnly = item.created_at.split('T')[0]
-      const date = new Date(dateOnly)
-
-      if (date >= monthStart && date <= monthEnd) {
-        if (!totalsByDate[dateOnly]) totalsByDate[dateOnly] = 0
-        totalsByDate[dateOnly] += item.price
-        monthTotal += item.price
-      }
-    })
-
-    setSpendingData(totalsByDate)
-    setMonthlyTotal(monthTotal)
   }, [data, currentMonth])
 
   const handlePrev = () => {
@@ -237,7 +224,7 @@ const SpentCalendar = () => {
         <div
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="overflow-hidden h-[384px] md:h-auto"
+          className="overflow-hidden md:h-auto"
         >
           <AnimatePresence custom={direction} mode="wait">
             <motion.div
@@ -268,8 +255,8 @@ const SpentCalendar = () => {
                     key={idx}
                     className={`
                       h-12 md:h-24 rounded-xl md:border dark:border-none text-center overflow-hidden
-                      ${amount ? ' border-red-300 !bg-red-50 dark:!bg-[#292021]' : 'border-gray-300'}
                       flex flex-col justify-between p-1 text-sm hover:!bg-gray-100 dark:hover:!bg-[#414141] cursor-pointer
+                      ${amount ? ' border-red-300 !bg-red-50 dark:!bg-[#292021]' : 'border-gray-300'}
                       ${date ? 'bg-white dark:bg-medium-dark' : 'bg-transparent border-none'}
                       
                     `}

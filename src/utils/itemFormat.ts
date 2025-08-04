@@ -1,4 +1,9 @@
 import { itemTypes } from "@/types/itemTypes";
+import {
+  startOfMonth,
+  endOfMonth,
+} from 'date-fns'
+import { FormatDate } from "./DateFormat";
 
 type GroupedItem = {
   type: string;
@@ -13,9 +18,11 @@ export class CategoryAndPrice {
         this.data = data;
     }    
 
-    //this function summarize data by grouping there category and sum all price 
-    //This return object
-    //Ex. { Food: 80, Transport: 50 }
+    /**
+     * this function summarize data by grouping there category and sum all price 
+     * This return object
+     * Ex. { Food: 80, Transport: 50 }
+    **/
     grouped(): Record<string, number> {
 
          const grouped = this.data?.reduce<Record<string, number>>((acc, item) => {
@@ -33,9 +40,10 @@ export class CategoryAndPrice {
         return grouped;
     }
 
-    //this function create new array
-    //This return array
-    /**Ex.[
+   /**
+    * this function create new array
+    * This return array
+    * Ex.[
             {type: 'Staycation', price: 1380, exclude: false},
             {type: 'Food', price: 1698, exclude: false}
         ]
@@ -56,4 +64,70 @@ export class CategoryAndPrice {
 
 export function CalulateTotal(data: itemTypes[]){
     return data?.reduce((sum: number, item: itemTypes) => sum + Number(item.price), 0) || 0;
+}
+
+//Calc total by day and by month
+export class TotalPerDayAndMonth{
+    private data: itemTypes[];
+    private monthStart: Date;
+    private monthEnd: Date;
+
+    constructor(data : itemTypes[], month: Date | string){
+        this.data = data;
+        const now = new Date(month);
+        this.monthStart = startOfMonth(now)
+        this.monthEnd = endOfMonth(now)
+    } 
+
+    /**
+    * this function format date from 2025-08-01 04:53:29.122000+00 to 2025-08-01(yyyy-mm-dd)
+    * This return object with primative value
+    * Ex. return {2025-08-01, 2025-08-01}
+    * first one return Date type second return String type
+    **/
+     getDateOnly(item: itemTypes){
+        const dateOnly: string = FormatDate(item.created_at)
+        const date: Date = new Date(dateOnly)
+
+        return {date,dateOnly};
+    }
+
+    /**
+    * this function compute total for month and per day
+    * This return object with primative value
+    * Ex. {200, 1900}
+    **/
+    private getTotals(){
+        const totalsByDate: Record<string, number> = {};
+        let monthTotal:number = 0;
+
+        this.data?.forEach((item: any) => {
+            const {date,dateOnly} = this.getDateOnly(item);
+
+            if (date >= this.monthStart && date <= this.monthEnd) {
+                if (!totalsByDate[dateOnly]) totalsByDate[dateOnly] = 0;
+                totalsByDate[dateOnly] += item.price
+                monthTotal += item.price
+            }
+        })
+
+        return{monthTotal, totalsByDate};
+    }
+
+    /**
+    * this return total amount by day
+    **/
+    getTotalPerDay(){
+        const {totalsByDate} = this.getTotals()
+        return totalsByDate;
+    }
+
+    /**
+    * this return total amount by month
+    **/
+    getTotalPerMonth(){
+        const {monthTotal} = this.getTotals()
+        return monthTotal;
+    }
+
 }
