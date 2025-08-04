@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import useDocumentTitle from "@/hooks/document/useDocTitle";
 import SpentHistory from "@/components/dashboard/spentHistory/SpentHistory";
 import AddItem from "@/components/dashboard/addItem/AddItem";
@@ -6,16 +6,15 @@ import { useSpendings } from "@/store/useSpendingStore";
 import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding";
 import OverViewPage from "@/components/dashboard/OverView";
 import { FormatDate, FormattedUTCDate } from "@/utils/DateFormat";
-import CustomModal from "@/components/modal/CustomModal";
 import SpentSummary from "@/components/dashboard/SpentSummary";
 import OverviewDate from "@/hooks/OverviewDate";
+import { useModal } from "@/store/useModal";
 
 const OverView = () => {
   const { handleFetchAllSpendings } = useFetchAllSpending();
   const { setSpendItems, spendings } = useSpendings();
-  const [addItemModal, setAddItemModal] = useState<boolean>(false);
   const { dateRange,timeRange } = OverviewDate();
-
+  const {setModal,setChild, isModal} = useModal();
   useEffect(() => {
     const fetch = async () => {
       const res = await handleFetchAllSpendings(FormatDate(new Date()));
@@ -50,7 +49,7 @@ const OverView = () => {
           <div className="border border-gray-300 dark:border-light-dark dark:lg:bg-medium-dark rounded-xl px-4 py-5.5 ">
             <button
               className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-medium-dark dark:text-white"
-              onClick={() => setAddItemModal(!addItemModal)}
+              onClick={() => {setModal(!isModal); setChild(<AddItem />)}}
             >
               Add Item
             </button>
@@ -79,10 +78,10 @@ const OverView = () => {
         </div>
       </div>
 
-      {/* Add Item Modal */}
-      <CustomModal hidden={addItemModal} onClick={() => setAddItemModal(!addItemModal)}>
+      {/* Add Item Modal
+      <CustomModal>
         <AddItem />
-      </CustomModal>
+      </CustomModal> */}
     </div>
   );
 };

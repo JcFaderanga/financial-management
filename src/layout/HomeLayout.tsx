@@ -2,26 +2,30 @@ import Header from '../components/header/Header';
 import SideBar from '../components/sideBar/SideBar';
 import { Outlet } from 'react-router-dom';
 import { useMenuStore } from '@/store/useMenuToggle';
-
+import CustomModal from '@/components/modal/CustomModal';
+import { useModal } from '@/store/useModal';
 const HomeLayout = () => {
   const { isMenuActive } = useMenuStore();
-
+  const {isModal, children} = useModal();
   return (
-    <section className="flex transition dark:bg-dark">
-      <div className={'relative z-50'}>
-        <SideBar />
-      </div>
-
-      <div className={`w-full h-screen ${isMenuActive ? '' : 'lg:ml-[18%]'}`}>
-        <div className={'relative z-40'}>
-          <Header />
+    <>
+      <CustomModal hidden={isModal} children={children}/>
+      <section className="flex transition dark:bg-dark">
+        <div className={'relative z-50'}>
+          <SideBar />
         </div>
 
-        <div className="relative z-10 h-[calc(100% - 64px)] mt-16 dark:bg-dark">
-          <Outlet />
+        <div className={`w-full h-screen ${isMenuActive ? '' : 'lg:ml-[18%]'}`}>
+          <div className={'relative z-40'}>
+            <Header />
+          </div>
+
+          <div className="relative z-10 h-[calc(100% - 64px)] mt-16 dark:bg-dark">
+            <Outlet />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

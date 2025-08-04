@@ -6,7 +6,7 @@ import { SubmitButton } from '@/components/button/SubmitButton';
 import supabase from '@/lib/supabase';
 import { useSpendings } from '@/store/useSpendingStore';
 
-const SpentEdit = ({itemProps,setIsItemEdit}:{itemProps: itemTypes,setIsItemEdit:()=>void}) => {
+const SpentEdit = ({itemProps}:{itemProps: itemTypes}) => {
 
     const [item, setItem] = useState<itemTypes | null>(null)
     const [isAddingGroup, setIsAddGroup] = useState<boolean>(false);
@@ -73,7 +73,6 @@ const SpentEdit = ({itemProps,setIsItemEdit}:{itemProps: itemTypes,setIsItemEdit
 
         setSpendItems(updatedSpendings);
         setBtnDisable(false)
-        setIsItemEdit();
     }
         
   }

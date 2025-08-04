@@ -6,29 +6,27 @@ import supabase from '@/lib/supabase';
 import SpentTable from './SpentTable';
 // import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
 import OverviewDate from '@/hooks/OverviewDate';
-import CustomModal from '@/components/modal/CustomModal';
 import SpentEdit from './SpentEdit';
 import GroupSpending from './GroupSpending';
 // Action buttons (Edit, Delete)
 import { useActionItem } from '@/store/useActionItem';
 import { NoRecord } from '@/components/NoRecord';
+import { useModal } from '@/store/useModal';
 
-type ActionProps={
-  status: boolean,
-  item: itemTypes
-}
 const SpentHistory = () => {
   const { spendings, setSpendItems } = useSpendings();
   const [toastList, setToastList] = useState<itemTypes[]>([]);
-  const [isItemEdit, setIsItemEdit] = useState<ActionProps>({status: false, item: {} });
-  const [isViewGrouped, setIsViewGrouped] = useState<ActionProps>({status: false, item: {} });
+  const [isItemEdit, setIsItemEdit] = useState<boolean>(false);
   const [spendingIsHidden] = useState<boolean>(false);
   const {dateRange, timeRange} = OverviewDate();
   const {setSelected} = useActionItem()
+  const {isModal, setChild,setModal} = useModal();
+
   useEffect(()=>{
-    if(!isItemEdit.status)
+    if(!isItemEdit)
     setSelected(null)
   },[isItemEdit])
+
   // Auto-remove toast and delete item permanently
   useEffect(() => {
     if (toastList.length === 0) return;
@@ -57,16 +55,21 @@ const SpentHistory = () => {
     
   };
 
-  // const handleEdit = (item: itemTypes) => {
-  //   console.log('Edit ID:', item);
-  //   setIsItemEdit(!isItemEdit)
-  // };
-
   const handleUndo = (id: string | number | undefined) => {
     setToastList(prev => prev.filter(item => item.id !== id));
   };
 
+  const handleEdit= (data: itemTypes)=>{
+    setIsItemEdit(!isItemEdit)
+    setModal(!isModal);
+    setChild(<SpentEdit itemProps={data}/>)
+  }
 
+  const handleGroup =(data: itemTypes)=>{
+    setModal(!isModal);
+    setChild(<GroupSpending groupId={data?.grouped_in}/>)
+  }
+  
   return (
     <div className={`${spendingIsHidden && 'bg-slate-100'}`}>
       <header className={` py-4 flex justify-between items-center`}>
@@ -84,9 +87,9 @@ const SpentHistory = () => {
           { spendings && spendings?.length > 0 ?
             <SpentTable 
                 data={spendings}
-                handleEdit={(prev => setIsItemEdit({status: true, item: prev}))}
+                handleEdit={handleEdit}
                 handleDelete={handleDelete}
-                handleGroup={(prev => setIsViewGrouped({status: true, item: prev}))}
+                handleGroup={handleGroup}
                 toastList={toastList}
               /> : <div className='flex justify-center w-full'>
                 <NoRecord/>
@@ -104,20 +107,6 @@ const SpentHistory = () => {
             </footer>
         } */}
       </div>
-
-      {/* Modals */}
-     
-        <CustomModal 
-        hidden={isItemEdit?.status}
-        onClick={()=>setIsItemEdit({...isItemEdit, status: !isItemEdit.status})}>
-          <SpentEdit itemProps={isItemEdit?.item} setIsItemEdit={()=>setIsItemEdit({...isItemEdit, status: !isItemEdit.status})}/>
-        </CustomModal>
-        <CustomModal 
-        hidden={isViewGrouped?.status}
-        onClick={()=>setIsViewGrouped({...isViewGrouped, status: !isViewGrouped.status})}>
-          <GroupSpending groupId={isViewGrouped?.item?.grouped_in}/>
-        </CustomModal>
-        
     </div>
   ); 
 };
