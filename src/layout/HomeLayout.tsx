@@ -17,7 +17,7 @@ const HomeLayout = () => {
           <Header />
         </div>
 
-        <div className="relative z-10 h-full mt-16 dark:bg-dark">
+        <div className="relative z-10 h-[calc(100% - 64px)] mt-16 dark:bg-dark">
           <Outlet />
         </div>
       </div>

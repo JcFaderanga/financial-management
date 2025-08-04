@@ -32,7 +32,7 @@ const OverView = () => {
   useDocumentTitle("Dashboard - Overview | Finance Management");
 
   return (
-    <div className="grid min-h-screen gap-4 px-4 py-6 mx-auto transition max-w-7xl lg:grid-cols-3 dark:bg-dark dark:text-white">
+    <div className="grid gap-4 px-4 py-6 mx-auto transition max-w-7xl lg:grid-cols-3 dark:bg-dark dark:text-white">
       {/* Left Column (spans 2 columns on large screens) */}
       <div className="space-y-4 lg:col-span-2">
 
