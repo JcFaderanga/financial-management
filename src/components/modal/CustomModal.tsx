@@ -1,34 +1,49 @@
-import { ReactNode,useEffect } from "react"
+import { ReactNode, useEffect, useRef } from "react";
 import { FaXmark } from "react-icons/fa6";
 import { useModal } from "@/store/useModal";
-const CustomModal = ({children, hidden}: {children?: ReactNode,hidden?: boolean}) => {
-const {isModal,setModal} = useModal();
-useEffect(() => {
-    // Disable scroll
-    if(hidden){
-        document.body.style.overflow = "hidden";
+
+const CustomModal = ({ children, hidden }: { children?: ReactNode; hidden?: boolean }) => {
+  const { isModal, setModal } = useModal();
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Disable scroll when modal is open
+    if (hidden) {
+      document.body.style.overflow = "hidden";
     }
-  
-    // Re-enable scroll on unmount
     return () => {
       document.body.style.overflow = "";
     };
   }, [hidden]);
 
+  const handleOverlayClick = () => {
+    setModal(false); // close when clicking outside
+  };
+
+  const preventClose = (e: React.MouseEvent) => {
+    e.stopPropagation(); // prevent closing when clicking inside
+  };
+
   return (
     <section
-        className={`${hidden ? 'fixed' : ' hidden'}
-         w-full px-4 h-screen bg-[rgb(0,0,0,.3)] inset-0 overflow-scroll z-100`}>
-        <div className="mx-auto mt-20 bg-white rounded max-w-200">
-            <div onClick={()=>setModal(!isModal)} className="flex justify-end p-2 cursor-pointer ">
-              <FaXmark size={20} className="text-slate-500"/>
-            </div>
-            <div>
-              {children} 
-            </div>
+      onClick={handleOverlayClick}
+      className={`${
+        hidden ? "fixed" : "hidden"
+      } inset-0 flex justify-center items-center lg:justify-end 
+          w-full px-4 lg:px-0 h-screen bg-[rgba(0,0,0,0.6)] backdrop-blur-sm z-[100]`}
+    >
+      <div
+        ref={modalRef}
+        onClick={preventClose}
+        className="bg-white dark:bg-medium-dark rounded-xl lg:rounded-none max-w-200 lg:h-full"
+      >
+        <div onClick={() => setModal(!isModal)} className="flex justify-end p-2 cursor-pointer">
+          <FaXmark size={20} className="text-slate-500" />
         </div>
+        <div className="dark:text-white">{children}</div>
+      </div>
     </section>
-  )
-}
+  );
+};
 
-export default CustomModal
+export default CustomModal;

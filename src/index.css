@@ -4,10 +4,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-mint-500: #121212;
-  --color-dark:#121212 ;
-  --color-light-dark: #414141;
-  --color-medium-dark: #2A2A2A;
+  --color-dark:#161B21 ;
+  --color-medium-dark: #1D232C;
+  --color-light-dark: #222730;
 }
 *{
     font-family: "Plus Jakarta Sans", sans-serif;

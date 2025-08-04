@@ -155,10 +155,10 @@ const SpentCalendar = () => {
   }
 
 return(
-    <div className='py-4 transition lg:flex dark:bg-dark'>
+    <div className='pt-4 transition lg:flex dark:bg-dark'>
       <div
           onClick={()=>handleMonthSelect()}
-          className='flex items-center justify-between pb-5 mb-4 border-b border-gray-200 cursor-pointer lg:ml-4 lg:hidden custom-black hover:bg-gray-50'>
+          className='flex items-center justify-between pb-5 mb-4 border-b border-gray-200 dark:border-light-dark cursor-pointer lg:ml-4 lg:hidden custom-black hover:bg-gray-50'>
           <div>
             <strong className='text-sm dark:text-white'>Total this month</strong>
             <div className="text-[#eb4b6d] text-2xl font-bold">
@@ -180,10 +180,10 @@ return(
           </div>
 
           <div className='flex items-center gap-1'>
-            <button onClick={handlePrev} className='px-1 border border-gray-300 rounded-md cursor-pointer h-7 dark:text-white'>
+            <button onClick={handlePrev} className='px-1 border border-gray-300 dark:border-light-dark rounded-md cursor-pointer h-7 dark:text-white'>
               <IoMdArrowDropleft size={20}/>
             </button>
-            <div className='cursor-pointer border border-gray-300 flex justify-center items-center gap-0.5 rounded-md h-7 w-18 lg:w-30 font-bold'>
+            <div className='cursor-pointer border border-gray-300 dark:border-light-dark flex justify-center items-center gap-0.5 rounded-md h-7 w-18 lg:w-30 font-bold'>
                 
                 <span className="hidden text-xs lg:flex dark:text-white">
                   {format(currentMonth, 'MMMM')}
@@ -196,7 +196,7 @@ return(
                   {format(currentMonth, 'yyyy')}
                 </span>
             </div>
-            <button onClick={handleNext} className='px-1 border border-gray-300 rounded-md cursor-pointer h-7 dark:text-white'>
+            <button onClick={handleNext} className='px-1 border border-gray-300 dark:border-light-dark rounded-md cursor-pointer h-7 dark:text-white'>
               <IoMdArrowDropright size={20}/>
             </button>
           </div>
@@ -236,18 +236,21 @@ return(
                     key={idx}
                     className={`
                       h-12 md:h-24 rounded-xl md:border dark:border-none text-center overflow-hidden
-                      flex flex-col justify-between p-1 text-sm hover:!bg-gray-100 dark:hover:!bg-[#414141] cursor-pointer
+                      flex flex-col justify-between p-1 text-sm hover:!bg-gray-100 dark:hover:!bg-light-dark cursor-pointer
                       ${amount ? ' border-red-300 !bg-red-50 dark:!bg-[#292021]' : 'border-gray-300'}
                       ${date ? 'bg-white dark:bg-medium-dark' : 'bg-transparent border-none'}
-                      
+
                     `}
                   >
-                    <div className="text-sm font-bold md:text-right dark:text-white">
+                    <div className={`text-sm font-bold md:text-right dark:text-white rounded-xl 
+                      ${ dateKey === FormatDate(new Date())&& 'bg-yellow-500 lg:px-2'}`}
+                    >
+                      { dateKey === FormatDate(new Date())&& <span className='hidden lg:inline p-1 text-xs float-left'>Today</span>}
                       {date ? format(date, 'd') : ''}
                     </div>
                     {amount && (
                       <div className="text-[#eb4b6d] font-semibold py-1 text-[8px] md:text-sm">
-                        -<span className='hidden md:inline-block'>₱</span>
+                        -<span className='hidden md:inline-block'></span>
                         <span className='sm:hidden '>{String(formatNumberDisplay(5, amount))}</span>
                         <span className='hidden sm:inline'>{String(formatNumberDisplay(8, amount))}</span>
                       </div>
@@ -265,7 +268,7 @@ return(
         <div
           onClick={()=>handleMonthSelect()} 
           className='border dark:border-none border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 hidden lg:flex dark:bg-medium-dark
-          justify-between items-center hover:bg-gray-50 dark:hover:!bg-[#414141] cursor-pointer '>
+          justify-between items-center hover:bg-gray-50 dark:hover:!bg-light-dark cursor-pointer '>
           <div className='dark:text-white'>
             Total this month
             <div className="text-[#eb4b6d] text-2xl font-bold">
@@ -284,7 +287,7 @@ return(
         <div className='transition border-t border-gray-300 lg:ml-4 lg:border lg:rounded-xl dark:border-none dark:lg:bg-medium-dark'>
           <div 
             onClick={()=> handleSelectAll()}
-            className=' px-4 py-4 custom-black flex justify-between items-center hover:bg-gray-50 dark:hover:!bg-[#414141] cursor-pointer'>
+            className=' px-4 py-4 custom-black flex justify-between items-center hover:bg-gray-50 dark:hover:!bg-light-dark cursor-pointer'>
             <div className='dark:text-white'>
               Over all total
               <div className="text-[#eb4b6d] text-2xl font-bold">

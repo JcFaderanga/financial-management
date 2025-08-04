@@ -20,7 +20,7 @@ const [page, setPage] = useState(1);
    <>
       {currentItems?.map((item: any) => (
         <div onClick={() => getSelectedItemId(item)} key={item.id}>
-            <ul className="w-full lg:max-w-[80%] flex justify-between border border-gray-100 bg-gray-50 rounded-xl py-2 px-3 my-2  mx-auto">
+            <ul className="w-full lg:max-w-[80%] flex justify-between border border-gray-100 bg-gray-50 rounded-xl py-2 px-3 my-2  mx-auto dark:bg-light-dark">
               <li>{item.title}</li>
               <li>₱{item.price}</li>
             </ul>

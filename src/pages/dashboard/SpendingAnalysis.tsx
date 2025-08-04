@@ -35,12 +35,15 @@ const SpendingAnalysis = () => {
         )
       }
   return (
-    <div className='mx-auto max-w-7xl px-2 pb-20'>
+    <div className='mx-auto max-w-7xl px-4 pb-20'>
       
       <section className=''>
           <SpentCalendar/>
       </section>  
-      <section>
+      <section className='lg:mt-10'>
+         <strong className="dark:text-white">
+              Spending Analysis
+          </strong>
           <MonthlyChart/>
       </section>
     </div>

@@ -38,7 +38,7 @@ const [dark, setDark] = useState(() => {
   }
 //console.log(user)
   return (
-    <header className={`border-b border-gray-300 w-full bg-white dark:bg-dark h-16 fixed top-0 flex items-center justify-between px-4
+    <header className={`border-b border-gray-300 w-full bg-white dark:border-medium-dark dark:bg-dark h-16 fixed top-0 flex items-center justify-between px-4
     ${isMenuActive ? 'hidden lg:flex' : ''}
     `}>
       <div className='flex items-center'>

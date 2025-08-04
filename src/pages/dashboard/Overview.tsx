@@ -40,13 +40,13 @@ const OverView = () => {
               <p className='text-sm text-gray-400'>{timeRange}</p>
           </div>
         {/* Overview Section */}
-        <section className="p-4 bg-white border border-gray-300 dark:bg-transparent dark:border-light-dark rounded-xl lg:hidden">
+        <section className="p-4 bg-white border border-gray-300 dark:bg-transparent dark:border-medium-dark rounded-xl lg:hidden">
           <OverViewPage />
         </section>
 
         {/* Add Item Button */}
         {FormattedUTCDate(dateRange) !== "invalid date" && (
-          <div className="border border-gray-300 dark:border-light-dark dark:lg:bg-medium-dark rounded-xl px-4 py-5.5 ">
+          <div className="border border-gray-300 dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl px-4 py-5.5 ">
             <button
               className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-medium-dark dark:text-white"
               onClick={() => {setModal(!isModal); setChild(<AddItem />)}}
@@ -57,23 +57,23 @@ const OverView = () => {
         )}
 
         {/* Mobile Summary */}
-        <div className="p-4 bg-white border border-gray-300 lg:hidden dark:border-light-dark dark:lg:bg-medium-dark rounded-xl dark:bg-transparent" >
+        <div className="p-4 bg-white border border-gray-300 lg:hidden dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl dark:bg-transparent" >
           <SpentSummary />
         </div>
 
         {/* Spend History */}
-        <section className="p-4 bg-white border border-gray-300 dark:border-light-dark dark:lg:bg-medium-dark rounded-xl dark:bg-transparent">
+        <section className="p-4 bg-white border border-gray-300 dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl dark:bg-transparent">
           <SpentHistory />
         </section>
       </div>
 
       {/* Right Column (Desktop Only) */} 
       <div className="sticky z-10 self-start hidden lg:block top-20 h-fit">
-        <section className="p-4 mb-4 bg-white border border-gray-300 dark:bg-dark dark:border-light-dark dark:lg:bg-medium-dark rounded-xl ">
+        <section className="p-4 mb-4 bg-white border border-gray-300 dark:bg-dark dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl ">
           <OverViewPage />
         </section>
 
-        <div className="p-4 bg-white border border-gray-300 dark:bg-dark dark:border-light-dark dark:lg:bg-medium-dark rounded-xl">
+        <div className="p-4 bg-white border border-gray-300 dark:bg-dark dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl">
           <SpentSummary />
         </div>
       </div>

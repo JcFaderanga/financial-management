@@ -67,6 +67,7 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
                   className={`
                     ${selected?.id === spent.id && 'bg-blue-50'} 
                     cursor-pointer hover:bg-slate-50 dark:hover:bg-light-dark dark:border-light-dark
+                    border-b border-gray-100
                     ${excluded?.includes(spent?.category) && 'hidden'}
                   `} 
                   onClick={() => selectRow(spent)}

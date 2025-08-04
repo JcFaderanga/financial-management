@@ -13,7 +13,6 @@ import AddGroup from './AddGroup'
 import { itemTypes } from '@/types/itemTypes'
 import OverviewDate from '@/hooks/OverviewDate'
 import { FormattedUTCDate } from '@/utils/DateFormat'
-
 const AddItem = () => {
 const {setSpendItems, spendings} =useSpendings();
 const {user} = useUserStore();
@@ -137,13 +136,13 @@ const menu = (val: string) =>{
 
   return (
     <>
-      <header className={` flex justify-between item-center border-b border-gray-300 py-4 px-4 cursor-pointer`}>
-          <strong className='text-2xl custom-black'>
+      <header className={` flex justify-between item-center px-4 cursor-pointer`}>
+          <strong className='text-2xl text-dark dark:text-white'>
             <span>Add Item</span>
           </strong>
       </header>
-      <div className={`${isAddingGroup && '!hidden'} w-full md:flex justify-between py-4 border-b border-gray-300`}>
-        <section className='flex justify-center w-full border-gray-300 lg:max-w-1/2 md:border-r '>
+      <div className={`${isAddingGroup && '!hidden'} w-full py-4 dark:text-white`}>
+        <section className='flex justify-center w-full  '>
             <div className='px-4 '>
               <CustomDropdown onChange={menu} isActive={category}/>
                 {
@@ -184,7 +183,7 @@ const menu = (val: string) =>{
                 />
             </div>
         </section>
-        <section className="w-full lg:px-4">
+        <section className="w-full px-4">
             {isDelay && title && !doneSelect? ( 
                 <DotsLoading />
             ) : fetchedTitles && title && !fetchedLoading && !doneSelect? (

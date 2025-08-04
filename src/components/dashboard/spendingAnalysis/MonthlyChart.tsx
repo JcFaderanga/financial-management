@@ -72,10 +72,10 @@ const MonthlyChart = () => {
 // Container grid for 12 columns (1 per month)
   return (
   <section className="lg:flex">
-    <div className="hidden lg:w-2/6">s</div>
-    <div className="flex py-4 gap-4 border rounded-xl border-gray-300 lg:w-2/3 overflow-x-scroll lg:overflow-auto">
+    <div className="hidden lg:w-2/6"></div>
+    <div className="flex py-4 gap-4 rounded-xl lg:w-2/3 overflow-x-scroll lg:overflow-auto">
       {/* Reverse the months so the most recent is first */}
-      {monthlyTotal.reverse().map((e) => {
+      {monthlyTotal.map((e) => {
         // Calculate percentage of this month's spending vs total
         const percent = ((e.total / totalAll) * 100).toFixed(2);
         
@@ -85,7 +85,7 @@ const MonthlyChart = () => {
           <div key={e.month} className=" flex flex-col justify-end items-center ">
             {/* Visual bar with dynamic height based on % */}
             <div className="h-60  flex flex-col justify-end">
-              <div className="text-[10px]">
+              <div className="text-[10px] dark:text-white">
               <NumberFlowUI
                   value={e.total}
                   currency='PHP'
@@ -99,10 +99,8 @@ const MonthlyChart = () => {
             </div>
             
             {/* Label for month and percentage */}
-            <div className="text-center text-sm mt-2">
-              {e.month}
-              {/* {e.month.charAt(0).toUpperCase() + e.month.slice(1)}<br />
-              {percent}% */}
+            <div className="text-center text-sm mt-2 dark:text-white">
+              {e.month.charAt(0).toUpperCase() + e.month.slice(1)}
             </div>
           </div>
         );

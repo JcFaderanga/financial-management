@@ -11,7 +11,7 @@ const CustomRow = (
     onClick: () => void
   }) => {
   return (
-    <tr onClick={onClick} className={`border-b border-gray-100 custom-black ${className ?? className}`}>
+    <tr onClick={onClick} className={` ${className ?? className}`}>
         {children}
     </tr>
   )

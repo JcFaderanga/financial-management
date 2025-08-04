@@ -14,7 +14,7 @@ const Sidebar = () => {
   }
   return (
     <section className={`fixed w-full top-0 lg:w-[18%] left-0 lg:fixed min-h-screen bg-white text-white p-4 border-r border-gray-300
-    dark:bg-dark
+    dark:bg-dark dark:border-medium-dark
     ${isMenuActive ? 'w-full block lg:hidden ' : 'hidden lg:block lg:w-80 '}
     `}>
       <div className="border h-14 dark:border-dark">
