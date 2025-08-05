@@ -3,17 +3,12 @@ import React, { useEffect, useState, useCallback } from "react";
 interface DropDownProps {
   value?: string;
   isActive: any;
+  options: string[];
   onChange: (val: string) => void;
 }
 
-const CustomDropdown: React.FC<DropDownProps> = ({ value, isActive, onChange }) => {
+const CustomDropdown: React.FC<DropDownProps> = ({ value, isActive, onChange,options }) => {
   const [selected, setSelected] = useState<string>(value || "");
-
-  const category = [
-    "Bills", "Education", "Food", "Games", "Gifts", "Hotel", "Load", "Lottery",
-    "Others", "Payments", "Phone", "Shopping", "Social", "Staycation",
-    "Transportation", "Wants"
-  ];
 
   useEffect(() => {
     if (!isActive) {
@@ -32,12 +27,12 @@ const CustomDropdown: React.FC<DropDownProps> = ({ value, isActive, onChange }) 
       <select
         value={selected}
         onChange={(e) => handleSelect(e.target.value)}
-        className="w-full px-3 py-2 my-2 border border-gray-400 rounded-xl"
+        className="w-full px-3 py-2 my-2 border border-gray-400 rounded-xl dark:bg-dark dark:text-white"
       >
         <option value="" disabled>
           Select Category
         </option>
-        {category.sort().map((word) => (
+        {options?.sort().map((word) => (
           <option key={word} value={word}>
             {word}
           </option>

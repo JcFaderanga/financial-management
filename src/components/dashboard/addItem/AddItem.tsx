@@ -13,6 +13,7 @@ import AddGroup from './AddGroup'
 import { itemTypes } from '@/types/itemTypes'
 import OverviewDate from '@/hooks/OverviewDate'
 import { FormattedUTCDate } from '@/utils/DateFormat'
+import { itemCategory } from '@/utils/DropDownList'
 const AddItem = () => {
 const {setSpendItems, spendings} =useSpendings();
 const {user} = useUserStore();
@@ -27,7 +28,7 @@ const [btnDisable, setBtnDisable] = useState<boolean>(true);
 const [isDelay, setDelay ] = useState<boolean>(false);
 const [doneSelect, setDoneSelect] = useState<boolean>(false);
 const {title: fetchedTitles, loading: fetchedLoading, handleFetchTitle} = useFetchItem();
-const {handleSaveItem} = UseSaveItem();
+const {handleSaveItem,error} = UseSaveItem();
 const {handleUniqueItem} = useUniqueItemList()
 const [isAddingGroup, setIsAddGroup] = useState<boolean>(false);
 const [selectedGroup, setSelectedGroup] = useState<any>(null); // store checked item IDs
@@ -61,6 +62,16 @@ const handleSave = useCallback(async()=>{
       return;
   }
 
+  if(!itemCategory?.includes(category)){
+      setCategoryError(true);
+      return;
+  }
+
+  if(Number(price) <= 0){
+      setPriceError(true);
+      return;
+  }
+
   if(FormattedUTCDate(dateRange) === 'invalid date'){
       alert(dateRange+ ' is not a valid date.')
       return;
@@ -79,6 +90,12 @@ const handleSave = useCallback(async()=>{
       grouped_in:selectedGroup ? selectedGroup[0]?.id : null,
       created_at: FormattedUTCDate(dateRange)
     };
+
+
+    if(error){
+
+    }
+
 
     //save item to db and fetch
     const spentRes = await handleSaveItem(spent);
@@ -144,9 +161,9 @@ const menu = useCallback( (val: string) =>{
       <div className={`${isAddingGroup && '!hidden'} w-full py-4 dark:text-white`}>
         <section className='flex justify-center w-full  '>
             <div className='px-4 '>
-              <CustomDropdown onChange={menu} isActive={category}/>
+              <CustomDropdown onChange={menu} isActive={category} options={itemCategory}/>
                 {
-                  categoryError ? <p className='text-red-600'>Category cannot be empty.</p> : ""
+                  categoryError ? <p className='text-red-600'>Category is not valid.</p> : ""
                 }
                 {/* <CustomInput 
                     disabled={isInputDisabled} 
