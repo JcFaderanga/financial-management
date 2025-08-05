@@ -1,5 +1,5 @@
-
-export const SubmitButton = ({title, onClick, disabled}:{
+import React from "react";
+const SubmitButton = ({title, onClick, disabled}:{
     title: string;
     onClick: ()=> void,
     disabled?: boolean
@@ -15,3 +15,5 @@ export const SubmitButton = ({title, onClick, disabled}:{
     </button>
   )
 }
+
+export default React.memo(SubmitButton)

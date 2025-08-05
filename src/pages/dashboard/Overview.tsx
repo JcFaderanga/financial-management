@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import useDocumentTitle from "@/hooks/document/useDocTitle";
 import SpentHistory from "@/components/dashboard/spentHistory/SpentHistory";
 import AddItem from "@/components/dashboard/addItem/AddItem";
@@ -9,27 +9,42 @@ import { FormatDate, FormattedUTCDate } from "@/utils/DateFormat";
 import SpentSummary from "@/components/dashboard/SpentSummary";
 import OverviewDate from "@/hooks/OverviewDate";
 import { useModal } from "@/store/useModal";
+import { ClipLoader } from "react-spinners";
 
 const OverView = () => {
   const { handleFetchAllSpendings } = useFetchAllSpending();
   const { setSpendItems, spendings } = useSpendings();
   const { dateRange,timeRange } = OverviewDate();
   const {setModal,setChild, isModal} = useModal();
+  const [loading, setLoading] = useState<boolean>(false)
+
   useEffect(() => {
+    
     const fetch = async () => {
+      setLoading(true);
       const res = await handleFetchAllSpendings(FormatDate(new Date()));
       if (res) {
         setSpendItems?.(res);
       }
+      setLoading(false);
     };
 
     if (!spendings) {
       fetch();
     }
+    
   }, []);
 
   useDocumentTitle("Dashboard - Overview | Finance Management");
 
+  if (loading) {
+        return (
+          <div className='flex justify-center w-full h-screen py-20 dark:text-white'>
+            <span className='dark:hidden'><ClipLoader size={30} /></span>
+            <span className='hidden dark:block'><ClipLoader color={'#ffffff'} size={30} /></span>
+          </div>
+        )
+      }
   return (
     <div className="grid gap-4 px-4 py-6 mx-auto transition max-w-7xl lg:grid-cols-3 dark:bg-dark dark:text-white">
       {/* Left Column (spans 2 columns on large screens) */}

@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import  { useCallback, useEffect, useState } from 'react';
 import { useSpendings } from '@/store/useSpendingStore';
 import { ToastDelete } from '../../tostify/Toast';
 import type { itemTypes } from '@/types/itemTypes';
@@ -49,26 +49,26 @@ const SpentHistory = () => {
   }, [toastList, spendings, setSpendItems]);
 
 // console.log('latestSpendings',latestSpendings)
-  const handleDelete = (item: itemTypes) => {
+  const handleDelete = useCallback((item: itemTypes) => {
     setSelected(null);
     setToastList(prev => [...prev, item]);
     
-  };
+  },[]);
 
-  const handleUndo = (id: string | number | undefined) => {
+  const handleUndo = useCallback((id: string | number | undefined) => {
     setToastList(prev => prev.filter(item => item.id !== id));
-  };
+  },[]);
 
-  const handleEdit= (data: itemTypes)=>{
+  const handleEdit= useCallback((data: itemTypes)=>{
     setIsItemEdit(!isItemEdit)
     setModal(!isModal);
     setChild(<SpentEdit itemProps={data}/>)
-  }
+  },[isItemEdit,isModal])
 
-  const handleGroup =(data: itemTypes)=>{
+  const handleGroup = useCallback((data: itemTypes)=>{
     setModal(!isModal);
     setChild(<GroupSpending groupId={data?.grouped_in}/>)
-  }
+  },[isItemEdit,isModal])
   
   return (
     <div className={`${spendingIsHidden && 'bg-slate-100'}`}>

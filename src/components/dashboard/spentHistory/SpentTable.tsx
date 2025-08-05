@@ -1,3 +1,4 @@
+import React from 'react';
 import { CustomTable, CustomRow, CustomData } from '../../tables'; 
 import { LiaTrashSolid, LiaPenSolid } from "react-icons/lia";
 import { useActionItem } from '@/store/useActionItem';
@@ -6,6 +7,7 @@ import { itemTypes } from '@/types/itemTypes';
 import { MdOutlineFolderOpen } from "react-icons/md";
 import { useSpendingExcluded } from '@/store/useSpendingStore';
 import { useCategoryColors } from '@/store/useCatogoryColors';
+import { useCallback } from 'react';
 type SpentTableProps = {
   data: itemTypes[];
   toastList: any;
@@ -48,9 +50,11 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
   const {setSelected,selected} = useActionItem()
   const {excluded} = useSpendingExcluded();
   const {colors: categoryColors} = useCategoryColors();
-  const selectRow =(item: any)=>{
-      setSelected(selected === item ? null : item)
-  }
+
+  const selectRow = useCallback((item: any)=>{
+    setSelected(selected === item ? null : item)
+  },[selected])
+ 
   return (
     <>
     <CustomTable className=''>
@@ -65,12 +69,12 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
                 <CustomRow 
                   key={spent.id} 
                   className={`
-                    ${selected?.id === spent.id && 'bg-blue-50'} 
+                    ${selected?.id === spent.id && 'bg-blue-50 dark:bg-light-dark'} 
                     cursor-pointer hover:bg-slate-50 dark:hover:bg-light-dark dark:border-light-dark
                     border-b border-gray-100
                     ${excluded?.includes(spent?.category) && 'hidden'}
                   `} 
-                  onClick={() => selectRow(spent)}
+                  onClick={()=>selectRow(spent)}
                 >
                   <CustomData className='pl-2 dark:text-white'>
                     <div>
@@ -110,4 +114,4 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
   )
 }
 
-export default SpentTable
+export default React.memo(SpentTable)

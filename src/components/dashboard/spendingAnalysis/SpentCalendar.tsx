@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io"
 import { FaAngleRight } from "react-icons/fa6"
 import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding"
@@ -36,10 +36,7 @@ const SpentCalendar = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-
     //Over all total
-    setAllTotal(CalulateTotal(data))
-
     const date = new TotalPerDayAndMonth( data, currentMonth );
     
     setSpendingData(date.getTotalPerDay())
@@ -47,6 +44,10 @@ const SpentCalendar = () => {
 
   }, [data, currentMonth])
 
+  useEffect(() => {
+  const total = CalulateTotal(data)
+  setAllTotal(total)
+}, [data])
   const handlePrev = () => {
     setDirection("right")
     setCurrentMonth((prev) => subMonths(prev, 1))
@@ -75,21 +76,21 @@ const SpentCalendar = () => {
     setTouchStartX(null)
   }
 
-  async function setDate(date: string | {}){
+   const setDate = useCallback(async(date: string | {})=>{
+
     const res = await handleFetchAllSpendings(date)
     setSpendItems(date === 'all' ? data : res || [])
     navigate(`/dashboard/overview`)
-  }
-
+  },[handleFetchAllSpendings, setSpendItems, data, navigate])
+ 
   //handleDateSelect function use to select specific date
-  function handleDateSelect(date: string) {
-
+  const handleDateSelect = useCallback((date: string)=>{
     setDate(FormatDate(date))
     setStoreDate(FormatDate(date))
-  }
+  },[setDate, setStoreDate])
 
   //handleMonthSelect function use to select current month data
-  function handleMonthSelect() {
+  const handleMonthSelect = useCallback(()=>{
     const monthStart = FormatDate(startOfMonth(currentMonth))
     const monthEnd = FormatDate(endOfMonth(currentMonth))
 
@@ -100,10 +101,13 @@ const SpentCalendar = () => {
 
     setStoreDate(date_range)
     setDate(date_range)
-  }
+  },[currentMonth])
+
   
+
+
   //handleSelectAll function use to select all data
-  function handleSelectAll() {
+  const handleSelectAll = useCallback(()=>{
 
     //first item in the array is the most reccent or last item
     //data[0] select first index(most reccent or latest item inserted to DB)
@@ -123,8 +127,7 @@ const SpentCalendar = () => {
     //passing string arguments for conditional logic inside setDate
     //all means getting all data from DB
     setDate('all');
-  }
-
+  },[]);
 
   const days = eachDayOfInterval({
     start: startOfMonth(currentMonth),

@@ -1,4 +1,4 @@
-
+import React from 'react';
 import NumberFlow from '@number-flow/react'
 type NumberFlowProp = {
  value: number | string;
@@ -16,4 +16,4 @@ const NumberFlowUI = ({value, currency, style}:NumberFlowProp) => {
   )
 }
 
-export default NumberFlowUI
+export default React.memo(NumberFlowUI)

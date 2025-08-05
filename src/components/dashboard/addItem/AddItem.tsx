@@ -1,7 +1,7 @@
-import {useState,useEffect} from 'react'
+import {useState,useEffect, useCallback} from 'react'
 import CustomInput from '@/components/inputs/CustomInputs'
 import { useSpendings } from '@/store/useSpendingStore'
-import { SubmitButton } from '@/components/button/SubmitButton'
+import SubmitButton from '@/components/button/SubmitButton'
 import UseSaveItem from '@/hooks/spend_items/useSaveItem'
 import useFetchItem from '@/hooks/spend_items/useFetchItem'
 import DotsLoading from '@/components/UI/DotsLoading'
@@ -53,7 +53,7 @@ useEffect(()=>{
 
 },[title,price, category])
 
-const handleSave =async()=>{
+const handleSave = useCallback(async()=>{
   //check if category is null
   
   if(!category || category === 'Select Category' ) {
@@ -94,7 +94,7 @@ const handleSave =async()=>{
     setPrice('')
     setCategory(null)
     setBtnDisable(false)
-}
+},[category, price])
 
 //listen on changes in title
 useEffect(()=>{
@@ -120,10 +120,10 @@ const getSelectedItemId = (item: any)=>{
 }
 
 //for options in dropdown
-const menu = (val: string) =>{
+const menu = useCallback( (val: string) =>{
   setIsInputsDisabled(false);
   setCategory(val);
-}
+},[isInputDisabled ,categoryError , category])
 
 
   const handleCheckboxChange = (item: any) => {

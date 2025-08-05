@@ -57,4 +57,4 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ data }) => {
   );
 };
 
-export default DoughnutChart;
+export default React.memo(DoughnutChart);

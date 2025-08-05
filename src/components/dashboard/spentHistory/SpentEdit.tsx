@@ -2,7 +2,7 @@ import {useState,useEffect} from 'react'
 import CustomInput from '@/components/inputs/CustomInputs'
 import { itemTypes } from '@/types/itemTypes';
 import AddGroup from '../addItem/AddGroup';
-import { SubmitButton } from '@/components/button/SubmitButton';
+import SubmitButton from '@/components/button/SubmitButton';
 import supabase from '@/lib/supabase';
 import { useSpendings } from '@/store/useSpendingStore';
 
