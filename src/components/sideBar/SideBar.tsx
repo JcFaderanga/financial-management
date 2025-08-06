@@ -7,7 +7,7 @@ import { signOut } from '@/utils/authService'
 const Sidebar = () => {
   const {isMenuActive,setMenuIsActive}= useMenuStore();
   const homePage = navItems.filter((item) => item.category === "homePage");
-  // const reports = navItems.filter((item) => item.category === "reports");
+  const reports = navItems.filter((item) => item.category === "reports");
   
   const handleMenuToggle=()=>{
     setMenuIsActive(!isMenuActive)
@@ -22,7 +22,7 @@ const Sidebar = () => {
       </div>
       <nav className="flex flex-col space-y-1">
         <LinkItem navs={homePage} title="HOME PAGE" />
-        {/* <LinkItem navs={reports} title="REPORTS" /> */}
+        <LinkItem navs={reports} title="REPORTS" />
       </nav>
       <button onClick={signOut} className="px-4 py-1 mt-20 text-sm bg-blue-100 rounded cursor-pointer text-dark">
         Sign Out
