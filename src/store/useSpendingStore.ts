@@ -30,3 +30,12 @@ export const useAllSpendingData = create<allSpending>((set)=>({
     setAllSpentData: (allSpentData)=> set({allSpentData})
 }))
 
+
+interface loadingProps{
+    isLoading: null | any,
+    setLoading: (isLoading: any | null)=> void,
+}
+export const useFetchLoader = create<loadingProps>((set)=>({
+    isLoading: false,
+    setLoading: (isLoading)=> set({isLoading})
+}))

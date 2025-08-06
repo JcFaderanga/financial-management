@@ -53,3 +53,35 @@
   border-radius: 5px;
   overflow:hidden;
 }
+
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer-light {
+  background: linear-gradient(
+    90deg,
+    #e0e0e0 0%,
+    #f8f8f8 50%,
+    #e0e0e0 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+.shimmer-dark {
+  background: linear-gradient(
+    90deg,
+    #222730 0%,
+    #1D232C 50%,
+    #222730 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}

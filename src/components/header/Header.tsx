@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect } from 'react'
 import { useUserStore } from '@/store/useUserStore'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@/store/useSession'
@@ -10,22 +10,6 @@ const Header = () => {
   const {session} = useSession();
   const {setMenuIsActive,isMenuActive} = useMenuStore();
 
-const [dark, setDark] = useState(() => {
-    return localStorage.theme === 'dark';
-  });
-
-  useEffect(() => {
-    const html = document.documentElement;
-    if (dark) {
-      html.classList.add('dark');
-      document.body.style.backgroundColor = '#121212';
-      localStorage.setItem('theme', 'dark');
-    } else {
-      html.classList.remove('dark');
-      document.body.style.backgroundColor = 'transparent';
-      localStorage.setItem('theme', 'light');
-    }
-  }, [dark]);
 
   useEffect(()=>{
     if(!session){
@@ -42,10 +26,13 @@ const [dark, setDark] = useState(() => {
     ${isMenuActive ? 'hidden lg:flex' : ''}
     `}>
       <div className='flex items-center'>
-        {isMenuActive 
+        <div className='hidden lg:flex'>
+          {isMenuActive 
             ? <FaAlignLeft onClick={handleMenuToggle} className='mr-4 cursor-pointer text-slate-500' size={20}/>
             : <FaAlignRight onClick={handleMenuToggle} className='mr-4 cursor-pointer text-slate-500' size={20}/>
-        }
+          }
+        </div>
+        
 
         {user.id === '75eacadc-8e39-425a-adda-56712083d51a' 
             ? <span className='px-2 text-sm dark:text-white'>Demo Account</span>
@@ -57,11 +44,7 @@ const [dark, setDark] = useState(() => {
        
       </div>
          
-        <div  onClick={() => setDark(!dark)} className='flex px-1 py-1 bg-blue-100 cursor-pointer dark:bg-light-dark rounded-2xl'>
-          <span className='opacity-0 dark:opacity-100 bg-blue-50 rounded-full p-0.5'>🌙</span> 
-          <span className='dark:opacity-0 bg-blue-50 rounded-full p-0.5'>☀️</span>
-
-      </div>
+        
     </header>
   )
 }

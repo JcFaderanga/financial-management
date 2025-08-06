@@ -46,22 +46,24 @@ const OverView = () => {
         )
       }
   return (
-    <div className="grid gap-4 px-4 py-6 mx-auto transition max-w-7xl lg:grid-cols-3 dark:bg-dark dark:text-white">
-      {/* Left Column (spans 2 columns on large screens) */}
-      <div className="space-y-4 lg:col-span-2">
+    <div className="grid gap-4 px-4 lg:py-6 mx-auto transition max-w-7xl lg:grid-cols-3 dark:bg-dark dark:text-white">
 
-         <div className="lg:hidden">
+      {/* Left Column (spans 2 columns on large screens) */}
+      <div className="space-y-4 lg:col-span-2 ">
+
+        {/* Overview Section */}
+        <section className="pt-4 sticky top-0 bg-white dark:bg-dark dark:border-medium-dark lg:hidden">
+          <OverViewPage />
+          <div className="lg:hidden mt-2 py-1 text-center border-t border-gray-300 dark:border-light-dark">
               <p className='text-sm text-gray-400'>{dateRange}</p>
               <p className='text-sm text-gray-400'>{timeRange}</p>
-          </div>
-        {/* Overview Section */}
-        <section className="p-4 bg-white border border-gray-300 dark:bg-transparent dark:border-medium-dark rounded-xl lg:hidden">
-          <OverViewPage />
+        </div>
         </section>
+        
 
-        {/* Add Item Button */}
+        {/* Add Item Button Desktop only*/}
         {FormattedUTCDate(dateRange) !== "invalid date" && (
-          <div className="border border-gray-300 dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl px-4 py-5.5 ">
+          <div className="hidden lg:block border border-gray-300 dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl px-4 py-5.5 ">
             <button
               className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-medium-dark dark:text-white"
               onClick={() => {setModal(!isModal); setChild(<AddItem />)}}
@@ -72,7 +74,7 @@ const OverView = () => {
         )}
 
         {/* Mobile Summary */}
-        <div className="p-4 bg-white border border-gray-300 lg:hidden dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl dark:bg-transparent" >
+        <div className="hidden p-4 bg-white border border-gray-300 lg:hidden dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl dark:bg-transparent" >
           <SpentSummary />
         </div>
 

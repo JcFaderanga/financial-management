@@ -72,7 +72,7 @@ const MonthlyChart = () => {
 // Container grid for 12 columns (1 per month)
   return (
   <section className="lg:flex">
-    <div className="hidden lg:w-2/6"></div>
+    <div className=" lg:w-2/6"></div>
     <div className="flex py-4 gap-4 rounded-xl lg:w-2/3 overflow-x-scroll lg:overflow-auto">
       {/* Reverse the months so the most recent is first */}
       {monthlyTotal.map((e) => {

@@ -14,10 +14,9 @@ const useFetchAllSpending = () => {
   const { user } = useUserStore();
   const [data, setData] = useState<itemTypes[]>([]);
   const [error, setError] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean | null>(true);
 
   const handleFetchAllSpendings = async (targetDate?: TargetDate) => {
-    setLoading(true);
 
     try {
       let query = supabase
@@ -75,10 +74,10 @@ const useFetchAllSpending = () => {
       setError(err);
       throw new Error(err.message || 'Unknown error');
     } finally {
-      setLoading(false);
+      setLoading(false)
+      
     }
   };
-
   return { data, error, loading, handleFetchAllSpendings };
 };
 
