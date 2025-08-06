@@ -11,8 +11,8 @@ export const BottomTabBar = () => {
         <nav className="flex space-y-1 justify-evenly">
         <LinkItem navs={homePage} title="" slice={[0,2]} /> 
         <div 
-          onClick={() => {setModal(!isModal); setChild(<AddItem />)}}
-        className='lg:hidden -mt-8 h-16 w-16 rounded-full bg-yellow-500  flex justify-center items-center shadow-md'>
+            onClick={() => {setModal(!isModal); setChild(<AddItem />)}}
+            className='lg:hidden -mt-8 h-14 w-14 rounded-full bg-yellow-500  flex justify-center items-center shadow-md'>
           <FaPlus size={22}/>
         </div>
         <LinkItem navs={homePage} title="" slice={[2,4]} /> 
