@@ -2,7 +2,10 @@ import { Link, useLocation } from "react-router-dom";
 import type { NavType } from "@/types/NavigationTypes";
 import NavChild from "./navChild";
 import { useMenuStore } from "@/store/useMenuToggle";
-
+import { IoSettings } from "react-icons/io5";
+import { FaChartPie } from "react-icons/fa";
+import { RiFileList3Fill } from "react-icons/ri";
+import { CgMoreVerticalO } from "react-icons/cg";
 const LinkItem = ({
   navs,
   title,
@@ -19,9 +22,20 @@ const LinkItem = ({
     }
   };
 
+  
+const icon:any = {
+  overview: <RiFileList3Fill />, 
+  Analytics: <FaChartPie/>,
+  settings: <IoSettings/>,
+  more: <CgMoreVerticalO/>
+};
+  
+
   return (
     <>
-      <h1 className="px-4 text-sm font-bold text-slate-300">{title}</h1>
+    {
+      title && <h1 className="px-4 text-sm font-bold text-slate-300">{title}</h1>
+    }
       {navs.map((item) => {
         const isActive = location.pathname.startsWith(item.path);
 
@@ -35,11 +49,16 @@ const LinkItem = ({
             to={item.path}
             onClick={menuToggle}
             aria-current={isActive ? "page" : undefined}
-            className={`px-4 py-1.5 text-sm rounded-lg transition-colors text-black dark:text-white ${
-              isActive ? "bg-blue-100 text-blue-500  dark:bg-medium-dark" : "hover:bg-gray-100 dark:hover:bg-light-dark"
+            className={`px-4 py-1.5 text-sm rounded-lg transition-colors text-medium-dark dark:text-white ${
+              isActive ? "!text-yellow-500 " : "hover:bg-gray-100 dark:hover:bg-light-dark"
             }`}
           >
-            {item.label}
+            
+            <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start">
+              <div className="text-2xl">{icon[item.id]}</div>
+              <div className="text-sm ">{item.label}</div>
+            </div>
+            
           </Link>
         );
       })}
