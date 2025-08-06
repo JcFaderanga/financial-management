@@ -22,7 +22,7 @@ const Sidebar = () => {
       </div>
       <nav className="flex flex-col space-y-1">
 <<<<<<< HEAD
-        <LinkItem navs={homePage} title="HOME PAGE" />
+        <LinkItem navs={homePage} title="" />
         {/* <LinkItem navs={reports} title="REPORTS" /> */}
 =======
         <LinkItem navs={homePage} title="" />
