@@ -30,17 +30,20 @@ const SpentCalendar = () => {
   const [allTotal, setAllTotal] = useState<number>(0)
   const [monthlyTotal, setMonthlyTotal] = useState<number>(0)
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date())
+  const [averageDaily, SetAverageDaily] = useState<number>(0)
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
   const [direction, setDirection] = useState<"left" | "right">("left")
   const {setDate: setStoreDate} = useOverviewDateStore()
   const navigate = useNavigate()
-
+ 
+  // console.log(JSON.stringify(spendingData,null,2))
   useEffect(() => {
     //Over all total
     const date = new TotalPerDayAndMonth( data, currentMonth );
     
     setSpendingData(date.getTotalPerDay())
     setMonthlyTotal(date.getTotalPerMonth())
+    SetAverageDaily(date.getDailySpentAverage())
 
   }, [data, currentMonth])
 
@@ -173,6 +176,16 @@ return(
             </div>
           </div>
           <div className='dark:text-white'>
+            <strong className='text-sm dark:text-white'>Daily Spent Average</strong>
+            <div className="text-[#eb4b6d] text-2xl font-bold">
+              <NumberFlowUI
+                  value={averageDaily}
+                  currency='PHP'
+                  style='currency'
+                />
+            </div>
+          </div>
+          <div className='dark:text-white'>
             <FaAngleRight size={18} />
           </div>
       </div>
@@ -277,6 +290,16 @@ return(
             <div className="text-[#eb4b6d] text-2xl font-bold">
               <NumberFlowUI
                   value={monthlyTotal}
+                  currency='PHP'
+                  style='currency'
+                />
+            </div>
+          </div>
+          <div className='dark:text-white'>
+            Daily Spent Average
+            <div className="text-[#eb4b6d] text-2xl font-bold">
+              <NumberFlowUI
+                  value={averageDaily}
                   currency='PHP'
                   style='currency'
                 />

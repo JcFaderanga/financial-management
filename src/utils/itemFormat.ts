@@ -123,6 +123,16 @@ export class TotalPerDayAndMonth{
     }
 
     /**
+    * this return average speding per day
+    **/
+    getDailySpentAverage() {
+        const { totalsByDate } = this.getTotals();
+        return Number(calculateSmartAverage(totalsByDate));
+        
+    }
+
+
+    /**
     * this return total amount by month
     **/
     getTotalPerMonth(){
@@ -130,4 +140,19 @@ export class TotalPerDayAndMonth{
         return monthTotal;
     }
 
+}
+
+export function calculateSmartAverage(spendingData: Record<string, number>): Number | number[] {
+  const values = Object.values(spendingData);
+  if (values.length === 1) return values;
+  if (values.length === 0) return 0;
+
+  const sorted = [...values].sort((a, b) => a - b);
+  const median = (sorted[Math.floor(values.length / 2)] + sorted[Math.ceil(values.length / 2)]) / 2;
+
+  // Define outlier as anything > 3x the median
+  const filtered = values.filter(value => value <= median * 3);
+  const average = filtered.reduce((a, b) => a + b, 0) / filtered.length;
+
+  return average;
 }
