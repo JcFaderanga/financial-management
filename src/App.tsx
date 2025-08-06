@@ -6,7 +6,7 @@ import HomeLayout from '@/layout/HomeLayout';
 import BankAccounts from '@/pages/accounts/BankAccounts';
 import SocialAccounts from './pages/accounts/SocialAccounts';
 import Transaction from '@/pages/transaction/Transaction';
-import Liabilities from '@/pages/Liabilities/Liabilities';
+import Liabilities from '@/pages/Settings/Settings';
 import Bills from '@/pages/bills/Bills';
 import ProtectedRoute from './layout/ProtectedRoute';
 import SpendingAnalysis from './pages/dashboard/SpendingAnalysis';

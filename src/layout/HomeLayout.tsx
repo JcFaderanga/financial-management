@@ -5,9 +5,25 @@ import { useMenuStore } from '@/store/useMenuToggle';
 import CustomModal from '@/components/modal/CustomModal';
 import { useModal } from '@/store/useModal';
 import  BottomTabBar  from '@/components/bottomTab/BottomTabBar';
+import { useEffect } from 'react';
 const HomeLayout = () => {
   const { isMenuActive } = useMenuStore();
   const {isModal, children} = useModal();
+  const dark = localStorage.theme === 'dark';
+
+    useEffect(() => {
+        const html = document.documentElement;
+        if (dark) {
+          html.classList.add('dark');
+          document.body.style.backgroundColor = '#121212';
+          localStorage.setItem('theme', 'dark');
+        } else {
+          html.classList.remove('dark');
+          document.body.style.backgroundColor = 'transparent';
+          localStorage.setItem('theme', 'light');
+        }
+      }, [dark]);
+      
   return (
     <>
       <CustomModal hidden={isModal} children={children}/>

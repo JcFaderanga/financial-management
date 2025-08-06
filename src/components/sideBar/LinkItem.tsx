@@ -7,9 +7,11 @@ import { FaChartPie } from "react-icons/fa";
 import { RiFileList3Fill } from "react-icons/ri";
 import { CgMoreVerticalO } from "react-icons/cg";
 const LinkItem = ({
+  slice,
   navs,
   title,
 }: {
+  slice?: any;
   navs: NavType[];
   title: string;
 }) => {
@@ -36,7 +38,7 @@ const icon:any = {
     {
       title && <h1 className="px-4 text-sm font-bold text-slate-300">{title}</h1>
     }
-      {navs.map((item) => {
+      {navs?.slice(slice?.[0],slice?.[1]).map((item) => {
         const isActive = location.pathname.startsWith(item.path);
 
         if (item.children) {
@@ -49,14 +51,14 @@ const icon:any = {
             to={item.path}
             onClick={menuToggle}
             aria-current={isActive ? "page" : undefined}
-            className={`px-4 py-1.5 text-sm rounded-lg transition-colors text-medium-dark dark:text-white ${
+            className={` py-1.5 text-sm rounded-lg transition-colors text-medium-dark dark:text-white ${
               isActive ? "!text-yellow-500 " : "hover:bg-gray-100 dark:hover:bg-light-dark"
             }`}
           >
             
-            <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start">
+            <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start w-14">
               <div className="text-2xl">{icon[item.id]}</div>
-              <div className="text-sm ">{item.label}</div>
+              <div className="text-xs ">{item.label}</div>
             </div>
             
           </Link>

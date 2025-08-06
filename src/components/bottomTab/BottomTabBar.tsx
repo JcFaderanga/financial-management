@@ -1,11 +1,21 @@
 import LinkItem from '../sideBar/LinkItem';
 import { navItems } from '../sideBar/NavPaths';
+import { FaPlus } from "react-icons/fa6";
+import AddItem from '../dashboard/addItem/AddItem';
+import { useModal } from '@/store/useModal';
 export const BottomTabBar = () => {
     const homePage = navItems.filter((item) => item.category === "homePage");
+    const {setModal,setChild, isModal} = useModal();
   return (
-    <div className='fixed bottom-0 w-full left-0 h-18 py-2 bg-white rounded-t-2xl dark:bg-light-dark box-shadow'>
+    <div className='fixed bottom-0 w-full left-0 h-18 py-2 bg-white  dark:bg-light-dark box-shadow'>
         <nav className="flex space-y-1 justify-evenly">
-        <LinkItem navs={homePage} title="" /> 
+        <LinkItem navs={homePage} title="" slice={[0,2]} /> 
+        <div 
+          onClick={() => {setModal(!isModal); setChild(<AddItem />)}}
+        className='lg:hidden -mt-8 h-16 w-16 rounded-full bg-yellow-500  flex justify-center items-center shadow-md'>
+          <FaPlus size={22}/>
+        </div>
+        <LinkItem navs={homePage} title="" slice={[2,4]} /> 
       </nav>
     </div>
   )
