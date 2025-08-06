@@ -7,7 +7,7 @@ export const BottomTabBar = () => {
     const homePage = navItems.filter((item) => item.category === "homePage");
     const {setModal,setChild, isModal} = useModal();
   return (
-    <div className='fixed bottom-0 w-full left-0 h-18 py-2 bg-white  dark:bg-light-dark box-shadow'>
+    <div className='fixed bottom-0 w-full left-0 h-16 rounded-t-2xl py-2 bg-white  dark:bg-light-dark box-shadow'>
         <nav className="flex space-y-1 justify-evenly">
         <LinkItem navs={homePage} title="" slice={[0,2]} /> 
         <div 

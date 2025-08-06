@@ -5,7 +5,7 @@ import { useMenuStore } from "@/store/useMenuToggle";
 import { IoSettings } from "react-icons/io5";
 import { FaChartPie } from "react-icons/fa";
 import { RiFileList3Fill } from "react-icons/ri";
-import { CgMoreVerticalO } from "react-icons/cg";
+import { HiMenuAlt3 } from "react-icons/hi";
 const LinkItem = ({
   slice,
   navs,
@@ -29,7 +29,7 @@ const icon:any = {
   overview: <RiFileList3Fill />, 
   Analytics: <FaChartPie/>,
   settings: <IoSettings/>,
-  more: <CgMoreVerticalO/>
+  more: <HiMenuAlt3/>
 };
   
 
@@ -56,9 +56,9 @@ const icon:any = {
             }`}
           >
             
-            <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start w-14">
-              <div className="text-2xl">{icon[item.id]}</div>
-              <div className="text-xs ">{item.label}</div>
+            <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start w-14 lg:px-1">
+              <div className="text-2xl ">{icon[item.id]}</div>
+              <div className="text-xs lg:px-7">{item.label}</div>
             </div>
             
           </Link>

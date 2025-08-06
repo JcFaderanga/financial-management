@@ -32,7 +32,7 @@ const HomeLayout = () => {
           <SideBar />
         </div>
 
-        <div className={`w-full h-screen ${isMenuActive ? '' : 'lg:ml-[18%]'}`}>
+        <div className={`w-full h-screen ${isMenuActive ? 'lg:ml-16' : 'lg:ml-[14%]'}`}>
           <div className={'relative z-40 hidden lg:block'}>
             <Header />
           </div>
