@@ -21,13 +21,8 @@ const Sidebar = () => {
         <FaAlignRight onClick={handleMenuToggle} className='mr-4 cursor-pointer text-slate-500 lg:hidden float-end' size={20}/>
       </div>
       <nav className="flex flex-col space-y-1">
-<<<<<<< HEAD
         <LinkItem navs={homePage} title="" />
         {/* <LinkItem navs={reports} title="REPORTS" /> */}
-=======
-        <LinkItem navs={homePage} title="" />
-        {/* <LinkItem navs={reports} title="REPORTS" /> */}
->>>>>>> main
       </nav>
       
     </section>
