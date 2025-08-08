@@ -1,13 +1,14 @@
 import React from 'react';
 import { CustomTable, CustomRow, CustomData } from '../../tables'; 
 import { LiaTrashSolid, LiaPenSolid } from "react-icons/lia";
-import { useActionItem } from '@/store/useActionItem';
 import { LongDateFormat } from '@/utils/DateFormat';
 import { itemTypes } from '@/types/itemTypes';
 import { MdOutlineFolderOpen } from "react-icons/md";
 import { useSpendingExcluded } from '@/store/useSpendingStore';
 import { useCategoryColors } from '@/store/useCatogoryColors';
 import { useCallback } from 'react';
+import { useModal } from '@/store/useModal';
+import SpentEdit from './SpentEdit';
 type SpentTableProps = {
   data: itemTypes[];
   toastList: any;
@@ -46,15 +47,19 @@ export const ActionMenu = ({
 );
 
 //{data, handleEdit, handleDelete,handleGroup,toastList}
-const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:SpentTableProps) => {
-  const {setSelected,selected} = useActionItem()
+const SpentTable = ({data, toastList}:SpentTableProps) => {
   const {excluded} = useSpendingExcluded();
   const {colors: categoryColors} = useCategoryColors();
+  const {setModal,setChild, isModal} = useModal();
 
-  const selectRow = useCallback((item: any)=>{
-    setSelected(selected === item ? null : item)
-  },[selected])
  
+  const selectedItem = useCallback((item: itemTypes) => {
+      setModal(!isModal);
+      setChild(<SpentEdit itemProps={item} />)
+    },
+    [isModal],
+  )
+   
   return (
     <>
     <CustomTable className=''>
@@ -69,25 +74,23 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
                 <CustomRow 
                   key={spent.id} 
                   className={`
-                    ${selected?.id === spent.id && 'bg-blue-50 dark:bg-light-dark'} 
                     cursor-pointer hover:bg-slate-50 dark:hover:bg-light-dark dark:border-light-dark
                     border-b border-gray-100
                     ${excluded?.includes(spent?.category) && 'hidden'}
                   `} 
-                  onClick={()=>selectRow(spent)}
+                  onClick={()=>selectedItem(spent )}
                 >
                   <CustomData className='pl-2 dark:text-white'>
                     <div>
                       <div className='flex items-center'>
                         <span className={`h-2 w-2 rounded-full mr-1`} style={{ backgroundColor: catBg }} />
-                        <strong className='text-xs' >{spent.category}</strong>
+                        <strong className='text-xs opacity-30' >{spent.category}</strong>
                       </div>
                       <p className='text-sm md:text-base'>{spent.title}</p>
                     </div>
                   </CustomData>
                   <CustomData className='pr-2 text-right dark:text-white'>
                     <div>
-                      {spent.id}
                       <strong className='text-xs'>{LongDateFormat(new Date(spent.created_at))}</strong>
                       <p className='text-sm font-semibold text-red-400 md:text-base'>-₱{spent?.price?.toLocaleString()}</p>
                     </div>
@@ -97,20 +100,6 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
             })}
           </tbody>
         </CustomTable>
-        {
-      
-      selected && 
-      <div className="fixed bottom-0 left-0 flex justify-center w-full py-4 bg-white border-t border-gray-300 box-shadow ">
-          <div className='w-2/3 max-w-xl p-2 '>
-              <ActionMenu
-                  onEdit={() => handleEdit(selected)}
-                  onDelete={() => handleDelete(selected)}
-                  onGroup={() => handleGroup(selected)}
-                  isGrouped={selected?.grouped_in}
-              />
-          </div>
-      </div>
-    }
         </>
   )
 }

@@ -14,7 +14,6 @@ import NumberFlowUI from '../../UI/NumberFlow'
 import { CalulateTotal,TotalPerDayAndMonth } from '@/utils/itemFormat'
 import { useAllSpendingData } from '@/store/useSpendingStore'
 import Calendar from './Calendar'
-import { useFetchLoader } from '@/store/useSpendingStore'
 import { useThisMonth } from '@/store/useCalendarStore'
 const SpentCalendar = () => {
   const { handleFetchAllSpendings } = useFetchAllSpending();
