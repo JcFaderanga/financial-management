@@ -2,8 +2,8 @@ import { itemTypes } from "@/types/itemTypes";
 import {
   startOfMonth,
   endOfMonth,
+  format,
 } from 'date-fns'
-import { FormatDate } from "./DateFormat";
 
 type GroupedItem = {
   type: string;
@@ -86,7 +86,7 @@ export class TotalPerDayAndMonth{
     * first one return Date type second return String type
     **/
      getDateOnly(item: itemTypes){
-        const dateOnly: string = FormatDate(item.created_at)
+        const dateOnly: string = format(item.created_at, 'yyyy-MM-dd')
         const date: Date = new Date(dateOnly)
 
         return {date,dateOnly};

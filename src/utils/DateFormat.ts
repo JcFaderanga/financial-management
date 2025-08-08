@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 //2025-08-01 
 export const FormatDate=(date: any)=>{
   const setDate = new Date(date);
@@ -24,6 +26,7 @@ export const FormatDate=(date: any)=>{
     return formatter.format(date); 
   }
 
+  //August 7, 2025
   export const LongDateFormat = (date: any) => {
     return date ? date.toLocaleDateString('en-US', { 
       timeZone: 'UTC',
@@ -60,6 +63,16 @@ export function FormattedUTCDate(date: string | Date) {
   const formatedDate = `${selectedDate} ${hours}:${minutes}:${seconds}.${microseconds}+00`;
 
   return formatedDate;
+}
+
+//2025-08-01 04:53:29.122000+00
+export function getCurrentLocalTime() {
+
+  const now = new Date();
+
+  const toLocalTome = format(now,'hh:mm:ss.SSS')
+
+  return toLocalTome;
 }
 
 

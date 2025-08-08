@@ -87,6 +87,7 @@ const SpentTable = ({data, handleEdit, handleDelete,handleGroup, toastList}:Spen
                   </CustomData>
                   <CustomData className='pr-2 text-right dark:text-white'>
                     <div>
+                      {spent.id}
                       <strong className='text-xs'>{LongDateFormat(new Date(spent.created_at))}</strong>
                       <p className='text-sm font-semibold text-red-400 md:text-base'>-₱{spent?.price?.toLocaleString()}</p>
                     </div>

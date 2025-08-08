@@ -5,24 +5,24 @@ import AddItem from "@/components/dashboard/addItem/AddItem";
 import { useSpendings } from "@/store/useSpendingStore";
 import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding";
 import OverViewPage from "@/components/dashboard/OverView";
-import { FormatDate, FormattedUTCDate } from "@/utils/DateFormat";
+import {FormattedUTCDate } from "@/utils/DateFormat";
 import SpentSummary from "@/components/dashboard/SpentSummary";
 import OverviewDate from "@/hooks/OverviewDate";
 import { useModal } from "@/store/useModal";
 import { ClipLoader } from "react-spinners";
-
+import {format} from "date-fns"
 const OverView = () => {
   const { handleFetchAllSpendings } = useFetchAllSpending();
   const { setSpendItems, spendings } = useSpendings();
   const { dateRange,timeRange } = OverviewDate();
   const {setModal,setChild, isModal} = useModal();
   const [loading, setLoading] = useState<boolean>(false)
-
+  console.log(dateRange)
   useEffect(() => {
     
     const fetch = async () => {
       setLoading(true);
-      const res = await handleFetchAllSpendings(FormatDate(new Date()));
+      const res = await handleFetchAllSpendings(format(new Date(),"yyyy-MM-dd"));     //convert date to yyyy-mm-dd, e.g. 2025-08-01
       if (res) {
         setSpendItems?.(res);
       }

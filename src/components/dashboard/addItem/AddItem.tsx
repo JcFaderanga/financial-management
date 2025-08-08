@@ -12,8 +12,9 @@ import useUniqueItemList from '@/hooks/spend_items/useUniqueList'
 import AddGroup from './AddGroup'
 import { itemTypes } from '@/types/itemTypes'
 import OverviewDate from '@/hooks/OverviewDate'
-import { FormattedUTCDate } from '@/utils/DateFormat'
+import { getCurrentLocalTime } from '@/utils/DateFormat'
 import { itemCategory } from '@/utils/DropDownList'
+import {format} from "date-fns"
 const AddItem = () => {
 const {setSpendItems, spendings} =useSpendings();
 const {user} = useUserStore();
@@ -72,14 +73,14 @@ const handleSave = useCallback(async()=>{
       return;
   }
 
-  if(FormattedUTCDate(dateRange) === 'invalid date'){
-      alert(dateRange+ ' is not a valid date.')
+  if(format(dateRange, "yyyy-MM-dd HH:mm:ss.SSS") + '000+00' === 'invalid date'){
       return;
   }
-    
-
+  
     //disable save button when submit
     setBtnDisable(true)
+
+    const createdDate =  `${format(dateRange,'yyyy-MM-dd')} ${getCurrentLocalTime()}`;
 
     //create obj for selected inputs 
     const spent: itemTypes = {
@@ -88,14 +89,13 @@ const handleSave = useCallback(async()=>{
       price: Number(price),
       category: category,
       grouped_in:selectedGroup ? selectedGroup[0]?.id : null,
-      created_at: FormattedUTCDate(dateRange)
+      created_at: createdDate
     };
 
 
     if(error){
 
     }
-
 
     //save item to db and fetch
     const spentRes = await handleSaveItem(spent);

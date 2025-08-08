@@ -32,7 +32,20 @@ const Calendar = () => {
   const [direction, setDirection] = useState<"left" | "right">("left")
   const {setDate: setStoreDate} = useOverviewDateStore()
   const navigate = useNavigate()
- 
+
+  const date = new Date();
+  const start = startOfMonth(date);
+  const format1 = format(date,'MMMM-yyyy-dd');
+  const getDay1 = getDay(date);
+
+  useEffect(()=>{
+    console.log('start',start)
+  console.log('format1',format1)
+  console.log('getDay1',getDay1)
+  },[])
+  
+
+
   // console.log(JSON.stringify(spendingData,null,2))
   useEffect(() => {
     //Over all total
@@ -70,7 +83,6 @@ const Calendar = () => {
   }
 
    const setDate = useCallback(async(date: string | {})=>{
-
     const res = await handleFetchAllSpendings(date)
     setSpendItems(date === 'all' ? data : res || [])
     navigate(`/dashboard/overview`)

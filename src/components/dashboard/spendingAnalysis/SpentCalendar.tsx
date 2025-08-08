@@ -18,8 +18,6 @@ import { useFetchLoader } from '@/store/useSpendingStore'
 import { useThisMonth } from '@/store/useCalendarStore'
 const SpentCalendar = () => {
   const { handleFetchAllSpendings } = useFetchAllSpending();
-  const {isLoading: loading} = useFetchLoader();
-  console.log(loading)
   const {allSpentData: data} = useAllSpendingData();
   const { setSpendItems } = useSpendings()
   const [allTotal, setAllTotal] = useState<number>(0)

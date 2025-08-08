@@ -1,35 +1,41 @@
-import { LongDateFormat,formatTo12Hour } from "../utils/DateFormat";
+
+import { formatTo12Hour } from "../utils/DateFormat";
 import { useOverviewDateStore } from "@/store/useOverviewDate";
+import { format } from 'date-fns';
+
 const OverviewDate = () => {
-    const {date} = useOverviewDateStore();
+  const { date } = useOverviewDateStore();
 
-    let dateRange = '';
-    let timeRange = '';
+  const formatToLocal = (dateInput: string | Date): string => {
+    const localDate = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+    return format(localDate, 'MMMM d, yyyy'); // local browser time
+  };
 
-    if(typeof date === 'string'){
-        dateRange = LongDateFormat(new Date(date));
+  let dateRange = String(new Date());
+  let timeRange = '';
+
+  if (date && typeof date === 'string') {
+    // if it's a string and empty, fallback to now
+    dateRange = formatToLocal(date);
+  }
+
+  if (typeof date === 'object') {
+    const { startDate, endDate, startTime, endTime } = date;
+
+    if (!startDate) {
+      dateRange = formatToLocal(new Date());
+    } else if (startDate && !endDate) {
+      dateRange = formatToLocal(startDate);
+    } else {
+      dateRange = `${formatToLocal(startDate)} - ${formatToLocal(endDate)}`;
     }
 
-    if (typeof date === 'object') {
-        if(!date?.startDate){
-            dateRange = LongDateFormat(new Date())
-        }
-        else if(date?.startDate && !date?.endDate){
-          dateRange= LongDateFormat(new Date(date?.startDate));
-        }
-        else{
-            dateRange =`${LongDateFormat(new Date(date?.startDate))} 
-                - ${LongDateFormat(new Date(date?.endDate))}` 
-        }
-
-        if(date?.startTime && date?.endTime){
-            timeRange = `${formatTo12Hour(date?.startTime)}
-                - ${formatTo12Hour(date?.endTime)}` ;
-        }
+    if (startTime && endTime) {
+      timeRange = `${formatTo12Hour(startTime)} - ${formatTo12Hour(endTime)}`;
     }
+  }
 
-    
-  return {dateRange,timeRange}
-}
+  return { dateRange, timeRange };
+};
 
 export default OverviewDate;
