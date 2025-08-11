@@ -17,11 +17,13 @@ const AddItemForm = () => {
 const { category } = useParams(); 
 const {setSpendItems, spendings} =useSpendings();
 const {user} = useUserStore();
-const [title, setItem] = useState<string | undefined>('');
+const [title, setTitle] = useState<string | undefined>('');
 const [price, setPrice] = useState<string>('');
 const [subCategory, setSubCategory] = useState<string | undefined>('');
 const [tempSub, setTemp] = useState<string | undefined>('');
+const [tempTitle, setTempTitle] = useState<string | undefined>('');
 const [isAddSubCategory, setAddSubCategory] = useState<boolean>(false)
+const [isAddTitle, setAddTitle] = useState<boolean>(false)
 const [priceError, setPriceError] = useState<boolean>(false);
 const [btnDisable, setBtnDisable] = useState<boolean>(true);
 const {handleSaveItem} = UseSaveItem();
@@ -29,15 +31,19 @@ const {handleUniqueItem, fetchUniqueList, uniqueItem, loading} = useUniqueItemLi
 const {dateRange} = OverviewDate();
 const navigate = useNavigate();
 
-console.log('uniqueItem',subCategory)
 useEffect(() => {
-    async function Fetch() {
-        const res = await fetchUniqueList(category);
-        console.log(res)
-    }
-  
-  Fetch();
+    fetchUniqueList(category);
 }, [category]);
+
+const uniqueSubcategory: string[] = [
+  ...new Set(uniqueItem?.map((item: any) => item.sub_category))
+];
+
+const uniqueTitle: string[] = [
+  ...new Set(uniqueItem?.map((item: any) => item.title))
+];
+
+console.log(uniqueSubcategory)
 
 // field validation
 useEffect(()=>{
@@ -95,7 +101,7 @@ const handleSave = useCallback(async()=>{
     handleUniqueItem(spent);
 
     //reset fields
-    setItem('')
+    setTitle('')
     setPrice('')
     setBtnDisable(false)
 
@@ -121,26 +127,24 @@ const handleSave = useCallback(async()=>{
                     <strong>Specification</strong>
                     <div className=' p-1 flex flex-wrap gap-2'>
                         {/* If a subcategory is selected, show it */}
-                        {subCategory ? (
-                            <div className="py-2 px-4 rounded-xl bg-yellow-500 text-dark w-fit">{subCategory}</div>
-                        ) : (
+                        
                             <>
-                                {uniqueItem?.map((item: itemTypes) => {
-                                if (!item?.sub_category) return null
+                                {uniqueSubcategory?.map((item: string, index) => {
+                                if (!item) return null
                                 return (
                                     <div
-                                        key={item.sub_category}
+                                        key={index}
                                         className={`
-                                            ${subCategory === item.sub_category && 'bg-yellow-500 text-dark font-semibold' }
+                                            ${subCategory === item && '!bg-yellow-500 text-dark font-semibold' }
                                             py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit cursor-pointer`}
-                                        onClick={() => setSubCategory(item.sub_category)}
+                                        onClick={() => setSubCategory(item)}
                                     >
-                                        {item.sub_category}
+                                        {item}
                                     </div>
                                 )
                                 })}
                             </>
-                        )}
+                        
                         <div className='py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit cursor-pointer'
                             onClick={()=>setAddSubCategory(!isAddSubCategory)}>
                                 +
@@ -149,58 +153,91 @@ const handleSave = useCallback(async()=>{
                 </div>
                 {
                     isAddSubCategory && 
+                    <>
+                    { !subCategory && <span className='text-yellow-200'>unsave</span>}
                         <div className='flex gap-1 items-center'>
                             <CustomInput 
+                                disabled = {!!subCategory }
                                 value={tempSub} type='string' 
                                 placeholder={'Enter Sub category'} 
                                 onChange={setTemp}
                             />
-                            <div className='p-3 bg-gray-200 dark:bg-light-dark rounded-xl'
+                            <div className={`${subCategory && 'hidden'} p-3 bg-gray-200 dark:bg-light-dark rounded-xl`}
                             onClick={()=>{
                                 setSubCategory(tempSub)
-                                setAddSubCategory(!isAddSubCategory)
+                                
                             }}>
                                 <IoCheckmark/>
                             </div>
-                                <div className='p-3 bg-gray-200 dark:bg-light-dark rounded-xl'
-                                onClick={()=>setAddSubCategory(!isAddSubCategory)}>
+                            <div className='p-3 bg-gray-200 dark:bg-light-dark rounded-xl'
+                                onClick={()=>{
+                                    setAddTitle(!isAddTitle);
+                                    setSubCategory('');
+                                    setTemp('');
+                                    }}>
                                 <IoCloseOutline/>
                             </div>
                         </div>
-                        
+                    </>    
                 }
                 
-                    <div className='py-1'>
+                <div className='py-1'>
                     <strong>Typically use</strong>
                     <div className=' p-1 flex flex-wrap gap-2'>
                         <div className=' p-1 flex flex-wrap gap-2'>
                             {
-                            uniqueItem?.map((item: itemTypes)=>{
+                            uniqueTitle?.map((item: string, index)=>{
                                 return(
-                                    <div key={item.category} 
+                                    <div key={index} 
                                         className={`
-                                                ${title === item.title && '!bg-yellow-500 text-dark font-semibold' }
+                                                ${title === item && '!bg-yellow-500 text-dark font-semibold' }
                                                 py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit cursor-pointer`}
-                                        onClick={()=> setItem(item?.title)}>
-                                        {item.title}
+                                        onClick={()=> setTitle(item)}>
+                                        {item}
                                     </div>
                                 )
                             })
                             }
-                            {/* <div className='py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit'>
+                            <div className='py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit cursor-pointer'
+                                onClick={()=>setAddTitle(!isAddTitle)}>
                                 +
-                            </div>  */}
+                            </div>  
                         </div>
                     </div>
                 </div>
+                {
+                isAddTitle && 
+                <>
+                    { !title && <span className='text-yellow-200'>unsave</span>}
+                    <div className='flex gap-1 items-center'>
+                        
+                        <CustomInput 
+                            disabled = {!!title }
+                            value={tempTitle} type='string' 
+                            placeholder={'Enter Sub category'} 
+                            onChange={setTempTitle}
+                        />
+                        <div className={`${title && 'hidden'} p-3 bg-gray-200 dark:bg-light-dark rounded-xl`}
+                        onClick={()=>{
+                            setTitle(tempTitle)
+                            
+                        }}>
+                            <IoCheckmark/>
+                        </div>
+                        <div className='p-3 bg-gray-200 dark:bg-light-dark rounded-xl'
+                            onClick={()=>{
+                                setAddTitle(!isAddTitle);
+                                setTitle('');
+                                setTempTitle('');
+                                }}>
+                            <IoCloseOutline/>
+                        </div>
+                    </div> 
+                </>
+                }
                 
-                <div>
-                
-                    <CustomInput 
-                        value={title} type='string' 
-                        placeholder={'Enter Title'} 
-                        onChange={setItem}
-                    />
+                <div className='flex flex-col'>
+                    <strong>Price</strong>
                     <CustomInput 
                         value={price} type='number' 
                         placeholder={'Enter Price'} 

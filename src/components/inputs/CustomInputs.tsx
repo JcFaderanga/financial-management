@@ -13,7 +13,7 @@ const StringInput = ({ value, type, placeholder, disabled, onChange }: InputProp
     <input
       className={`px-3 py-2 w-full my-2 rounded-xl lg:max-w-72 outline-none transition-all
         ${disabled 
-          ? 'border text-gray-300 border-gray-100 bg-gray-100' 
+          ? '  text-gray-300  bg-gray-100 dark:bg-light-dark opacity-55' 
           : 'border border-gray-400 bg-gray-100 dark:bg-light-dark'
         }
         focus:bg-blue-50 focus:border-blue-400 focus:ring-2 focus:ring-blue-300 
