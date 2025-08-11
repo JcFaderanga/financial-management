@@ -12,7 +12,21 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { setUser } = useUserStore();
   const navigate = useNavigate();
   const [checking, setChecking] = useState(true);
-
+  
+  const dark = localStorage.theme === 'dark';
+    useEffect(() => {
+        const html = document.documentElement;
+        if (dark) {
+          html.classList.add('dark');
+          document.body.style.backgroundColor = '#121212';
+          localStorage.setItem('theme', 'dark');
+        } else {
+          html.classList.remove('dark');
+          document.body.style.backgroundColor = 'transparent';
+          localStorage.setItem('theme', 'light');
+        }
+      }, [dark]);
+      
   useEffect(() => {
     let unsub: () => void;
 

@@ -3,30 +3,19 @@ import SideBar from '../components/sideBar/SideBar';
 import { Outlet } from 'react-router-dom';
 import { useMenuStore } from '@/store/useMenuToggle';
 import CustomModal from '@/components/modal/CustomModal';
-import { useModal } from '@/store/useModal';
+import CustomModalFullScreen from '@/components/modal/CustomModalFullScreen';
+import { useModal, useModalFull } from '@/store/useModal';
 import  BottomTabBar  from '@/components/bottomTab/BottomTabBar';
-import { useEffect } from 'react';
+
 const HomeLayout = () => {
   const { isMenuActive } = useMenuStore();
   const {isModal, children} = useModal();
-  const dark = localStorage.theme === 'dark';
-
-    useEffect(() => {
-        const html = document.documentElement;
-        if (dark) {
-          html.classList.add('dark');
-          document.body.style.backgroundColor = '#121212';
-          localStorage.setItem('theme', 'dark');
-        } else {
-          html.classList.remove('dark');
-          document.body.style.backgroundColor = 'transparent';
-          localStorage.setItem('theme', 'light');
-        }
-      }, [dark]);
-      
+  const {isModalFS, children: ChildFS} = useModalFull();
+  
   return (
     <>
       <CustomModal hidden={isModal} children={children}/>
+      <CustomModalFullScreen hidden={isModalFS} children={ChildFS}/>
       <section className="flex transition dark:bg-dark">
         <div className={'relative z-50 hidden lg:block'}>
           <SideBar />

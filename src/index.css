@@ -34,7 +34,11 @@
       rgba(14, 30, 37, 0.10) 0px -7px 10px 0px;
   }
 }
-
+.box-shadow {
+    box-shadow: 
+      rgba(14, 30, 37, 0.05) 0px -7px 10px 0px,
+      rgba(14, 30, 37, 0.10) 0px -7px 10px 0px;
+  }
 .hide-calendar::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;

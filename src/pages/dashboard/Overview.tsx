@@ -1,23 +1,23 @@
 import React, { useEffect,useState } from "react";
 import useDocumentTitle from "@/hooks/document/useDocTitle";
 import SpentHistory from "@/components/dashboard/spentHistory/SpentHistory";
-import AddItem from "@/components/dashboard/addItem/AddItem";
+// import AddItem from "@/components/dashboard/addItem/AddItem";
 import { useSpendings } from "@/store/useSpendingStore";
 import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding";
 import OverViewPage from "@/components/dashboard/OverView";
 import {FormattedUTCDate } from "@/utils/DateFormat";
 import SpentSummary from "@/components/dashboard/SpentSummary";
 import OverviewDate from "@/hooks/OverviewDate";
-import { useModal } from "@/store/useModal";
 import { ClipLoader } from "react-spinners";
 import {format} from "date-fns"
+import { Link } from "react-router-dom";
 const OverView = () => {
   const { handleFetchAllSpendings } = useFetchAllSpending();
   const { setSpendItems, spendings } = useSpendings();
   const { dateRange,timeRange } = OverviewDate();
-  const {setModal,setChild, isModal} = useModal();
+  // const {setModal,setChild, isModal} = useModal();
   const [loading, setLoading] = useState<boolean>(false)
-  console.log(dateRange)
+  
   useEffect(() => {
     
     const fetch = async () => {
@@ -66,9 +66,8 @@ const OverView = () => {
           <div className="hidden lg:block border border-gray-300 dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl px-4 py-5.5 ">
             <button
               className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-medium-dark dark:text-white"
-              onClick={() => {setModal(!isModal); setChild(<AddItem />)}}
             >
-              Add Item
+              <Link to={`/add/category`}>Add Item</Link>
             </button>
           </div>
         )}

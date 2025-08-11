@@ -1,9 +1,9 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { FaXmark } from "react-icons/fa6";
-import { useModal } from "@/store/useModal";
+import { useModalFull } from "@/store/useModal";
 
-const CustomModal = ({ children, hidden }: { children?: ReactNode; hidden?: boolean }) => {
-  const { isModal, setModal } = useModal();
+const CustomModalFullScreen = ({ children, hidden }: { children?: ReactNode; hidden?: boolean }) => {
+  const { isModalFS, setModalFS } = useModalFull();
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const CustomModal = ({ children, hidden }: { children?: ReactNode; hidden?: bool
   }, [hidden]);
 
   const handleOverlayClick = () => {
-    setModal(false); // close when clicking outside
+    setModalFS(false); // close when clicking outside
   };
 
   const preventClose = (e: React.MouseEvent) => {
@@ -29,15 +29,15 @@ const CustomModal = ({ children, hidden }: { children?: ReactNode; hidden?: bool
       onClick={handleOverlayClick}
       className={`${
         hidden ? "fixed" : "hidden"
-      } inset-0 flex justify-center items-center lg:justify-end overflow-y-scroll
-          w-full px-4 lg:px-0 h-screen bg-[rgba(0,0,0,0.6)] backdrop-blur-sm z-[100]`}
+      } lg:justify-end overflow-y-scroll
+          w-full lg:px-0 h-screen bg-[rgba(0,0,0,0.6)] z-[100]`}
     >
       <div
         ref={modalRef}
         onClick={preventClose}
-        className="bg-white dark:bg-medium-dark rounded-xl lg:rounded-none max-w-200 lg:h-full lg:mt-0"
+        className="bg-white dark:bg-dark rounded-xl lg:rounded-none h-full lg:mt-0"
       >
-        <div onClick={() => setModal(!isModal)} className="flex justify-end p-2 cursor-pointer">
+        <div onClick={() => setModalFS(!isModalFS)} className="flex justify-end p-2 cursor-pointer">
           <FaXmark size={20} className="text-slate-500" />
         </div>
         <div className="dark:text-white">{children}</div>
@@ -46,4 +46,4 @@ const CustomModal = ({ children, hidden }: { children?: ReactNode; hidden?: bool
   );
 };
 
-export default CustomModal;
+export default CustomModalFullScreen;

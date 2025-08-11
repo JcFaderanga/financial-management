@@ -13,7 +13,7 @@ import AddGroup from './AddGroup'
 import { itemTypes } from '@/types/itemTypes'
 import OverviewDate from '@/hooks/OverviewDate'
 import { getCurrentLocalTime } from '@/utils/DateFormat'
-import { itemCategory } from '@/utils/DropDownList'
+import { itemCategory,Icon} from '@/utils/DropDownList'
 import {format} from "date-fns"
 const AddItem = () => {
 const {setSpendItems, spendings} =useSpendings();
@@ -35,6 +35,7 @@ const [isAddingGroup, setIsAddGroup] = useState<boolean>(false);
 const [selectedGroup, setSelectedGroup] = useState<any>(null); // store checked item IDs
 const {dateRange} = OverviewDate();
 
+console.log(category)
 useEffect(()=>{
     setBtnDisable(true);
 
@@ -152,25 +153,58 @@ const menu = useCallback( (val: string) =>{
   };
 
   return (
-    <>
-      <header className={` flex justify-between item-center px-4 cursor-pointer`}>
+    <section className=' dark:bg-dark flex'>
+      {/* <header className={` flex justify-between item-center px-4 cursor-pointer`}>
           <strong className='text-2xl text-dark dark:text-white'>
             <span>Add Item</span>
           </strong>
-      </header>
-      <div className={`${isAddingGroup && '!hidden'} w-full py-4 dark:text-white`}>
-        <section className='flex justify-center w-full  '>
-            <div className='px-4 '>
-              <CustomDropdown onChange={menu} isActive={category} options={itemCategory}/>
-                {
-                  categoryError ? <p className='text-red-600'>Category is not valid.</p> : ""
-                }
+      </header> */}
+      <div className={`grid grid-cols-3 gap-2 p-4 ${category && 'h-2/3'} dark:bg-dark max-w-2/6 border`}>
+          {
+            itemCategory?.map((item:any)=>{
+                return(
+                    <div key={item} className={`
+                            text-center border border-gray-300 rounded-xl p-2 cursor-pointer
+                            dark:border-none dark:bg-light-dark dark:hover:bg-amber-500 dark:hover:text-light-dark
+                            ${category === item && '!bg-amber-500 dark:!text-light-dark' }
+                            `}
+                         onClick={()=>menu(item  === category ? '' : item)}
+                        >
+                        <div className='flex justify-center text-2xl'>{Icon[item]}</div>
+                        <p className='text-xs'>{item}</p>
+                    </div>
+                )
+            })
+          }
+      </div>
+      <div className={`${isAddingGroup && '!hidden'} ${!category && 'hidden'} 
+               w-full pb-4 dark:text-white dark:bg-light-dark
+               box-shadow border-t border-light-dark
+          `}>
+          <div className='h-14'>
+            {isDelay && title && !doneSelect? ( 
+                'Getting Match Items...'
+            ) : fetchedTitles && title && !fetchedLoading && !doneSelect? (
+                <MatchItem 
+                    current={fetchedTitles} 
+                    getSelectedItemId={getSelectedItemId}
+                />
+            ) : (
+              ""
+            )}
+          </div>
+            
+        <section className='flex justify-center '>
+          
+            <div className='px-4'>
                 {/* <CustomInput 
                     disabled={isInputDisabled} 
                     value={subCategory} type='string' 
                     placeholder={'Sub category (Jeep, Lawson etc.)'} 
                     onChange={setSubCategory}
                 /> */}
+                
+                 
                 <CustomInput 
                     disabled={isInputDisabled} 
                     value={title} type='string' 
@@ -186,12 +220,12 @@ const menu = useCallback( (val: string) =>{
                 {
                   priceError ? <p className='text-red-600'>Invalid price value.</p> : ""
                 }
-                {selectedGroup?.map((grouped:any, index: number)=>{
+                {/* {selectedGroup?.map((grouped:any, index: number)=>{
                   return <span key={index}>Add to <span  className='text-green-700'>{grouped?.title}</span></span>
                 })}
                 
                 <div className='py-2 underline' onClick={()=>setIsAddGroup(!isAddingGroup)}>Add in a group</div>
-                
+                 */}
 
                 <SubmitButton 
                     title='Save'
@@ -200,7 +234,7 @@ const menu = useCallback( (val: string) =>{
                 />
             </div>
         </section>
-        <section className="w-full px-4">
+        {/* <section className=" px-4">
             {isDelay && title && !doneSelect? ( 
                 <DotsLoading />
             ) : fetchedTitles && title && !fetchedLoading && !doneSelect? (
@@ -211,18 +245,17 @@ const menu = useCallback( (val: string) =>{
             ) : (
               ""
             )}
-        </section>
+        </section> */}
       </div>
-      <section className={`${!isAddingGroup ? '!hidden' : 'block'} pb-4`}>
+      {/* <section className={`${!isAddingGroup ? '!hidden' : 'block'} pb-4`}>
           <AddGroup 
             handleCheckboxChange={handleCheckboxChange}
             selectedGroup={selectedGroup}
             setIsAddGroup={()=>setIsAddGroup(!isAddingGroup)}
           />
-         
-      </section>
+      </section> */}
         
-  </>
+  </section>
   )
 }
 

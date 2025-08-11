@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useCallback } from "react";
-
+import React, { useEffect, useState, useCallback, ReactNode } from "react";
 interface DropDownProps {
   value?: string;
   isActive: any;
   options: string[];
+  icon?: Record<string,ReactNode>,
   onChange: (val: string) => void;
 }
 
-const CustomDropdown: React.FC<DropDownProps> = ({ value, isActive, onChange,options }) => {
+const CustomDropdown: React.FC<DropDownProps> = ({ value, isActive, onChange, options }) => {
   const [selected, setSelected] = useState<string>(value || "");
 
   useEffect(() => {

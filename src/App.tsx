@@ -10,6 +10,8 @@ import Liabilities from '@/pages/Settings/Settings';
 import Bills from '@/pages/bills/Bills';
 import ProtectedRoute from './layout/ProtectedRoute';
 import SpendingAnalysis from './pages/dashboard/SpendingAnalysis';
+import AddItem from './pages/add_item/CategorySelection';
+import AddItemForm from './pages/add_item/AddItemForm';
 function App() {
   return (
     <BrowserRouter>
@@ -35,6 +37,10 @@ function App() {
           <Route path="liabilities" element={<Liabilities />} />
           <Route path="transaction" element={<Transaction />} />
         </Route>
+        
+        {/* Modals */}
+        <Route path="add/category" element={<ProtectedRoute children={<AddItem />}/> }/>
+        <Route path="add/form/:category" element={<ProtectedRoute children={<AddItemForm />}/> }/>
 
         {/* Catch-all 404 */}
         <Route path="*" element={<Page404 />} />

@@ -7,6 +7,7 @@ export type itemTypes={
     location?: string,
     grouped_in?: string | number ,
     created_at?: any,
+    sub_category?: string,
 }
 export type datePropertyTypes={
   startDate: string, 
