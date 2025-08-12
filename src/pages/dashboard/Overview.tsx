@@ -62,15 +62,31 @@ const OverView = () => {
         
 
         {/* Add Item Button Desktop only*/}
-        {FormattedUTCDate(dateRange) !== "invalid date" && (
           <div className="hidden lg:block border border-gray-300 dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl px-4 py-5.5 ">
             <button
-              className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-medium-dark dark:text-white"
+              className={`
+                ${FormattedUTCDate(dateRange) == "invalid date" && 'hidden'}
+                px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:hover:bg-light-dark cursor-pointer dark:bg-dark dark:text-white`}
             >
               <Link to={`/add/category`}>Add Item</Link>
             </button>
+            
+            <button className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:hover:bg-light-dark cursor-pointer dark:bg-dark dark:text-white mx-1">
+              Today
+            </button>
+
+            <button className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:hover:bg-light-dark cursor-pointer dark:bg-dark dark:text-white mx-1">
+              7 Days
+            </button>
+
+            <button className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:hover:bg-light-dark cursor-pointer dark:bg-dark dark:text-white mx-1">
+              30 Days
+            </button>
+
+            <button className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:hover:bg-light-dark cursor-pointer dark:bg-dark dark:text-white mx-1">
+              60 Days
+            </button>
           </div>
-        )}
 
         {/* Mobile Summary */}
         <div className="hidden p-4 bg-white border border-gray-300 lg:hidden dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl dark:bg-transparent" >
