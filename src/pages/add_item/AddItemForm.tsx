@@ -111,60 +111,118 @@ const handleSave = useCallback(async()=>{
 
  if(loading) return 'Loading...';
     return (
-        <div className="w-screen dark:text-white h-screen box-shadow border-t border-light-dark"> 
+        <div className="w-screen max-w-4xl mx-auto dark:text-white h-screen box-shadow border-t border-light-dark"> 
             <header className={` flex justify-between item-center p-4 cursor-pointer`}>
                 <p className=' text-dark dark:text-white'>
                     <span>{category}</span>
                 </p> 
-                <span className="dark:text-white" onClick={()=>navigate(-1)}>back</span>
-            </header>
-            
-            <div className=' px-4 max-w-7xl mx-auto'>
                 <div className=' text-dark font-semibold text-center dark:text-white pb-4'>
                     <span>{dateRange}</span>
                 </div>
-                <div className='py-1'>
-                    <strong>Specification</strong>
-                    <div className=' p-1 flex flex-wrap gap-2'>
-                        {/* If a subcategory is selected, show it */}
-                        
+                <span className="dark:text-white" onClick={()=>navigate(-1)}>back</span>
+            </header>
+            {/* Form Container */}
+            <div className=' px-4 lg:flex'>
+
+                {/* Details */}
+                <div className='w-full lg:max-w-3/5'>
+                    <div className='py-2 rounded-2xl'>
+                        <strong>Specification</strong>
+                        <div className=' p-1 flex flex-wrap gap-2'>
+                            {/* If a subcategory is selected, show it */}
+                            
+                                <>
+                                    {uniqueSubcategory?.map((item: string, index) => {
+                                    if (!item) return null
+                                    return (
+                                        <div
+                                            key={index}
+                                            className={`
+                                                ${subCategory === item && '!bg-yellow-500 text-dark font-semibold' }
+                                                py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit cursor-pointer`}
+                                            onClick={() => setSubCategory(item === subCategory ? '' : item)}
+                                        >
+                                            {item}
+                                        </div>
+                                    )
+                                    })}
+                                </>
+                            
+                            <div className={`${(subCategory || isAddSubCategory) && 'hidden'} py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit cursor-pointer`}
+                                onClick={()=>setAddSubCategory(!isAddSubCategory)}>
+                                    +
+                            </div> 
+                        </div>
+                        {
+                            isAddSubCategory && 
                             <>
-                                {uniqueSubcategory?.map((item: string, index) => {
-                                if (!item) return null
-                                return (
-                                    <div
-                                        key={index}
-                                        className={`
-                                            ${subCategory === item && '!bg-yellow-500 text-dark font-semibold' }
-                                            py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit cursor-pointer`}
-                                        onClick={() => setSubCategory(item)}
-                                    >
-                                        {item}
+                            { !subCategory && <span className='text-yellow-200'>unsave</span>}
+                                <div className='flex gap-1 items-center'>
+                                    <CustomInput 
+                                        disabled = {!!subCategory }
+                                        value={tempSub} type='string' 
+                                        placeholder={'Enter Sub category'} 
+                                        onChange={setTemp}
+                                    />
+                                    <div className={`${subCategory && 'hidden'} p-3 bg-gray-200 dark:bg-light-dark rounded-xl`}
+                                    onClick={()=>{
+                                        setSubCategory(tempSub)
+                                        
+                                    }}>
+                                        <IoCheckmark/>
                                     </div>
-                                )
-                                })}
-                            </>
-                        
-                        <div className='py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit cursor-pointer'
-                            onClick={()=>setAddSubCategory(!isAddSubCategory)}>
-                                +
-                        </div> 
+                                    <div className='p-3 bg-gray-200 dark:bg-light-dark rounded-xl'
+                                        onClick={()=>{
+                                            setAddSubCategory(!isAddSubCategory);
+                                            setSubCategory('');
+                                            setTemp('');
+                                            }}>
+                                        <IoCloseOutline/>
+                                    </div>
+                                </div>
+                            </>    
+                        }
                     </div>
-                </div>
-                {
-                    isAddSubCategory && 
+
+                    <div className='py-2'>
+                        <strong>Typical title use</strong>
+                        <div className=' p-1 flex flex-wrap gap-2'>
+                            <div className=' p-1 flex flex-wrap gap-2'>
+                                {
+                                uniqueTitle?.map((item: string, index)=>{
+                                    return(
+                                        <div key={index} 
+                                            className={`
+                                                    ${title === item && '!bg-yellow-500 text-dark font-semibold' }
+                                                    py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit cursor-pointer`}
+                                            onClick={()=> setTitle(item === title ? '' : item)}>
+                                            {item}
+                                        </div>
+                                    )
+                                })
+                                }
+                                <div className={`${(title || isAddTitle) && 'hidden'} py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit cursor-pointer`}
+                                    onClick={()=>setAddTitle(!isAddTitle)}>
+                                    +
+                                </div>  
+                            </div>
+                        </div>
+                    
+                    {
+                    isAddTitle && 
                     <>
-                    { !subCategory && <span className='text-yellow-200'>unsave</span>}
+                        { !title && <span className='text-yellow-200'>unsave</span>}
                         <div className='flex gap-1 items-center'>
+                            
                             <CustomInput 
-                                disabled = {!!subCategory }
-                                value={tempSub} type='string' 
+                                disabled = {!!title }
+                                value={tempTitle} type='string' 
                                 placeholder={'Enter Sub category'} 
-                                onChange={setTemp}
+                                onChange={setTempTitle}
                             />
-                            <div className={`${subCategory && 'hidden'} p-3 bg-gray-200 dark:bg-light-dark rounded-xl`}
+                            <div className={`${title && 'hidden'} p-3 bg-gray-200 dark:bg-light-dark rounded-xl`}
                             onClick={()=>{
-                                setSubCategory(tempSub)
+                                setTitle(tempTitle)
                                 
                             }}>
                                 <IoCheckmark/>
@@ -172,86 +230,32 @@ const handleSave = useCallback(async()=>{
                             <div className='p-3 bg-gray-200 dark:bg-light-dark rounded-xl'
                                 onClick={()=>{
                                     setAddTitle(!isAddTitle);
-                                    setSubCategory('');
-                                    setTemp('');
+                                    setTitle('');
+                                    setTempTitle('');
                                     }}>
                                 <IoCloseOutline/>
                             </div>
-                        </div>
-                    </>    
-                }
-                
-                <div className='py-1'>
-                    <strong>Typically use</strong>
-                    <div className=' p-1 flex flex-wrap gap-2'>
-                        <div className=' p-1 flex flex-wrap gap-2'>
-                            {
-                            uniqueTitle?.map((item: string, index)=>{
-                                return(
-                                    <div key={index} 
-                                        className={`
-                                                ${title === item && '!bg-yellow-500 text-dark font-semibold' }
-                                                py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit cursor-pointer`}
-                                        onClick={()=> setTitle(item)}>
-                                        {item}
-                                    </div>
-                                )
-                            })
-                            }
-                            <div className='py-2 px-4 rounded-xl bg-gray-200 dark:bg-light-dark w-fit cursor-pointer'
-                                onClick={()=>setAddTitle(!isAddTitle)}>
-                                +
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-                {
-                isAddTitle && 
-                <>
-                    { !title && <span className='text-yellow-200'>unsave</span>}
-                    <div className='flex gap-1 items-center'>
-                        
-                        <CustomInput 
-                            disabled = {!!title }
-                            value={tempTitle} type='string' 
-                            placeholder={'Enter Sub category'} 
-                            onChange={setTempTitle}
-                        />
-                        <div className={`${title && 'hidden'} p-3 bg-gray-200 dark:bg-light-dark rounded-xl`}
-                        onClick={()=>{
-                            setTitle(tempTitle)
-                            
-                        }}>
-                            <IoCheckmark/>
-                        </div>
-                        <div className='p-3 bg-gray-200 dark:bg-light-dark rounded-xl'
-                            onClick={()=>{
-                                setAddTitle(!isAddTitle);
-                                setTitle('');
-                                setTempTitle('');
-                                }}>
-                            <IoCloseOutline/>
-                        </div>
-                    </div> 
-                </>
-                }
-                
-                <div className='flex flex-col'>
-                    <strong>Price</strong>
-                    <CustomInput 
-                        value={price} type='number' 
-                        placeholder={'Enter Price'} 
-                        onChange={setPrice}
-                    />
-                    
-                    {
-                    priceError ? <p className='text-red-600'>Invalid price value.</p> : ""
+                        </div> 
+                    </>
                     }
-                    <SubmitButton 
-                        title='Save'
-                        onClick={handleSave} 
-                        disabled={btnDisable}
-                    />
+                </div>
+                </div>
+                <div className='flex flex-col w-full lg:max-w-2/5 py-4 lg:dark:bg-light-dark rounded-2xl'>
+                    <div className='mx-auto'>
+                        <CustomInput 
+                            value={price} type='number' 
+                            placeholder={'Enter Price'} 
+                            onChange={setPrice}
+                        />
+                        {
+                        priceError ? <p className='text-red-600'>Invalid price value.</p> : ""
+                        }
+                        <SubmitButton 
+                            title='Save'
+                            onClick={handleSave} 
+                            disabled={btnDisable}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
