@@ -12,7 +12,7 @@ export const BottomTabBar = () => {
         <LinkItem navs={homePage} title="" slice={[0,2]} /> 
         <div 
             onClick={() => navigate('/add/category')}
-            className='lg:hidden -mt-8 h-14 w-14 rounded-full bg-yellow-500  flex justify-center items-center shadow-md'>
+            className='lg:hidden -mt-6 h-14 w-14 rounded-full bg-yellow-500 text-white flex justify-center items-center shadow-md'>
           <FaPlus size={22}/>
         </div>
         <LinkItem navs={homePage} title="" slice={[2,4]} /> 

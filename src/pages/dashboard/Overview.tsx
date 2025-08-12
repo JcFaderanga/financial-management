@@ -54,7 +54,7 @@ const OverView = () => {
         {/* Overview Section */}
         <section className="pt-4 sticky top-0 bg-white dark:bg-dark dark:border-medium-dark lg:hidden">
           <OverViewPage />
-          <div className="lg:hidden mt-2 py-1 text-center border-t border-gray-300 dark:border-light-dark">
+          <div className={`${dateRange.includes('-') ? 'block' : 'hidden'} lg:hidden mt-2 py-1 text-center border-t border-gray-300 dark:border-light-dark`}>
               <p className='text-sm text-gray-400'>{dateRange}</p>
               <p className='text-sm text-gray-400'>{timeRange}</p>
         </div>
@@ -94,7 +94,7 @@ const OverView = () => {
         </div>
 
         {/* Spend History */}
-        <section className="p-4 bg-white border border-gray-300 dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl dark:bg-transparent">
+        <section className="lg:px-4 bg-white lg:border border-gray-300 dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl dark:bg-transparent">
           <SpentHistory />
         </section>
       </div>

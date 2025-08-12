@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io"
 
 import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding"
-import { FormatDate, MonthToNumber } from '@/utils/DateFormat'
+import { FormatDate } from '@/utils/DateFormat'
 import { useNavigate } from 'react-router-dom'
 import { useSpendings } from '@/store/useSpendingStore'
 import {
@@ -21,6 +21,7 @@ import { useAllSpendingData } from '@/store/useSpendingStore'
 import { useThisMonth } from '@/store/useCalendarStore'
 import { useFetchLoader } from '@/store/useSpendingStore'
 import CalendarSkeleton from './CalendarSkeleton'
+import millify from 'millify'
 const Calendar = () => {
   const { handleFetchAllSpendings } = useFetchAllSpending();
   const {allSpentData: data} = useAllSpendingData();
@@ -117,10 +118,10 @@ const Calendar = () => {
     }),
   }
 
-  function formatNumberDisplay(num: number, value: string | number) {
-    const formatted = value.toLocaleString()
-    return formatted.length > num ? formatted.slice(0, num) + '...' : formatted
-  }
+  // function formatNumberDisplay(num: number, value: string | number) {
+  //   const formatted = value.toLocaleString()
+  //   return formatted.length > num ? formatted.slice(0, num) + '...' : formatted
+  // }
 
   if(isLoading) return <CalendarSkeleton/>
 return(
@@ -134,18 +135,18 @@ return(
             <button onClick={handlePrev} className='px-1 border border-gray-300 dark:border-light-dark rounded-md cursor-pointer h-7 dark:text-white'>
               <IoMdArrowDropleft size={20}/>
             </button>
-            <div className='cursor-pointer border border-gray-300 dark:border-light-dark flex justify-center items-center gap-0.5 rounded-md h-7 w-18 lg:w-30 font-bold'>
+            <div className='cursor-pointer border border-gray-300 dark:border-light-dark flex justify-center items-center gap-0.5 rounded-md h-7 w-30 lg:w-30 font-bold'>
                 
-                <span className="hidden text-xs lg:flex dark:text-white">
+                <span className=" text-xs lg:flex dark:text-white">
                   {format(currentMonth, 'MMMM')}
                 </span>
-                <span className="text-xs lg:hidden dark:text-white">
+                {/* <span className="text-xs lg:hidden dark:text-white">
                   {MonthToNumber(format(currentMonth, 'MMMM'))} /
-                </span>
-
+                </span> */}
                 <span className="text-xs dark:text-white">
                   {format(currentMonth, 'yyyy')}
                 </span>
+
             </div>
             <button onClick={handleNext} className='px-1 border border-gray-300 dark:border-light-dark rounded-md cursor-pointer h-7 dark:text-white'>
               <IoMdArrowDropright size={20}/>
@@ -201,9 +202,9 @@ return(
                     </div>
                     {amount && (
                       <div className="text-[#eb4b6d] font-semibold py-1 text-[8px] md:text-sm">
-                        -<span className='hidden md:inline-block'></span>
-                        <span className='sm:hidden '>{String(formatNumberDisplay(5, amount))}</span>
-                        <span className='hidden sm:inline'>{String(formatNumberDisplay(8, amount))}</span>
+                        <span className='hidden md:inline-block'></span>
+                        <span className='sm:hidden '>₱{String(millify(amount))}</span>
+                        <span className='hidden sm:inline'>₱{millify(amount)}</span>
                       </div>
                     )}
                     <div className='hidden h-5 md:block'></div>

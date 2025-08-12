@@ -1,41 +1,34 @@
-import { 
-  IoFastFoodOutline,
-  IoGameControllerOutline,
-  IoGiftOutline,
-  IoBusinessOutline,
-  IoPhonePortraitOutline,
-  IoPeopleOutline  } from "react-icons/io5";
-import { GrMapLocation } from "react-icons/gr";
-import { PiJeep ,PiGraduationCap,PiShoppingCartSimple  } from "react-icons/pi";
+import { ReactNode } from "react";
+import { IoPeopleOutline, IoBusiness, IoCart, IoNewspaperSharp, IoFastFoodSharp, IoGiftSharp, IoCardSharp, IoPhonePortrait } from "react-icons/io5";
+import { GiGraduateCap, GiConsoleController } from "react-icons/gi";
 import { LiaGrinHeartsSolid } from "react-icons/lia";
-import { HiOutlineNewspaper } from "react-icons/hi2";
-import { BsCashCoin } from "react-icons/bs";
+import { FaBusAlt } from "react-icons/fa";
+import { FaMapLocationDot } from "react-icons/fa6";
 import { CgData } from "react-icons/cg";
 import { GrMore } from "react-icons/gr";
 import { RiBilliardsLine } from "react-icons/ri";
-import { ReactNode } from "react";
 
-export const itemCategory: Array<string> = [
-    "Bills", "Education", "Food", "Games", "Gifts", "Hotel", "Load", "Lottery",
-    "Others", "Payments", "Phone", "Shopping", "Social", "Staycation",
-    "Transportation", "Wants"
-  ];
+export const itemCategory: string[] = [
+  "Bills", "Education", "Food", "Games", "Gifts", "Hotel", "Load", "Lottery",
+  "Others", "Payments", "Phone", "Shopping", "Social", "Staycation",
+  "Transportation", "Wants"
+];
 
-export const Icon: Record<string, ReactNode> ={
-Food: <IoFastFoodOutline/>,
-Games: <IoGameControllerOutline/>,
-Gifts: <IoGiftOutline/>,
-Hotel: <IoBusinessOutline/>,
-Phone: <IoPhonePortraitOutline/>,
-Social: <IoPeopleOutline/>,
-Staycation: <GrMapLocation/>,
-Transportation: <PiJeep/>,
-Wants: <LiaGrinHeartsSolid/>,
-Bills: <HiOutlineNewspaper/>,
-Education: <PiGraduationCap/>,
-Shopping: <PiShoppingCartSimple/>,
-Payments: <BsCashCoin/>,
-Load: <CgData/>,
-Others: <GrMore/>,
-Lottery: <RiBilliardsLine/>,
-}
+export const CategoryIcon: Record<string, ReactNode> = {
+  Food: <IoFastFoodSharp />,
+  Games: <GiConsoleController />,
+  Gifts: <IoGiftSharp />,
+  Hotel: <IoBusiness />,
+  Phone: <IoPhonePortrait />,
+  Social: <IoPeopleOutline />,
+  Staycation: <FaMapLocationDot />,
+  Transportation: <FaBusAlt />,
+  Wants: <LiaGrinHeartsSolid />,
+  Bills: <IoNewspaperSharp />,
+  Education: <GiGraduateCap />,
+  Shopping: <IoCart />,
+  Payments: <IoCardSharp />,
+  Load: <CgData />,
+  Others: <GrMore />,
+  Lottery: <RiBilliardsLine />,
+};

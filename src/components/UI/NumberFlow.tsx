@@ -1,5 +1,7 @@
 import React from 'react';
 import NumberFlow from '@number-flow/react'
+
+
 type NumberFlowProp = {
  value: number | string;
  currency?: string;

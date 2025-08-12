@@ -15,6 +15,7 @@ import { CalulateTotal,TotalPerDayAndMonth } from '@/utils/itemFormat'
 import { useAllSpendingData } from '@/store/useSpendingStore'
 import Calendar from './Calendar'
 import { useThisMonth } from '@/store/useCalendarStore'
+
 const SpentCalendar = () => {
   const { handleFetchAllSpendings } = useFetchAllSpending();
   const {allSpentData: data} = useAllSpendingData();
@@ -22,7 +23,7 @@ const SpentCalendar = () => {
   const [allTotal, setAllTotal] = useState<number>(0)
   const [monthlyTotal, setMonthlyTotal] = useState<number>(0)
   const {currentMonth} = useThisMonth();
-  const [averageDaily, SetAverageDaily] = useState<number>(0)
+  // const [averageDaily, SetAverageDaily] = useState<number>(0)
   const {setDate: setStoreDate} = useOverviewDateStore()
   const navigate = useNavigate()
  
@@ -32,7 +33,7 @@ const SpentCalendar = () => {
     const date = new TotalPerDayAndMonth( data, currentMonth );
 
     setMonthlyTotal(date.getTotalPerMonth())
-    SetAverageDaily(date.getDailySpentAverage())
+    // SetAverageDaily(date.getDailySpentAverage())
 
   }, [data, currentMonth])
 
@@ -102,7 +103,7 @@ return(
                 />
             </div>
           </div>
-          <div className='dark:text-white'>
+          {/* <div className='dark:text-white'>
             <strong className='text-sm dark:text-white'>Daily Spent Average</strong>
             <div className="text-[#eb4b6d] text-2xl font-bold">
               <NumberFlowUI
@@ -111,7 +112,7 @@ return(
                   style='currency'
                 />
             </div>
-          </div>
+          </div> */}
           <div className='dark:text-white'>
             <FaAngleRight size={18} />
           </div>
@@ -135,7 +136,7 @@ return(
                 />
             </div>
           </div>
-          <div className='dark:text-white'>
+          {/* <div className='dark:text-white'>
             Daily Spent Average
             <div className="text-[#eb4b6d] text-2xl font-bold">
               <NumberFlowUI
@@ -144,7 +145,7 @@ return(
                   style='currency'
                 />
             </div>
-          </div>
+          </div> */}
           <div className='dark:text-white'>
             <FaAngleRight size={18} />
           </div>

@@ -20,6 +20,7 @@
     "date-fns": "^4.1.0",
     "express": "^5.1.0",
     "framer-motion": "^12.23.11",
+    "millify": "^6.1.0",
     "number-flow": "^0.5.8",
     "react": "^19.1.0",
     "react-chartjs-2": "^5.3.0",

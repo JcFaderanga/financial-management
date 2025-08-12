@@ -69,15 +69,16 @@ const SpentHistory = () => {
     setModal(!isModal);
     setChild(<GroupSpending groupId={data?.grouped_in}/>)
   },[isItemEdit,isModal])
-  
+
   return (
     <div className={`${spendingIsHidden && 'bg-slate-100'}`}>
       <header className={` flex justify-between items-center`}>
-          <strong className='text-dark dark:text-white'>Spendings</strong>
-          <div className='hidden md:block'>
+          {/* <strong className='text-dark dark:text-white'>Spendings</strong> */}
+          <div className={`hidden py-4 mx-auto ${dateRange.includes('-') && 'md:block'}`}>
               <p className='text-sm text-gray-400'>{dateRange}</p>
               <p className='text-sm text-gray-400'>{timeRange}</p>
           </div>
+
       </header>
       <div className={`${spendingIsHidden && 'hidden'} w-full pb-10`}>
         {toastList.length > 0 && (

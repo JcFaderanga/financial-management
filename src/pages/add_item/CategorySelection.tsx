@@ -1,6 +1,6 @@
 import {useState, useCallback} from 'react'
 import OverviewDate from '@/hooks/OverviewDate'
-import { itemCategory,Icon} from '@/utils/DropDownList'
+import { itemCategory,CategoryIcon} from '@/utils/DropDownList'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -39,7 +39,7 @@ const menu = useCallback( (val: string) =>{
                                 `}
                             onClick={()=>menu(item  === category ? '' : item)}
                             >
-                            <div className='flex justify-center text-2xl'>{Icon[item]}</div>
+                            <div className='flex justify-center text-2xl'>{CategoryIcon[item]}</div>
                             <p className='text-xs'>{item}</p>
                         </span>
                     )
