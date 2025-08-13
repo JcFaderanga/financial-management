@@ -43,7 +43,6 @@ const uniqueTitle: string[] = [
   ...new Set(uniqueItem?.map((item: any) => item.title))
 ];
 
-console.log(uniqueSubcategory)
 
 // field validation
 useEffect(()=>{
@@ -56,16 +55,17 @@ useEffect(()=>{
       return;
     }
 
-    //checkin if title and price is not empty
+    //check if title and price is not empty
     if(title && price){
         setBtnDisable(false)
         setPriceError(false);
     }
 },[title,price, category])
 
+
 const handleSave = useCallback(async()=>{
 
-  //check if price is null
+  //check if price is null or below 0
   if(Number(price) <= 0){
       setPriceError(true);
       return;
@@ -91,13 +91,15 @@ const handleSave = useCallback(async()=>{
       created_at: createdDate
     };
 
+ console.log('spent',spent)
+   
     //save item to db and fetch
     const spentRes = await handleSaveItem(spent);
 
     //save item as state using zustand
     setSpendItems([...spendings || [], spentRes?.[0]])
 
-    //check if the item is exsisting then save to db if not.
+    //check if the item is existing then save to db if not.
     handleUniqueItem(spent);
 
     //reset fields
@@ -105,9 +107,9 @@ const handleSave = useCallback(async()=>{
     setPrice('')
     setBtnDisable(false)
 
-    //navifate back to records
+    //navigate back to records
     navigate('/')
-},[category, price])
+},[category, price, title])
 
  if(loading) return 'Loading...';
     return (
