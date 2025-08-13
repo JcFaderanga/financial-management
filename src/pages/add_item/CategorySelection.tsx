@@ -19,7 +19,7 @@ const menu = useCallback( (val: string) =>{
 },[isInputDisabled , category])
 
   return (
-    <section className='relative dark:bg-dark h-screen max-w-7xl mx-auto'>
+    <section className='  h-screen w-full mx-auto fixed top-0 left-0 z-[99999]'>
       <header className={` flex justify-between item-center p-4 cursor-pointer`}>
            <strong className=' text-dark dark:text-white'>
             <span>{dateRange}</span>

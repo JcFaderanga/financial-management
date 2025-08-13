@@ -6,26 +6,23 @@ import supabase from '@/lib/supabase';
 import SpentTable from './SpentTable';
 // import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
 import OverviewDate from '@/hooks/OverviewDate';
-import SpentEdit from './SpentEdit';
 import GroupSpending from './GroupSpending';
 // Action buttons (Edit, Delete)
 import { useActionItem } from '@/store/useActionItem';
 import { NoRecord } from '@/components/NoRecord';
 import { useModal } from '@/store/useModal';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const SpentHistory = () => {
   const { spendings, setSpendItems } = useSpendings();
   const [toastList, setToastList] = useState<itemTypes[]>([]);
-  const [isItemEdit, setIsItemEdit] = useState<boolean>(false);
   const [spendingIsHidden] = useState<boolean>(false);
   const {dateRange, timeRange} = OverviewDate();
   const {setSelected} = useActionItem()
   const {isModal, setChild,setModal} = useModal();
 
-  useEffect(()=>{
-    if(!isItemEdit)
-    setSelected(null)
-  },[isItemEdit])
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Auto-remove toast and delete item permanently
   useEffect(() => {
@@ -60,15 +57,20 @@ const SpentHistory = () => {
   },[]);
 
   const handleEdit= useCallback((data: itemTypes)=>{
-    setIsItemEdit(!isItemEdit)
-    setModal(!isModal);
-    setChild(<SpentEdit itemProps={data}/>)
-  },[isItemEdit,isModal])
+
+    navigate(`/item/${data.id}`, {
+        state: { 
+          backgroundLocation: location,
+          data: data  
+        }
+      }, );
+
+  },[])
 
   const handleGroup = useCallback((data: itemTypes)=>{
     setModal(!isModal);
     setChild(<GroupSpending groupId={data?.grouped_in}/>)
-  },[isItemEdit,isModal])
+  },[isModal])
 
   return (
     <div className={`${spendingIsHidden && 'bg-slate-100'}`}>

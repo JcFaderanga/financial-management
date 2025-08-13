@@ -1,12 +1,11 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { CustomTable, CustomRow, CustomData } from '../../tables'; 
 import { itemTypes } from '@/types/itemTypes';
 import { useSpendingExcluded } from '@/store/useSpendingStore';
 import { useCategoryColors } from '@/store/useCatogoryColors';
-import { useModal } from '@/store/useModal';
-import SpentEdit from './SpentEdit';
 import { CategoryIcon } from '@/utils/DropDownList';
 import {format} from 'date-fns'
+
 type SpentTableProps = {
   data: itemTypes[];
   toastList: any;
@@ -15,18 +14,9 @@ type SpentTableProps = {
   handleGroup: (spent: itemTypes)=> void;
 };
 
-const SpentTable = ({ data }: SpentTableProps) => {
+const SpentTable = ({ data ,handleEdit}: SpentTableProps) => {
   const { excluded } = useSpendingExcluded();
   const { colors: categoryColors } = useCategoryColors();
-  const { setModal, setChild, isModal } = useModal();
-
-  const selectedItem = useCallback(
-    (item: itemTypes) => {
-      setModal(!isModal);
-      setChild(<SpentEdit itemProps={item} />);
-    },
-    [isModal]
-  );
 
   // Group items by date
   const groupedData = useMemo(() => {
@@ -54,36 +44,37 @@ const SpentTable = ({ data }: SpentTableProps) => {
           
           <CustomTable>
             <tbody>
-              {items.map((spent: itemTypes) => {
+              {[...items].reverse().map((spent: itemTypes) => {
                 const catBg = categoryColors.find(c => c.category === spent.category)?.color;
                 return (
-                  <CustomRow
-                    key={spent.id}
-                    className={`
-                      cursor-pointer hover:bg-slate-50 dark:hover:bg-light-dark dark:border-light-dark
-                      border-b border-gray-100
-                      ${excluded?.includes(spent?.category) && 'hidden'}
-                    `}
-                    onClick={() => selectedItem(spent)}
-                  >
-                    <CustomData className="dark:text-white flex items-center py-4">
-                      <span
-                        className="text-2xl font-bold text-white px-1 rounded-full mr-2"
-                        style={{ color: catBg }}
-                      >
-                        {CategoryIcon[spent?.category!]}
-                      </span>
-                      <div className="flex flex-col">
-                        <p className="text-sm font-semibold md:text-base">{spent.title}</p>
-                      </div>
-                    </CustomData>
+                    
+                    <CustomRow key={spent.id} onClick={()=>handleEdit(spent)}
+                      className={`
+                        cursor-pointer hover:bg-slate-50 dark:hover:bg-light-dark dark:border-light-dark
+                        border-b border-gray-100 flex justify-between w-full
+                        ${excluded?.includes(spent?.category) && 'hidden'}
+                      `}>
+                      <CustomData className="dark:text-white flex items-center py-4">
+                        <span
+                          className="text-2xl font-bold text-white px-1 rounded-full mr-2"
+                          style={{ color: catBg }}
+                        >
+                          {CategoryIcon[spent?.category!]}
+                        </span>
+                        <div className="flex flex-col">
+                          
+                          <p className="text-sm font-semibold md:text-base">{spent.title}</p>
+                          <p className="text-xs leading-2.5 text-gray-400 font-semibold md:text-base">{spent.sub_category}</p>
+                        </div>
+                      </CustomData>
 
-                    <CustomData className="text-right dark:text-white">
-                      <p className="text-sm font-semibold text-red-400 md:text-base">
-                        -₱{spent?.price?.toLocaleString()}
-                      </p>
-                    </CustomData>
-                  </CustomRow>
+                      <CustomData className="text-right dark:text-white">
+                        <p className="text-sm font-semibold text-red-400 md:text-base">
+                          -₱{spent?.price?.toLocaleString()}
+                        </p>
+                      </CustomData>
+                    </CustomRow>
+                 
                 );
               })}
             </tbody>

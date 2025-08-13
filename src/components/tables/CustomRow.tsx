@@ -8,7 +8,7 @@ const CustomRow = (
   }:{
     children: ReactNode,
     className?: string,
-    onClick: () => void
+    onClick?: () => void
   }) => {
   return (
     <tr onClick={onClick} className={` ${className ?? className}`}>

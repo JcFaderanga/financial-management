@@ -10,14 +10,14 @@ import SpentSummary from "@/components/dashboard/SpentSummary";
 import OverviewDate from "@/hooks/OverviewDate";
 import { ClipLoader } from "react-spinners";
 import {format} from "date-fns"
-import { Link } from "react-router-dom";
+import { Link  } from "react-router-dom";
 const OverView = () => {
   const { handleFetchAllSpendings } = useFetchAllSpending();
   const { setSpendItems, spendings } = useSpendings();
   const { dateRange,timeRange } = OverviewDate();
   // const {setModal,setChild, isModal} = useModal();
   const [loading, setLoading] = useState<boolean>(false)
-  
+
   useEffect(() => {
     
     const fetch = async () => {
@@ -46,7 +46,7 @@ const OverView = () => {
         )
       }
   return (
-    <div className="grid gap-4 px-4 lg:py-6 mx-auto transition max-w-7xl lg:grid-cols-3 dark:bg-dark dark:text-white">
+    <div className="grid gap-4 px-4 lg:py-6 mx-auto transition max-w-7xl lg:grid-cols-3 dark:bg-dark dark:text-white overflow-hidden lg:overflow-clip">
 
       {/* Left Column (spans 2 columns on large screens) */}
       <div className="space-y-4 lg:col-span-2 ">
@@ -63,13 +63,17 @@ const OverView = () => {
 
         {/* Add Item Button Desktop only*/}
           <div className="hidden lg:block border border-gray-300 dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl px-4 py-5.5 ">
-            <button
-              className={`
-                ${FormattedUTCDate(dateRange) == "invalid date" && 'hidden'}
-                px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:hover:bg-light-dark cursor-pointer dark:bg-dark dark:text-white`}
-            >
-              <Link to={`/add/category`}>Add Item</Link>
-            </button>
+
+              <Link to={`/add/category`}>
+                <button
+                  className={`
+                    ${FormattedUTCDate(dateRange) == "invalid date" && 'hidden'}
+                    px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:hover:bg-light-dark cursor-pointer dark:bg-dark dark:text-white`}
+                    >
+                    Add Item
+                </button>
+              </Link>
+            
             
             <button className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:hover:bg-light-dark cursor-pointer dark:bg-dark dark:text-white mx-1">
               Today

@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
         const html = document.documentElement;
         if (dark) {
           html.classList.add('dark');
-          document.body.style.backgroundColor = '#121212';
+          document.body.style.backgroundColor = '#161B21';
           localStorage.setItem('theme', 'dark');
         } else {
           html.classList.remove('dark');
