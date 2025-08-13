@@ -5,6 +5,7 @@ import useFetchGroupItem from '@/hooks/spend_items/useFetchGroupItem'
 import supabase from '@/lib/supabase'
 import SubmitButton from '@/components/button/SubmitButton'
 import { useUserStore } from '@/store/useUserStore'
+import { itemCategory } from '@/utils/DropDownList'
 const AddGroup = ({
     handleCheckboxChange,
     setIsAddGroup,
@@ -53,7 +54,7 @@ const AddGroup = ({
     if(isAdding){
         return(
             <div className='px-4 py-4 border-b border-slate-300'>
-                <CustomDropdown onChange={(val)=>setCategory(val)} isActive={category}/>
+                <CustomDropdown onChange={(val)=>setCategory(val)} isActive={category} options={itemCategory}/>
 
                     <CustomInput 
                         value={title} type='string' 
