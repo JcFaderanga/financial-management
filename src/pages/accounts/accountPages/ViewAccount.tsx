@@ -23,7 +23,7 @@ const ViewAccount = () => {
 
     async function updateAmount(){
         
-        currentAccount.amount += Number(amount);
+        currentAccount.amount = Number(amount);
 
         await supabase
             .from('accounts')
