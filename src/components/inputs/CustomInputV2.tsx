@@ -11,7 +11,7 @@ interface InputProps {
 const CustomInputV2 = ({ value, type, placeholder, disabled, onChange }: InputProps) => {
   return (
     <input
-      className={`px-3 py-2 w-full my-2 rounded-xl lg:max-w-72 outline-none transition-all
+      className={`px-3 py-2 w-full my-2 rounded-xl outline-none transition-all
         ${disabled 
           ? 'text-gray-300 !p-0 -mt-1 !rounded-md   font-semibold' 
           : ' bg-gray-100 dark:bg-dark'

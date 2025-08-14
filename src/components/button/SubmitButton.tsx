@@ -1,6 +1,7 @@
 import React from "react";
-const SubmitButton = ({title, onClick, disabled}:{
-    title: string;
+const SubmitButton = ({title, onClick, disabled, className}:{
+    title: string,
+    className?: string,
     onClick: ()=> void,
     disabled?: boolean
 }) => {
@@ -10,7 +11,8 @@ const SubmitButton = ({title, onClick, disabled}:{
     disabled = {disabled}
         className={`cursor-pointer w-full
         ${disabled ?'bg-gray-300 ' :'bg-blue-500'}
-             px-4 py-2 rounded-xl text-white font-bold lg:max-w-72`}
+        ${className}
+             px-4 py-2 rounded-xl text-white font-bold`}
     >{title}
     </button>
   )
