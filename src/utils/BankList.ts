@@ -5,6 +5,7 @@ export type BankType= {
 }
 
 export const BankList = [
+  { key: 0, name: "Cash", code: "CASH" },
   { key: 1, name: "Bank of the Philippine Islands(BPI)", code: "BPI" },
   { key: 2, name: "Metrobank", code: "MB" },
   { key: 3, name: "Philippine National Bank", code: "PNB" },
