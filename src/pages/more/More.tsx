@@ -1,5 +1,6 @@
 import useDocumentTitle from '@/hooks/document/useDocTitle'
 import { useState, useEffect } from 'react';
+import { signOut } from '@/utils/authService'
 import { LuLogOut } from "react-icons/lu";
 
 const Liabilities = () => {
@@ -34,7 +35,7 @@ const Liabilities = () => {
 
         <div className='flex items-center justify-between h-14 px-4 my-2 dark:bg-light-dark rounded-xl'>
         <strong className='dark:text-white text-dark '>Sign Out</strong>
-            <div onClick={() => setDark(!dark)} className='flex text-2xl dark:text-white cursor-pointer'>
+            <div onClick={() => signOut()} className='flex text-2xl dark:text-white cursor-pointer'>
                 <LuLogOut/>
             </div>
         </div> 
