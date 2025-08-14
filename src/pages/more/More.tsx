@@ -1,6 +1,5 @@
 import useDocumentTitle from '@/hooks/document/useDocTitle'
 import { useState, useEffect } from 'react';
-import { signOut } from '@/utils/authService'
 import { LuLogOut } from "react-icons/lu";
 
 const Liabilities = () => {
