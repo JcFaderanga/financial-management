@@ -27,7 +27,7 @@ const {account: accountStore,setAccount} =useAccountStore();
             amount: Number(amount),
             account_owner: user.id,
         }
-
+        console.log(account)
         const res = await handleInsertAccount(account);
 
         const isExisting = accountStore.filter((acc)=> acc.account_code === selectedBank.code)
