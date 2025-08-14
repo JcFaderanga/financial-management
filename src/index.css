@@ -89,3 +89,22 @@
   background-size: 1000px 100%;
   animation: shimmer 2s infinite linear;
 }
+
+ progress {
+    @apply w-full h-2 rounded-lg;
+    appearance: none; /* Remove default style */
+  }
+
+  /* For WebKit browsers */
+  progress::-webkit-progress-bar {
+    @apply bg-gray-300 rounded-lg;
+  }
+
+  progress::-webkit-progress-value {
+    @apply bg-green-500 rounded-lg;
+  }
+
+  /* For Firefox */
+  progress::-moz-progress-bar {
+    @apply bg-green-500 rounded-lg;
+  }

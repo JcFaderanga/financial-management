@@ -3,9 +3,10 @@ import type { NavType } from "@/types/NavigationTypes";
 import NavChild from "./navChild";
 import { useMenuStore } from "@/store/useMenuToggle";
 import { IoSettings } from "react-icons/io5";
-import { FaChartPie } from "react-icons/fa";
+import { FaChartPie ,FaWallet } from "react-icons/fa";
 import { RiFileList3Fill } from "react-icons/ri";
 import { HiMenuAlt3 } from "react-icons/hi";
+
 const LinkItem = ({
   slice,
   navs,
@@ -28,6 +29,7 @@ const LinkItem = ({
 const icon:any = {
   overview: <RiFileList3Fill />, 
   Analytics: <FaChartPie/>,
+  wallet: <FaWallet/>,
   settings: <IoSettings/>,
   more: <HiMenuAlt3/>
 };

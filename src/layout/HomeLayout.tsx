@@ -7,11 +7,12 @@ import CustomModalFullScreen from '@/components/modal/CustomModalFullScreen';
 import { useModal, useModalFull } from '@/store/useModal';
 import  BottomTabBar  from '@/components/bottomTab/BottomTabBar';
 
+
 const HomeLayout = () => {
   const { isMenuActive } = useMenuStore();
   const {isModal, children} = useModal();
   const {isModalFS, children: ChildFS} = useModalFull();
-  
+
   return (
     <>
       <CustomModal hidden={isModal} children={children}/>

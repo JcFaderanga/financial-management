@@ -3,8 +3,8 @@ export const navItems: NavType[] = [
 
     { id: "overview", label: "Records", path: "/dashboard/overview", category: "homePage" },
     { id: "Analytics", label: "Analytics", path: "/dashboard/spending_analysis", category: "homePage" },
-    { id: "settings", label: "Settings", path: "/liabilities", category: "homePage" },
-    { id: "more", label: "More", path: "/transaction", category: "homePage" },
+    { id: "wallet", label: "Wallet", path: "/wallet", category: "homePage" },
+    { id: "more", label: "More", path: "/more", category: "homePage" },
     // { 
     //   id: "dashboard",
     //   label: "Dashboard",
