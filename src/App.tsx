@@ -5,7 +5,7 @@ import Login from '@/pages/auth/Login';
 import HomeLayout from '@/layout/HomeLayout';
 import BankAccounts from '@/pages/accounts/BankAccounts';
 import SocialAccounts from './pages/accounts/SocialAccounts';
-import Deposit from './pages/accounts/accountPages/deposit';
+import Deposit from './pages/accounts/accountPages/Deposit';
 import More from '@/pages/more/More'
 // import Settings from '@/pages/Settings/Settings';
 import Bills from '@/pages/bills/Bills';
