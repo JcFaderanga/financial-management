@@ -6,11 +6,8 @@ import supabase from '@/lib/supabase';
 import SpentTable from './SpentTable';
 // import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
 import OverviewDate from '@/hooks/OverviewDate';
-import GroupSpending from './GroupSpending';
 // Action buttons (Edit, Delete)
-import { useActionItem } from '@/store/useActionItem';
 import { NoRecord } from '@/components/NoRecord';
-import { useModal } from '@/store/useModal';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const SpentHistory = () => {
@@ -18,8 +15,6 @@ const SpentHistory = () => {
   const [toastList, setToastList] = useState<itemTypes[]>([]);
   const [spendingIsHidden] = useState<boolean>(false);
   const {dateRange, timeRange} = OverviewDate();
-  const {setSelected} = useActionItem()
-  const {isModal, setChild,setModal} = useModal();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,12 +40,6 @@ const SpentHistory = () => {
     return () => clearTimeout(timer);
   }, [toastList, spendings, setSpendItems]);
 
-// console.log('latestSpendings',latestSpendings)
-  const handleDelete = useCallback((item: itemTypes) => {
-    setSelected(null);
-    setToastList(prev => [...prev, item]);
-    
-  },[]);
 
   const handleUndo = useCallback((id: string | number | undefined) => {
     setToastList(prev => prev.filter(item => item.id !== id));
@@ -66,11 +55,6 @@ const SpentHistory = () => {
       }, );
 
   },[])
-
-  const handleGroup = useCallback((data: itemTypes)=>{
-    setModal(!isModal);
-    setChild(<GroupSpending groupId={data?.grouped_in}/>)
-  },[isModal])
 
   return (
     <div className={`${spendingIsHidden && 'bg-slate-100'}`}>
@@ -91,9 +75,6 @@ const SpentHistory = () => {
             <SpentTable 
                 data={spendings}
                 handleEdit={handleEdit}
-                handleDelete={handleDelete}
-                handleGroup={handleGroup}
-                toastList={toastList}
               /> : <div className='flex justify-center w-full'>
                 <NoRecord/>
               </div>

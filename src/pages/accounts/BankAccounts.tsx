@@ -87,19 +87,11 @@ const AccountProgress = ({ title, amount, value }: AccountProgressProps) => {
 // Main Component
 // ========================
 const Accounts = () => {
-  const { account, loading } = useFetchAllAccount();
-  const { account: storedAccount, setAccount } = useAccountStore();
-
-  useEffect(() => {
-    setAccount(account);
-  }, [account, setAccount]);
-
+  
+  const { account: storedAccount } = useAccountStore();
+  
   const current = new BankAccount(storedAccount);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
+  
   return (
     <main className="w-full h-full mx-auto max-w-7xl p-4 flex flex-col gap-2">
       {/* Balance & Actions */}

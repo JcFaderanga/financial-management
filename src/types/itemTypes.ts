@@ -8,6 +8,7 @@ export type itemTypes={
     grouped_in?: string | number ,
     created_at?: any,
     sub_category?: string,
+    mode_of_payment?: string,
 }
 export type datePropertyTypes={
   startDate: string, 
