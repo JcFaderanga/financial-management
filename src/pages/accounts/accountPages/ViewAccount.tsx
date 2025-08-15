@@ -6,7 +6,6 @@ import { useAccountStore } from '@/store/useAccountStore';
 import { AccountType } from '@/types/AccountTypes';
 import NumberFlow from '@/components/UI/NumberFlow';
 import CustomInputV2 from '@/components/inputs/CustomInputV2';
-import { IoIosAddCircleOutline } from "react-icons/io";
 import { IoCheckmark  } from "react-icons/io5";
 import supabase from '@/lib/supabase';
 import useFetchItemByAccount from '@/hooks/spend_items/useFetchItemByAccount';
