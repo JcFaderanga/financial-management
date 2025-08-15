@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
 import { PiHandDeposit } from 'react-icons/pi';
 // import { RiBankLine } from 'react-icons/ri';
 // import useDocumentTitle from '@/hooks/document/useDocTitle';
 import NumberFlow from '@/components/UI/NumberFlow';
-import useFetchAllAccount from '@/hooks/accountHooks/useFetchAllAccount';
 import { useAccountStore } from '@/store/useAccountStore';
 import { BankAccount } from '@/utils/BankAccountFormula';
 import { AccountType } from '@/types/AccountTypes';

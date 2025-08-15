@@ -1,33 +1,29 @@
-import React, { useEffect,useState } from "react";
+import React from "react";
 import useDocumentTitle from "@/hooks/document/useDocTitle";
 import SpentHistory from "@/components/dashboard/spentHistory/SpentHistory";
 // import AddItem from "@/components/dashboard/addItem/AddItem";
-import { useSpendings } from "@/store/useSpendingStore";
-import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding";
 import OverViewPage from "@/components/dashboard/OverView";
 import {FormattedUTCDate } from "@/utils/DateFormat";
 import SpentSummary from "@/components/dashboard/SpentSummary";
 import OverviewDate from "@/hooks/OverviewDate";
-import { ClipLoader } from "react-spinners";
-import {format} from "date-fns"
+
 import { Link  } from "react-router-dom";
 const OverView = () => {
   
   const { dateRange,timeRange } = OverviewDate();
   // const {setModal,setChild, isModal} = useModal();
-  const [loading, setLoading] = useState<boolean>(false)
 
   
   useDocumentTitle("Dashboard - Overview | Finance Management");
 
-  if (loading) {
-        return (
-          <div className='flex justify-center w-full h-screen py-20 dark:text-white'>
-            <span className='dark:hidden'><ClipLoader size={30} /></span>
-            <span className='hidden dark:block'><ClipLoader color={'#ffffff'} size={30} /></span>
-          </div>
-        )
-      }
+  // if (loading) {
+  //       return (
+  //         <div className='flex justify-center w-full h-screen py-20 dark:text-white'>
+  //           <span className='dark:hidden'><ClipLoader size={30} /></span>
+  //           <span className='hidden dark:block'><ClipLoader color={'#ffffff'} size={30} /></span>
+  //         </div>
+  //       )
+  //     }
   return (
     <div className="grid gap-4 px-4 lg:py-6 mx-auto transition max-w-7xl lg:grid-cols-3 dark:bg-dark dark:text-white overflow-hidden lg:overflow-clip">
 
