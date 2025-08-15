@@ -7,22 +7,14 @@ const useFetchAllAccount = () => {
     const [error, setError] = useState<string>('')
     const [account, setAccount] = useState<any>();
     const {user} = useUserStore();
-<<<<<<< HEAD
-=======
-
->>>>>>> develop
     const fetchAccountData = async()=>{
         try{
             setLoading(true);
             const {data, error} = await supabase
                 .from('accounts')
                 .select('*')
-<<<<<<< HEAD
                 .eq('account_owner', user.id)
                 ;
-=======
-                .eq('account_owner', user?.id)
->>>>>>> develop
             
             if(error){
                 setError(error?.message)
