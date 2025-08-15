@@ -50,7 +50,7 @@ export default function ModalSpentEdit() {
   }
 
   return (
-    <ModalWrapper close={() => navigate(-1)}>
+    <ModalWrapper close={() => navigate(-1)} className='px-4'> 
       <div className="bg-white dark:bg-medium-dark rounded-xl p-4 dark:text-white">
         {/* Header */}
         <div className="flex items-center justify-between">

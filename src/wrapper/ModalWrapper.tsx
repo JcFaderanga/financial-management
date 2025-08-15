@@ -1,6 +1,16 @@
 import React from 'react'
 
-const ModalWrapper = ({children, close}:{children: React.ReactNode, close: ()=> void}) => {
+const ModalWrapper = ({
+  children, 
+  close,
+  className,
+  classNameChild
+}:{
+  children: React.ReactNode,
+  className?:string,
+  classNameChild?:string,
+  close: ()=> void
+}) => {
 
     /* use navigate(-1) to close the modal */
     
@@ -17,8 +27,8 @@ const ModalWrapper = ({children, close}:{children: React.ReactNode, close: ()=> 
   return (
     <div
         onClick={close} 
-        className={`fixed top-0 left-0 h-full w-full bg-[rgba(0,0,0,0.6)] z-9999 flex justify-center items-center px-4`}>
-        <div onClick={(e)=>e.stopPropagation()} className=' w-full max-w-2xl'>
+        className={`${className} fixed top-0 left-0 h-full w-full bg-[rgba(0,0,0,0.6)] z-9999 flex justify-center items-center`}>
+        <div onClick={(e)=>e.stopPropagation()} className={`${classNameChild} w-full max-w-2xl`}>
             {children}
         </div>
     </div>

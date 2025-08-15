@@ -4,10 +4,11 @@ interface DropDownProps {
   isActive: any;
   options: string[];
   icon?: Record<string,ReactNode>,
+  initial?: string;
   onChange: (val: string) => void;
 }
 
-const CustomDropdown: React.FC<DropDownProps> = ({ value, isActive, onChange, options }) => {
+const CustomDropdown: React.FC<DropDownProps> = ({ value, isActive, onChange, options, initial = 'Select Category' }) => {
   const [selected, setSelected] = useState<string>(value || "");
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const CustomDropdown: React.FC<DropDownProps> = ({ value, isActive, onChange, op
         className="w-full px-3 py-2 my-2 border border-gray-400 rounded-xl dark:bg-dark dark:text-white"
       >
         <option value="" disabled>
-          Select Category
+          {initial}
         </option>
         {options?.sort().map((word) => (
           <option key={word} value={word}>

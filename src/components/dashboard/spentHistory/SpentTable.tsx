@@ -8,10 +8,7 @@ import {format} from 'date-fns'
 
 type SpentTableProps = {
   data: itemTypes[];
-  toastList: any;
   handleEdit: (spent: itemTypes)=> void;
-  handleDelete: (spent: itemTypes)=> void;
-  handleGroup: (spent: itemTypes)=> void;
 };
 
 const SpentTable = ({ data ,handleEdit}: SpentTableProps) => {
@@ -38,7 +35,7 @@ const SpentTable = ({ data ,handleEdit}: SpentTableProps) => {
       {Object.entries(groupedData).map(([date, items]) => (
         <div key={date} className="mb-4">
           {/* Date heading */}
-          <h2 className="text-sm font-bold rounded-xl py-2 px-4 bg-slate-200 dark:bg-light-dark lg:dark:bg-gray-700 dark:text-white mb-2">
+          <h2 className="text-sm font-bold rounded-xl py-2 px-4 bg-slate-200 dark:bg-medium-dark lg:dark:bg-gray-700 dark:text-white mb-2">
             {date}
           </h2>
           

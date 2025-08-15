@@ -12,29 +12,12 @@ import { ClipLoader } from "react-spinners";
 import {format} from "date-fns"
 import { Link  } from "react-router-dom";
 const OverView = () => {
-  const { handleFetchAllSpendings } = useFetchAllSpending();
-  const { setSpendItems, spendings } = useSpendings();
+  
   const { dateRange,timeRange } = OverviewDate();
   // const {setModal,setChild, isModal} = useModal();
   const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() => {
-    
-    const fetch = async () => {
-      setLoading(true);
-      const res = await handleFetchAllSpendings(format(new Date(),"yyyy-MM-dd"));     //convert date to yyyy-mm-dd, e.g. 2025-08-01
-      if (res) {
-        setSpendItems?.(res);
-      }
-      setLoading(false);
-    };
-
-    if (!spendings) {
-      fetch();
-    }
-    
-  }, []);
-
+  
   useDocumentTitle("Dashboard - Overview | Finance Management");
 
   if (loading) {

@@ -13,6 +13,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const navigate = useNavigate();
   const [checking, setChecking] = useState(true);
   
+  
   const dark = localStorage.theme === 'dark';
     useEffect(() => {
         const html = document.documentElement;
@@ -27,6 +28,8 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
         }
       }, [dark]);
       
+
+
   useEffect(() => {
     let unsub: () => void;
 

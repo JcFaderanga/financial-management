@@ -26,3 +26,4 @@ export class BankAccount{
        return percent.toFixed(2);
     }
 }
+

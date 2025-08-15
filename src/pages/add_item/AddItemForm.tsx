@@ -10,8 +10,9 @@ import OverviewDate from '@/hooks/OverviewDate'
 import { getCurrentLocalTime } from '@/utils/DateFormat'
 import {format} from "date-fns"
 import { useNavigate, useParams } from 'react-router-dom'
-
+import CustomDropdown from '@/components/inputs/CustomDropdown'
 import { IoCheckmark ,IoCloseOutline  } from "react-icons/io5";
+import { useAccountStore } from '@/store/useAccountStore'
 
 const AddItemForm = () => {
 const { category } = useParams(); 
@@ -19,6 +20,7 @@ const {setSpendItems, spendings} =useSpendings();
 const {user} = useUserStore();
 const [title, setTitle] = useState<string | undefined>('');
 const [price, setPrice] = useState<string>('');
+const [bank, setBank] = useState<string>('');
 const [subCategory, setSubCategory] = useState<string | undefined>('');
 const [tempSub, setTemp] = useState<string | undefined>('');
 const [tempTitle, setTempTitle] = useState<string | undefined>('');
@@ -27,6 +29,7 @@ const [isAddTitle, setAddTitle] = useState<boolean>(false)
 const [priceError, setPriceError] = useState<boolean>(false);
 const [btnDisable, setBtnDisable] = useState<boolean>(true);
 const {handleSaveItem} = UseSaveItem();
+const {account} = useAccountStore();
 const {handleUniqueItem, fetchUniqueList, uniqueItem, loading} = useUniqueItemList()
 const {dateRange} = OverviewDate();
 const navigate = useNavigate();
@@ -43,6 +46,9 @@ const uniqueTitle: string[] = [
   ...new Set(uniqueItem?.map((item: any) => item.title))
 ];
 
+const currentAccount: string[] =[
+    ...new Set(account?.map((acc)=> acc.account_code))
+]
 
 // field validation
 useEffect(()=>{
@@ -88,7 +94,8 @@ const handleSave = useCallback(async()=>{
       price: Number(price),
       category: category,
       sub_category: subCategory,
-      created_at: createdDate
+      mode_of_payment: bank,
+      created_at: createdDate,
     };
 
  console.log('spent',spent)
@@ -97,7 +104,7 @@ const handleSave = useCallback(async()=>{
     const spentRes = await handleSaveItem(spent);
 
     //save item as state using zustand
-    setSpendItems([...spendings || [], spentRes?.[0]])
+    setSpendItems([...spendings || [], spentRes])
 
     //check if the item is existing then save to db if not.
     handleUniqueItem(spent);
@@ -244,6 +251,12 @@ const handleSave = useCallback(async()=>{
                 </div>
                 <div className='flex flex-col w-full lg:max-w-2/5 py-4 lg:dark:bg-light-dark rounded-2xl'>
                     <div className='mx-auto'>
+                        <CustomDropdown 
+                            options={currentAccount?.map((i)=>i)}
+                            onChange={(e)=>setBank(e)}
+                            isActive={true}
+                            initial='Mode of payment'
+                        />
                         <CustomInput 
                             value={price} type='number' 
                             placeholder={'Enter Price'} 
