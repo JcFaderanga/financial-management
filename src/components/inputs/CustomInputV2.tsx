@@ -14,8 +14,8 @@ const CustomInputV2 = ({ value, type, placeholder, disabled, className, onChange
     <input
       className={`px-3 py-2 w-full my-2 rounded-xl outline-none transition-all
         ${disabled 
-          ? 'text-gray-300 !p-0 -mt-1 !rounded-md   font-semibold' 
-          : ' bg-gray-100 dark:bg-dark'
+          ? ' dark:text-gray-300 !p-0 -mt-1 !rounded-md font-semibold' 
+          : '!bg-white dark:bg-dark'
         }
         ${className}
         focus:bg-blue-50 focus:border-blue-400 focus:ring-2 focus:ring-blue-300 

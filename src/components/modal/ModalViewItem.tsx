@@ -84,7 +84,7 @@ export default function ModalSpentEdit() {
                 <SubmitButton
                   onClick={() => setIsDelete(false)}
                   title="Cancel"
-                  className="bg-transparent border"
+                  className="bg-transparent border border-gray-300 !text-black dark:!text-white"
                 />
               </div>
             </>
@@ -92,7 +92,7 @@ export default function ModalSpentEdit() {
             <SubmitButton
               onClick={() => setIsDelete(true)}
               title="Delete"
-              className="bg-transparent border"
+              className="dark:bg-transparent dark:border dark:border-white dark:!text-white bg-gray-200 !text-black "
             />
           )}
         </div>
@@ -162,7 +162,7 @@ function ItemRow({
   }, [value, id, title, spendings, setSpendItems]);
 
   return (
-    <div className="py-2 px-4 rounded-xl bg-light-dark">
+    <div className="py-2 px-4 rounded-xl bg-gray-100 dark:bg-light-dark">
       <p className="md:text-base text-sm text-gray-400">{title}</p>
       <div className="flex items-center w-full">
         <CustomInputV2
@@ -173,7 +173,7 @@ function ItemRow({
           disabled={!toEdit}
         />
         <div
-          className="ml-2 p-3 bg-gray-200 dark:bg-dark rounded-xl h-fit cursor-pointer"
+          className="ml-2 p-3 bg-white dark:bg-dark rounded-xl h-fit cursor-pointer"
           onClick={() => {
             if (toEdit) {
               save();
