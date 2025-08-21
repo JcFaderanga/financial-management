@@ -20,7 +20,7 @@ const {setSpendItems, spendings} =useSpendings();
 const {user} = useUserStore();
 const [title, setTitle] = useState<string | undefined>('');
 const [price, setPrice] = useState<string>('');
-const [bank, setBank] = useState<string>('');
+const [modeOfPayment, setModeOfpPayment] = useState<string>('');
 const [subCategory, setSubCategory] = useState<string | undefined>('');
 const [tempSub, setTemp] = useState<string | undefined>('');
 const [tempTitle, setTempTitle] = useState<string | undefined>('');
@@ -32,6 +32,9 @@ const {handleSaveItem} = UseSaveItem();
 const {account} = useAccountStore();
 const {handleUniqueItem, fetchUniqueList, uniqueItem, loading} = useUniqueItemList()
 const {dateRange} = OverviewDate();
+
+console.log('subCategory',subCategory)
+
 const navigate = useNavigate();
 
 useEffect(() => {
@@ -62,11 +65,11 @@ useEffect(()=>{
     }
 
     //check if title and price is not empty
-    if(title && price){
+    if(title && price && subCategory && modeOfPayment){
         setBtnDisable(false)
         setPriceError(false);
     }
-},[title,price, category])
+},[title,price, category, subCategory , modeOfPayment])
 
 
 const handleSave = useCallback(async()=>{
@@ -94,7 +97,7 @@ const handleSave = useCallback(async()=>{
       price: Number(price),
       category: category,
       sub_category: subCategory,
-      mode_of_payment: bank,
+      mode_of_payment: modeOfPayment,
       created_at: createdDate,
     };
 
@@ -116,7 +119,7 @@ const handleSave = useCallback(async()=>{
 
     //navigate back to records
     navigate('/')
-},[category, price, title])
+},[category, price, title ,subCategory, modeOfPayment])
 
  if(loading) return 'Loading...';
     return (
@@ -253,7 +256,7 @@ const handleSave = useCallback(async()=>{
                     <div className='mx-auto'>
                         <CustomDropdown 
                             options={currentAccount?.map((i)=>i)}
-                            onChange={(e)=>setBank(e)}
+                            onChange={(e)=>setModeOfpPayment(e)}
                             isActive={true}
                             initial='Mode of payment'
                         />
