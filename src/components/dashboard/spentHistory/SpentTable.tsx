@@ -5,13 +5,15 @@ import { useSpendingExcluded } from '@/store/useSpendingStore';
 import { useCategoryColors } from '@/store/useCatogoryColors';
 import { CategoryIcon } from '@/utils/DropDownList';
 import {format} from 'date-fns'
+import SpentTableSkeleton from './SpentTableSkeleton';
 
 type SpentTableProps = {
   data: itemTypes[];
+  loading?: boolean;
   handleEdit: (spent: itemTypes)=> void;
 };
 
-const SpentTable = ({ data ,handleEdit}: SpentTableProps) => {
+const SpentTable = ({ data ,handleEdit, loading}: SpentTableProps) => {
   const { excluded } = useSpendingExcluded();
   const { colors: categoryColors } = useCategoryColors();
 
@@ -30,6 +32,10 @@ const SpentTable = ({ data ,handleEdit}: SpentTableProps) => {
   }, {});
 }, [data]);
 
+  if(loading){
+    return <SpentTableSkeleton/>
+  }
+  
   return (
     <>
       {Object.entries(groupedData).map(([date, items]) => (

@@ -13,7 +13,8 @@ import { itemTypes } from '@/types/itemTypes';
 import SpentTable from '@/components/dashboard/spentHistory/SpentTable';
 import { IoIosCloseCircle } from "react-icons/io";
 import { NoRecord } from '@/components/NoRecord';
-const ViewAccount = () => {
+
+const ViewAccountSkeleton = () => {
     const navigate = useNavigate()
     const [items, setItems] = useState<itemTypes[]>([]);
     const {code} = useParams();
@@ -60,6 +61,9 @@ const ViewAccount = () => {
 
   },[])
 
+  if(loading){
+    return
+  }
   return (
     <ModalWrapper close={()=>navigate(-1)} classNameChild='h-full lg:py-10'>
         <div className='bg-white dark:bg-light-dark lg:rounded-xl dark:text-white p-4 h-full'>
@@ -101,13 +105,14 @@ const ViewAccount = () => {
             </div>
             
             <span className='text-red-900'>{error}</span>
-            <SpentTable 
-                data={items}
-                loading={loading}
-                handleEdit={handleEdit}
-            />
+
             {
-                loading ? '' : (items.length > 0) ? '' : <NoRecord/>    
+                items.length > 0
+                ?   <SpentTable 
+                        data={items}
+                        handleEdit={handleEdit}
+                    />
+                :   <NoRecord/>
             }
             
         </div>
@@ -115,4 +120,4 @@ const ViewAccount = () => {
   )
 }
 
-export default ViewAccount
+export default ViewAccountSkeleton
