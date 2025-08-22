@@ -61,9 +61,7 @@ const ViewAccountSkeleton = () => {
 
   },[])
 
-  if(loading){
-    return
-  }
+
   return (
     <ModalWrapper close={()=>navigate(-1)} classNameChild='h-full lg:py-10'>
         <div className='bg-white dark:bg-light-dark lg:rounded-xl dark:text-white p-4 h-full'>
@@ -83,7 +81,7 @@ const ViewAccountSkeleton = () => {
             <div className='w-full p-5 text-center bg-slate-100 dark:bg-medium-dark rounded-2xl my-4'>
                 <strong >
                     <span className='text-2xl' onClick={()=>setIsAmountEdit(!isAmountEdit)}>
-                        <NumberFlow value={Number(currentAccount?.amount) || 0} style='currency' currency='php'/>
+                        <NumberFlow value={loading ? 0 : Number(currentAccount?.amount) || 0} style='currency' currency='php'/>
                     </span>
                     
                     {
