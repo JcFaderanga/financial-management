@@ -62,46 +62,49 @@ const ViewAccount = () => {
 
   return (
     <ModalWrapper close={()=>navigate(-1)} classNameChild='h-full lg:py-10'>
-        <div className='bg-white dark:bg-light-dark lg:rounded-xl dark:text-white p-4 h-full'>
+        <div className='bg-white dark:bg-light-dark lg:rounded-xl dark:text-white py-4 h-full'>
 
-            <div className='flex justify-between items-center'>
-                <div className='flex gap-2 items-center'>
-                    <IoWallet size={30}/>
-                    <strong className='text-xl'>{currentAccount?.account_code}</strong>
-                </div>
-                <span className='text-gray-300' onClick={()=>navigate(-1)}>
-                    <IoIosCloseCircle size={30}/>
-                </span>
-                
-            </div>
-            
-
-            <div className='w-full p-5 text-center bg-slate-100 dark:bg-medium-dark rounded-2xl my-4'>
-                <strong >
-                    <span className='text-2xl' onClick={()=>setIsAmountEdit(!isAmountEdit)}>
-                        <NumberFlow value={Number(currentAccount?.amount) || 0} style='currency' currency='php'/>
+            <div className='px-4'>
+                <div className='flex justify-between items-center'>
+                    <div className='flex gap-2 items-center'>
+                        <IoWallet size={30}/>
+                        <strong className='text-xl'>{currentAccount?.account_code}</strong>
+                    </div>
+                    <span className='text-gray-300' onClick={()=>navigate(-1)}>
+                        <IoIosCloseCircle size={30}/>
                     </span>
                     
-                    {
-                    isAmountEdit &&
-                        <div className='flex items-center gap-2'>
-                            <CustomInputV2 
-                                value={amount || ''} 
-                                onChange={(e)=>setAmount(Number(e))} 
-                                type='number' 
-                                disabled={false}
-                                className='text-center'
-                            />
-                            <div className={` p-3 bg-gray-200 dark:bg-dark rounded-xl w-fit`} onClick={updateAmount}>
-                                <IoCheckmark/>
+                </div>
+                
+
+                <div className='w-full p-5 text-center bg-slate-100 dark:bg-medium-dark rounded-2xl my-4'>
+                    <strong >
+                        <span className='text-2xl' onClick={()=>setIsAmountEdit(!isAmountEdit)}>
+                            <NumberFlow value={Number(currentAccount?.amount) || 0} style='currency' currency='php'/>
+                        </span>
+                        
+                        {
+                        isAmountEdit &&
+                            <div className='flex items-center gap-2'>
+                                <CustomInputV2 
+                                    value={amount || ''} 
+                                    onChange={(e)=>setAmount(Number(e))} 
+                                    type='number' 
+                                    disabled={false}
+                                    className='text-center'
+                                />
+                                <div className={` p-3 bg-gray-200 dark:bg-dark rounded-xl w-fit`} onClick={updateAmount}>
+                                    <IoCheckmark/>
+                                </div>
                             </div>
-                        </div>
-                    }
-                </strong> 
+                        }
+                    </strong> 
+                </div>
             </div>
             
             <span className='text-red-900'>{error}</span>
-            <SpentTable 
+            <div className='  h-4/5 px-4 overflow-y-scroll'>
+                <SpentTable 
                 data={items}
                 loading={loading}
                 handleEdit={handleEdit}
@@ -109,7 +112,7 @@ const ViewAccount = () => {
             {
                 loading ? '' : (items.length > 0) ? '' : <NoRecord/>    
             }
-            
+            </div>
         </div>
     </ModalWrapper>
   )

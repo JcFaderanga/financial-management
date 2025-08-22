@@ -1,32 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 @import "tailwindcss";
 
+/* ================================
+        DARK THEME UTILITY
+   ================================
+ */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ================================
+            COLOR THEME
+   ================================
+*/
 @theme {
   --color-dark:#161B21 ;
   --color-medium-dark: #1D232C;
   --color-light-dark: #222730;
 }
+
+/* ================================
+          GLOBAL THEME
+   ================================
+*/
 *{
     font-family: "Plus Jakarta Sans", sans-serif;
     font-optical-sizing: auto;
     box-sizing: border-box;
 }
 
-:root{
-    --white: #ffffff;
-    --gray: #E9E9E9;
-    --light-gray: #EFEFEF;
-}
-
-.border-gray{
-    border-color: var(--gray);
-}
-
-.custom-black{
-    color: #1b2124;
-}
+/* ================================
+        CUSTOM BOX SHADOW
+   ================================
+ */
 @media (max-width: 1023px) {
   .box-shadow {
     box-shadow: 
@@ -50,46 +54,16 @@
   box-shadow: none !important;
 }
 
-
-
 /* Optional: rounded corners for cleaner look */
 .fc .fc-daygrid-day-frame {
   border-radius: 5px;
   overflow:hidden;
 }
 
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-.shimmer-light {
-  background: linear-gradient(
-    90deg,
-    #e0e0e0 0%,
-    #f8f8f8 50%,
-    #e0e0e0 100%
-  );
-  background-size: 1000px 100%;
-  animation: shimmer 2s infinite linear;
-}
-
-.shimmer-dark {
-  background: linear-gradient(
-    90deg,
-    #222730 0%,
-    #1D232C 50%,
-    #222730 100%
-  );
-  background-size: 1000px 100%;
-  animation: shimmer 2s infinite linear;
-}
-
+/* ================================
+            PROGRESS BAR
+   ================================
+ */
  progress {
     @apply w-full h-2 rounded-lg;
     appearance: none; /* Remove default style */
@@ -108,3 +82,25 @@
   progress::-moz-progress-bar {
     @apply bg-green-500 rounded-lg;
   }
+
+
+/* ================================
+              SCROLLBAR
+   ================================
+ */
+
+/* Scrollbar container */
+::-webkit-scrollbar {
+  width: 3px;  /* vertical scrollbar width */
+}
+
+/* Scrollbar thumb (the draggable "line") */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+/* Thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
