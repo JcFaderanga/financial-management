@@ -75,7 +75,7 @@ const ViewAccount = () => {
             </div>
             
 
-            <div className='w-full p-5 text-center bg-medium-dark rounded-2xl my-4'>
+            <div className='w-full p-5 text-center bg-slate-100 dark:bg-medium-dark rounded-2xl my-4'>
                 <strong >
                     <span className='text-2xl' onClick={()=>setIsAmountEdit(!isAmountEdit)}>
                         <NumberFlow value={Number(currentAccount?.amount) || 0} style='currency' currency='php'/>
