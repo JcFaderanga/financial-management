@@ -10,9 +10,6 @@ import { useEffect } from 'react';
 import useFetchAllSpending from '@/hooks/spend_items/useFetchAllSpeding';
 import { useSpendings } from '@/store/useSpendingStore';
 import {format} from 'date-fns'
-import { useAccountStore } from '@/store/useAccountStore';
-import useFetchAllAccount from '@/hooks/accountHooks/useFetchAllAccount';
-
 
 const HomeLayout = () => {
   const { isMenuActive } = useMenuStore();
@@ -20,27 +17,16 @@ const HomeLayout = () => {
   const {isModalFS, children: ChildFS} = useModalFull();
   const { handleFetchAllSpendings } = useFetchAllSpending();
   const { setSpendItems, spendings } = useSpendings();
-  const { setAccount } = useAccountStore();
-  const { account } = useFetchAllAccount();
-
+  
   useEffect(() => {
-      
-      const fetch = async () => {
+      const fetchSpendings = async () => {
         const res = await handleFetchAllSpendings(format(new Date(),"yyyy-MM-dd"));     //convert date to yyyy-mm-dd, e.g. 2025-08-01
         if (res) {
           setSpendItems?.(res);
         }
-      };
-  
-      if (!spendings) {
-        fetch();
-      }
-      
+      };  
+      if (!spendings) fetchSpendings();
   }, []);
-
-  useEffect(() => {
-    setAccount(account);
-  }, [account, setAccount]);
 
 
   return (
