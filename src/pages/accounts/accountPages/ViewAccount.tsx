@@ -61,7 +61,7 @@ const ViewAccount = () => {
   },[])
 
   return (
-    <ModalWrapper close={()=>navigate(-1)} classNameChild='h-full lg:py-10'>
+    <ModalWrapper close={()=>navigate(-1)} classNameChild='h-full lg:py-10 fade-in'>
         <div className='bg-white dark:bg-light-dark lg:rounded-xl dark:text-white py-4 h-full'>
 
             <div className='px-4'>
