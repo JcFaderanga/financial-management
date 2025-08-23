@@ -27,7 +27,9 @@ const ModalWrapper = ({
   return (
     <div
         onClick={close} 
-        className={`${className} fixed top-0 left-0 h-full w-full bg-[rgba(0,0,0,0.6)] z-9999 flex justify-center items-center`}>
+        className={`${className} fixed top-0 left-0 h-full w-full bg-[rgba(0,0,0,0.6)] z-9999 flex justify-center items-center transition-all`}>
+
+          {/* to add animation: fade-in, slide-up */}
         <div onClick={(e)=>e.stopPropagation()} className={`${classNameChild} w-full max-w-2xl`}>
             {children}
         </div>
