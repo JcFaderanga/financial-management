@@ -1,6 +1,6 @@
 import supabase from '@/lib/supabase';
 import { useUserStore } from '@/store/useUserStore';
-import  { useEffect, useState } from 'react'
+import  { useState } from 'react'
 
 const useFetchAllAccount = () => {
     const [loading, setLoading] = useState<boolean>(false);
