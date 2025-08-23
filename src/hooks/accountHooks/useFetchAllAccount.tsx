@@ -7,6 +7,7 @@ const useFetchAllAccount = () => {
     const [error, setError] = useState<string>('')
     const [account, setAccount] = useState<any>();
     const {user} = useUserStore();
+
     const fetchAccountData = async()=>{
         try{
             setLoading(true);
@@ -20,18 +21,14 @@ const useFetchAllAccount = () => {
                 setError(error?.message)
             }
 
-            if(data){
-                setAccount(data)
-            }   
+            setAccount(data)
             setLoading(false);
+            return data;
+
         }catch(e){
             console.error(e)
         }
     }
-    
-    useEffect(()=>{
-        fetchAccountData();
-    },[])
 
     return {loading,error,account,fetchAccountData}
 }

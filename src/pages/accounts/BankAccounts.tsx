@@ -1,4 +1,4 @@
-
+import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { PiHandDeposit } from 'react-icons/pi';
 // import { RiBankLine } from 'react-icons/ri';
@@ -7,7 +7,7 @@ import NumberFlow from '@/components/UI/NumberFlow';
 import { useAccountStore } from '@/store/useAccountStore';
 import { BankAccount } from '@/utils/BankAccountFormula';
 import { AccountType } from '@/types/AccountTypes';
-
+import useFetchAllAccount from '@/hooks/accountHooks/useFetchAllAccount';
 // ========================
 // Subcomponents
 // ========================
@@ -85,11 +85,26 @@ const AccountProgress = ({ title, amount, value }: AccountProgressProps) => {
 // ========================
 // Main Component
 // ========================
+
 const Accounts = () => {
-  
+  const { setAccount, account: accountStore } = useAccountStore();
+  const { account, fetchAccountData, loading } = useFetchAllAccount();
+
+  useEffect(() => {
+      const fetchAccounts = async () =>{
+        if(accountStore.length <= 0){
+            const res = await fetchAccountData();
+            setAccount(res ?? []);
+        }
+      }
+      fetchAccounts();
+    }, [account]);
+
   const { account: storedAccount } = useAccountStore();
   
   const current = new BankAccount(storedAccount);
+  
+  if(loading) return 'Loading...';
   
   return (
     <main className="w-full h-full mx-auto max-w-7xl p-4 flex flex-col gap-2">
