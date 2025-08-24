@@ -27,7 +27,7 @@ export class CategoryAndPrice {
 
          const grouped = this.data?.reduce<Record<string, number>>((acc, item) => {
 
-            //check if both category and price in not empty, udefine or null
+            //check if both category and price in not empty, undefine or null
             if (!item.category || item.price == null) return acc;
 
             const category = item.category;
@@ -62,7 +62,7 @@ export class CategoryAndPrice {
 }
 
 
-export function CalulateTotal(data: itemTypes[]){
+export function CalculateTotal(data: itemTypes[]){
     return data?.reduce((sum: number, item: itemTypes) => sum + Number(item.price), 0) || 0;
 }
 
@@ -123,7 +123,7 @@ export class TotalPerDayAndMonth{
     }
 
     /**
-    * this return average speding per day
+    * this return average spending per day
     **/
     getDailySpentAverage() {
         const { totalsByDate } = this.getTotals();

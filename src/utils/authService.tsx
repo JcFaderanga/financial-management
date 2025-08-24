@@ -56,7 +56,7 @@ export const signInDemo = async (): Promise<void>=>{
 
     if(error) throw new Error(error.message);
 
-    window.location.href = "/dashboard/overview"; 
+    window.location.href = "/"; 
   } catch (error: any) {
     console.error('catch', error.message)
   }

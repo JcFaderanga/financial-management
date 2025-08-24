@@ -1,16 +1,25 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import Overview from '@/pages/dashboard/Overview';
-import Page404 from '@/pages/Page404';
+
+//AUTH PAGES
 import Login from '@/pages/auth/Login';
+
+//MAIN PAGES
 import HomeLayout from '@/layout/HomeLayout';
-import BankAccounts from '@/pages/accounts/BankAccounts';
+import Records from '@/pages/dashboard/Records';
+import Analytics from './pages/dashboard/Analytics';
+import Wallet from '@/pages/accounts/Wallet';
+import More from '@/pages/more/More'
+
+//404 PAGE
+import Page404 from '@/pages/Page404';
+
 import SocialAccounts from './pages/accounts/SocialAccounts';
 import Deposit from './pages/accounts/accountPages/Deposit';
-import More from '@/pages/more/More'
+
 // import Settings from '@/pages/Settings/Settings';
 import Bills from '@/pages/bills/Bills';
 import ProtectedRoute from './layout/ProtectedRoute';
-import SpendingAnalysis from './pages/dashboard/SpendingAnalysis';
+
 import AddItem from './pages/add_item/CategorySelection';
 import AddItemForm from './pages/add_item/AddItemForm';
 import ModalViewItem from './components/modal/ModalViewItem';
@@ -35,13 +44,13 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Navigate to="/dashboard/overview" replace />} />
-          <Route path="dashboard/overview" element={<Overview />} />
-          <Route path="dashboard/spending_analysis" element={<SpendingAnalysis />} />
+          <Route index element={<Navigate to="/records" replace />} />
+          <Route path="/records" element={<Records />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="wallet" element={<Wallet />} />
+           <Route path="more" element={<More />} />
           <Route path="accounts/socials" element={<SocialAccounts />} />
           <Route path="bills" element={<Bills />} />
-          <Route path="wallet" element={<BankAccounts />} />
-          <Route path="more" element={<More />} />
         </Route>
 
         {/* Fallback if modal route is visited directly */}

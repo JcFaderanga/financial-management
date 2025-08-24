@@ -7,7 +7,7 @@ import CustomModalFullScreen from '@/components/modal/CustomModalFullScreen';
 import { useModal, useModalFull } from '@/store/useModal';
 import  BottomTabBar  from '@/components/bottomTab/BottomTabBar';
 import { useEffect } from 'react';
-import useFetchAllSpending from '@/hooks/spend_items/useFetchAllSpeding';
+import useFetchAllSpending from '@/hooks/spend_items/useFetchAllSpending';
 import { useSpendings } from '@/store/useSpendingStore';
 import {format} from 'date-fns'
 

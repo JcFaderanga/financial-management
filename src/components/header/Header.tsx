@@ -10,17 +10,14 @@ const Header = () => {
   const {session} = useSession();
   const {setMenuIsActive,isMenuActive} = useMenuStore();
 
-
   useEffect(()=>{
-    if(!session){
-      navigate('/login')
-    }
+    if(!session) navigate('/login')
   }, [session])
   
   const handleMenuToggle=()=>{
     setMenuIsActive(!isMenuActive)
   }
-//console.log(user)
+
   return (
     <header className={`border-b border-gray-300 w-full bg-white dark:border-medium-dark dark:bg-dark h-16 fixed top-0 flex items-center justify-between px-4
     ${isMenuActive ? 'hidden lg:flex' : ''}

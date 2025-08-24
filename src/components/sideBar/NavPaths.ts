@@ -1,8 +1,8 @@
 import type { NavType } from "@/types/NavigationTypes";
 export const navItems: NavType[] = [
 
-    { id: "overview", label: "Records", path: "/dashboard/overview", category: "homePage" },
-    { id: "Analytics", label: "Analytics", path: "/dashboard/spending_analysis", category: "homePage" },
+    { id: "records", label: "Records", path: "/records", category: "homePage" },
+    { id: "analytics", label: "Analytics", path: "/analytics", category: "homePage" },
     { id: "wallet", label: "Wallet", path: "/wallet", category: "homePage" },
     { id: "more", label: "More", path: "/more", category: "homePage" },
     // { 
@@ -12,7 +12,7 @@ export const navItems: NavType[] = [
     //   category: "homePage",
     //   children: [
     //     { id: "overview", label: "Overview", path: "/dashboard/overview", category: "homePage" },
-    //     { id: "spedingCalendar", label: "Spending Analysis", path: "/dashboard/spending_analysis", category: "homePage" },
+    //     { id: "spendingCalendar", label: "Spending Analysis", path: "/dashboard/spending_analysis", category: "homePage" },
     //   ],
     // },
     // {

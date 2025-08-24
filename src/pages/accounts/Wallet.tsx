@@ -98,6 +98,7 @@ const Accounts = () => {
         }
       }
       fetchAccounts();
+      
     }, [account]);
 
   const { account: storedAccount } = useAccountStore();
