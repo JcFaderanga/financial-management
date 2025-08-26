@@ -14,7 +14,7 @@ const OverView = () => {
   useDocumentTitle("Records | Finance Management");
 
   return (
-    <div className="grid gap-4 px-4 lg:py-6 mx-auto transition max-w-7xl lg:grid-cols-3 dark:bg-dark dark:text-white overflow-hidden lg:overflow-clip">
+    <div className="grid gap-4 px-4 lg:py-6 transition lg:grid-cols-3 dark:bg-dark dark:text-white overflow-hidden lg:overflow-clip">
 
       {/* Left Column (spans 2 columns on large screens) */}
       <div className="space-y-4 lg:col-span-2 ">

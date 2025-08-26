@@ -9,15 +9,20 @@ export const getAndStoreSession = async () => {
   return session;
 };
 
-export const subscribeToAuthChanges = () => {
+export const subscribeToAuthChanges = (callback?: (session: any) => void) => {
   const { setSession } = useSession.getState();
 
   const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
     setSession(session);
+
+    if (callback) {
+      callback(session);
+    }
   });
 
   return () => subscription.unsubscribe();
 };
+
 
 export const signInWithGoogle = async (): Promise<void> => {
   try {

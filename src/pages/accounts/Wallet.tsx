@@ -8,6 +8,7 @@ import { useAccountStore } from '@/store/useAccountStore';
 import { BankAccount } from '@/utils/BankAccountFormula';
 import { AccountType } from '@/types/AccountTypes';
 import useFetchAllAccount from '@/hooks/accountHooks/useFetchAllAccount';
+import PageWrapper from '@/wrapper/PageWrapper';
 // ========================
 // Subcomponents
 // ========================
@@ -108,28 +109,28 @@ const Accounts = () => {
   if(loading) return 'Loading...';
   
   return (
-    <main className="w-full h-full mx-auto max-w-7xl p-4 flex flex-col gap-2">
-      {/* Balance & Actions */}
-      <section className="border-b flex justify-between border-gray-300 dark:border-light-dark pb-4">
-        <AvailableBalance />
-        <div><ActionButton /></div>
-      </section>
+      <main className=" p-4 flex flex-col gap-2">
+        {/* Balance & Actions */}
+        <section className="border-b flex justify-between border-gray-300 dark:border-light-dark pb-4">
+          <AvailableBalance />
+          <div><ActionButton /></div>
+        </section>
 
-      {/* Accounts List */}
-      <output className="pb-4 dark:text-white lg:flex flex-wrap gap-2">
-        {storedAccount?.map((acc: AccountType, index) => {
-          const percent = current.getPercent(acc?.amount);
-          return (
-            <AccountProgress
-              key={index}
-              title={acc?.account_code}
-              amount={acc?.amount}
-              value={percent}
-            />
-          );
-        })}
-      </output>
-    </main>
+        {/* Accounts List */}
+        <output className="pb-4 dark:text-white lg:flex flex-wrap gap-2">
+          {storedAccount?.map((acc: AccountType, index) => {
+            const percent = current.getPercent(acc?.amount);
+            return (
+              <AccountProgress
+                key={index}
+                title={acc?.account_code}
+                amount={acc?.amount}
+                value={percent}
+              />
+            );
+          })}
+        </output>
+      </main>
   );
 };
 

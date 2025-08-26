@@ -1,18 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useUserStore } from '@/store/useUserStore'
-import { useNavigate } from 'react-router-dom'
-import { useSession } from '@/store/useSession'
 import { FaAlignLeft,FaAlignRight } from "react-icons/fa6";
 import { useMenuStore } from '@/store/useMenuToggle'
 const Header = () => {
-  const navigate = useNavigate();
   const {user} = useUserStore();  
-  const {session} = useSession();
   const {setMenuIsActive,isMenuActive} = useMenuStore();
-
-  useEffect(()=>{
-    if(!session) navigate('/login')
-  }, [session])
   
   const handleMenuToggle=()=>{
     setMenuIsActive(!isMenuActive)
