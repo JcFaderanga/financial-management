@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAllSpendingData } from "@/store/useSpendingStore";
 import { itemTypes } from "@/types/itemTypes";
-import { TotalPerDayAndMonth, CalulateTotal } from "@/utils/itemFormat";
+import { TotalPerDayAndMonth, CalculateTotal } from "@/utils/itemFormat";
 import NumberFlowUI from "@/components/UI/NumberFlow";
 // Define the shape of each month's data
 interface MonthlyData {
@@ -67,7 +67,7 @@ const MonthlyChart = () => {
   }, [allSpentData]);
 
   // Calculate the grand total of all spending
-  const totalAll = CalulateTotal(allSpentData);
+  const totalAll = CalculateTotal(allSpentData);
 
 // Container grid for 12 columns (1 per month)
   return (

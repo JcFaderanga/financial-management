@@ -27,8 +27,8 @@ const LinkItem = ({
 
   
 const icon:any = {
-  overview: <RiFileList3Fill />, 
-  Analytics: <FaChartPie/>,
+  records: <RiFileList3Fill />, 
+  analytics: <FaChartPie/>,
   wallet: <FaWallet/>,
   settings: <IoSettings/>,
   more: <HiMenuAlt3/>

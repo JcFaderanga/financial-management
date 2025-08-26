@@ -4,7 +4,7 @@ import { useOverviewTotal } from "@/store/useOverviewTotal";
 import { NoRecord } from "../NoRecord";
 import DoughnutChart from "../charts/Doughnut";
 import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
-import { CategoryAndPrice,CalulateTotal } from "@/utils/itemFormat";
+import { CategoryAndPrice,CalculateTotal } from "@/utils/itemFormat";
 type GroupedItem = {
   type: string;
   price: number;
@@ -129,7 +129,7 @@ const SpentSummary = () => {
                 <div className="text-end">
                   <div className="text-sm font-semibold">₱{item.price.toLocaleString()}</div>
                   <div className="text-sm text-gray-400">
-                    {((item.price / CalulateTotal(spendings)) * 100).toFixed(2)}%
+                    {((item.price / CalculateTotal(spendings)) * 100).toFixed(2)}%
                   </div>
                 </div>
               </div>

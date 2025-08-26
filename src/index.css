@@ -27,6 +27,10 @@
     box-sizing: border-box;
 }
 
+/* body{
+  background: #DBEAFE;
+  background: linear-gradient(135deg, rgba(219, 234, 254, 1) 0%, rgba(224, 231, 255, 1) 20%, rgba(245, 243, 255, 1) 100%);
+} */
 /* ================================
         CUSTOM BOX SHADOW
    ================================

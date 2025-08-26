@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAndStoreSession, subscribeToAuthChanges } from '@/utils/authService';
 import { useUserStore } from '@/store/useUserStore';
+import { useSession } from '@/store/useSession';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -10,52 +11,62 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { setUser } = useUserStore();
+  const { session, setSession } = useSession();
   const navigate = useNavigate();
   const [checking, setChecking] = useState(true);
-  
-  
-  const dark = localStorage.theme === 'dark';
-    useEffect(() => {
-        const html = document.documentElement;
-        if (dark) {
-          html.classList.add('dark');
-          document.body.style.backgroundColor = '#161B21';
-          localStorage.setItem('theme', 'dark');
-        } else {
-          html.classList.remove('dark');
-          document.body.style.backgroundColor = 'transparent';
-          localStorage.setItem('theme', 'light');
-        }
-      }, [dark]);
-      
 
-
+  // 🌙 Theme setup
   useEffect(() => {
-    let unsub: () => void;
+    const html = document.documentElement;
+    const dark = localStorage.theme === 'dark';
+    if (dark) {
+      html.classList.add('dark');
+      document.body.style.backgroundColor = '#161B21';
+    } else {
+      html.classList.remove('dark');
+      document.body.style.backgroundColor = 'transparent';
+    }
+  }, []);
+
+  // 🔐 Initial session + subscribe
+  useEffect(() => {
+    let unsubscribe: () => void;
 
     const init = async () => {
       const currentSession = await getAndStoreSession();
 
       if (!currentSession) {
-        if (window.location.pathname !== '/login') {
-          navigate('/login');
-        }
+        navigate('/login', { replace: true });
       } else {
         setUser(currentSession.user);
+        setSession(currentSession); // ⬅️ update global store
       }
 
-      unsub = subscribeToAuthChanges();
+      // 👂 Listen for login/logout
+      unsubscribe = subscribeToAuthChanges((newSession) => {
+        if (!newSession) {
+          setUser(null);
+          setSession(null);
+          navigate('/login', { replace: true });
+        } else {
+          setUser(newSession.user);
+          setSession(newSession);
+        }
+      });
+
       setChecking(false);
     };
 
     init();
 
     return () => {
-      if (unsub) unsub();
+      if (unsubscribe) unsubscribe();
     };
-  }, [navigate, setUser]);
+  }, [navigate, setUser, setSession]);
 
-  if (checking) return null; // Add a spinner here if preferred
+  if (checking) return 'Loading...';
+
+  if (!session) return null;
 
   return <>{children}</>;
 };
