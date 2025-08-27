@@ -108,7 +108,7 @@ const Accounts = () => {
   if(loading) return 'Loading...';
   
   return (
-      <main className=" p-4 flex flex-col gap-2">
+      <main className=" p-4 pb-20 flex flex-col gap-2">
         {/* Balance & Actions */}
         <section className="border-b flex justify-between border-gray-300 dark:border-light-dark pb-4">
           <AvailableBalance />
