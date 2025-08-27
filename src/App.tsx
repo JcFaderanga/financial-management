@@ -17,6 +17,7 @@ import Page404 from '@/pages/Page404';
 //ADD RECORDS
 import CategorySelection from './pages/add_item/CategorySelection';
 import AddItemForm from './pages/add_item/AddItemForm';
+import AccountList from './pages/accounts/accountPages/AccountList';
 
 //WALLET SUB PAGES
 import Deposit from './pages/accounts/accountPages/Deposit';
@@ -68,7 +69,8 @@ function AppRoutes() {
 
       {/* Modal routes (overlays on top) */}
       {state?.backgroundLocation && (
-        <Routes>
+        <Routes>AccountList
+          <Route path="/account list" element={<ProtectedRoute children={<AccountList/>}/> }/>
           <Route path="/record/:id" element={<ProtectedRoute children={<ModalViewItem/>}/> }/>
           <Route path="/account/deposit" element={<ProtectedRoute children={<Deposit/>}/> }/>
           <Route path="/account/:code" element={<ProtectedRoute children={<ViewAccount/>}/> }/>

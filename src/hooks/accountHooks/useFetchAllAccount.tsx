@@ -15,6 +15,8 @@ const useFetchAllAccount = () => {
                 .from('accounts')
                 .select('*')
                 .eq('account_owner', user.id)
+                // .order('amount', {ascending: false})
+                .order('account_name', {ascending: true})
                 ;
             
             if(error){

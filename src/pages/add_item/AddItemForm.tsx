@@ -10,17 +10,17 @@ import OverviewDate from '@/hooks/OverviewDate'
 import { getCurrentLocalTime } from '@/utils/DateFormat'
 import {format} from "date-fns"
 import { useNavigate, useParams } from 'react-router-dom'
-import CustomDropdown from '@/components/inputs/CustomDropdown'
 import { IoCheckmark ,IoCloseOutline  } from "react-icons/io5";
-import { useAccountStore } from '@/store/useAccountStore'
-
+import useFetchAllAccount from '@/hooks/accountHooks/useFetchAllAccount'
+import { Link, useLocation } from 'react-router-dom'
+import { usePaymentMethod } from '@/store/useAccountStore';
 const AddItemForm = () => {
 const { category } = useParams(); 
 const {setSpendItems, spendings} =useSpendings();
+const {modeOfPayment} = usePaymentMethod();
 const {user} = useUserStore();
 const [title, setTitle] = useState<string | undefined>('');
 const [price, setPrice] = useState<string>('');
-const [modeOfPayment, setModeOfpPayment] = useState<string>('');
 const [subCategory, setSubCategory] = useState<string | undefined>('');
 const [tempSub, setTemp] = useState<string | undefined>('');
 const [tempTitle, setTempTitle] = useState<string | undefined>('');
@@ -29,16 +29,16 @@ const [isAddTitle, setAddTitle] = useState<boolean>(false)
 const [priceError, setPriceError] = useState<boolean>(false);
 const [btnDisable, setBtnDisable] = useState<boolean>(true);
 const {handleSaveItem} = UseSaveItem();
-const {account} = useAccountStore();
 const {handleUniqueItem, fetchUniqueList, uniqueItem, loading} = useUniqueItemList()
 const {dateRange} = OverviewDate();
-
-console.log('subCategory',subCategory)
+const {fetchAccountData, account} = useFetchAllAccount();
 
 const navigate = useNavigate();
+const location = useLocation();
 
 useEffect(() => {
     fetchUniqueList(category);
+    fetchAccountData();
 }, [category]);
 
 const uniqueSubcategory: string[] = [
@@ -49,9 +49,6 @@ const uniqueTitle: string[] = [
   ...new Set(uniqueItem?.map((item: any) => item.title))
 ];
 
-const currentAccount: string[] =[
-    ...new Set(account?.map((acc)=> acc.account_code))
-]
 
 // field validation
 useEffect(()=>{
@@ -78,6 +75,11 @@ const handleSave = useCallback(async()=>{
   if(Number(price) <= 0){
       setPriceError(true);
       return;
+  }
+
+  if(!modeOfPayment){
+    setPriceError(true);
+    return;
   }
 
   //check if date format is valid
@@ -123,7 +125,7 @@ const handleSave = useCallback(async()=>{
 
  if(loading) return 'Loading...';
     return (
-        <div className="w-screen max-w-4xl mx-auto dark:text-white h-screen box-shadow border-t border-light-dark"> 
+        <div className="w-screen max-w-4xl mx-auto dark:text-white h-screen"> 
             <header className={` flex justify-between item-center p-4 cursor-pointer`}>
                 <p className=' text-dark dark:text-white'>
                     <span>{category}</span>
@@ -254,12 +256,16 @@ const handleSave = useCallback(async()=>{
                 </div>
                 <div className='flex flex-col w-full lg:max-w-2/5 py-4 lg:dark:bg-light-dark rounded-2xl'>
                     <div className='mx-auto'>
-                        <CustomDropdown 
-                            options={currentAccount?.map((i)=>i)}
+                        {/* <CustomDropdown 
+                            options={currentAccount?.map((i: string)=>i)}
                             onChange={(e)=>setModeOfpPayment(e)}
                             isActive={true}
                             initial='Mode of payment'
-                        />
+                        /> */}
+                        <Link to={'/account list'} state={{backgroundLocation: location, account: account}}>
+                            <div className='py-2 px-4 border border-gray-300 rounded-xl'>{ modeOfPayment ?? 'Mode of payment '}</div>
+                        </Link>
+                        
                         <CustomInput 
                             value={price} type='number' 
                             placeholder={'Enter Price'} 
