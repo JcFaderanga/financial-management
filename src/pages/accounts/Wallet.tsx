@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { PiHandDeposit } from 'react-icons/pi';
 // import { RiBankLine } from 'react-icons/ri';
 // import useDocumentTitle from '@/hooks/document/useDocTitle';
 import NumberFlow from '@/components/UI/NumberFlow';
-import { useAccountStore } from '@/store/useAccountStore';
+import { useAccountStore, useAmountHidden } from '@/store/useAccountStore';
 import { BankAccount } from '@/utils/BankAccountFormula';
 import { AccountType } from '@/types/AccountTypes';
 import useFetchAllAccount from '@/hooks/accountHooks/useFetchAllAccount';
+import { FaEyeSlash, FaEye} from "react-icons/fa6";
+
 // ========================
 // Subcomponents
 // ========================
@@ -15,16 +17,40 @@ const AvailableBalance = () => {
   const { account } = useAccountStore();
   const current = new BankAccount(account);
   const balance = current.getAvailableBalance();
+  const {isAmountHidden, setIsAmountHidden} = useAmountHidden();
+
+  useEffect(()=>{
+    if(isAmountHidden)
+      localStorage.setItem('isAmountHidden', 'true');
+    else 
+      localStorage.setItem('isAmountHidden', 'false');
+    
+  },[isAmountHidden])
 
   return (
     <div className="w-full">
-      <h1 className="text-sm dark:text-white">Available Balance</h1>
+      <div className='flex gap-2 items-center'>
+        <h1 className="text-sm dark:text-white">Available Balance</h1>
+
+        {
+          !isAmountHidden 
+          ? <FaEye onClick={()=> setIsAmountHidden(!isAmountHidden)} className='cursor-pointer dark:text-white'/>
+          : <FaEyeSlash onClick={()=> setIsAmountHidden(!isAmountHidden)} className='cursor-pointer dark:text-white'/>
+        }
+   
+      </div>
       <strong className="dark:text-white text-3xl py-1">
-        <NumberFlow
-          value={Number(balance) || 0}
-          style="currency"
-          currency="php"
-        />
+
+        {
+          isAmountHidden 
+          ? '*****'
+          : <NumberFlow
+              value={Number(balance) || 0}
+              style="currency"
+              currency="php"
+            />
+        }
+        
       </strong>
     </div>
   );
@@ -64,7 +90,7 @@ interface AccountProgressProps {
 const AccountProgress = ({ title, amount, value }: AccountProgressProps) => {
 
   const location = useLocation();
-
+  const {isAmountHidden} = useAmountHidden();
   return(
     
     <div className="border rounded-2xl px-4 py-3 border-gray-200 dark:bg-medium-dark dark:border-none my-2 w-full lg:max-w-[305px]">
@@ -72,7 +98,12 @@ const AccountProgress = ({ title, amount, value }: AccountProgressProps) => {
       <div className="flex justify-between font-bold">
         <label htmlFor="progress">{title}</label>
         <output>
-          <NumberFlow value={amount} style="currency" currency="php" />
+          {
+            isAmountHidden
+              ? "*****"
+              :<NumberFlow value={amount} style="currency" currency="php" />
+          }
+          
         </output>
       </div>
       <progress id="progress" max="100" value={value} />

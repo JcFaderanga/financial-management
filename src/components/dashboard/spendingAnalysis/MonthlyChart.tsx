@@ -82,7 +82,7 @@ const MonthlyChart = () => {
         if(e.total)
         return (
           // One bar per month
-          <div key={e.month} className=" flex flex-col justify-end items-center ">
+          <div key={e.month} className=" flex flex-col justify-end items-center">
             {/* Visual bar with dynamic height based on % */}
             <div className="h-60  flex flex-col justify-end">
               <div className="text-[10px] dark:text-white">
@@ -93,8 +93,8 @@ const MonthlyChart = () => {
                 />
             </div>
               <div
-              className="bg-blue-300 w-10 rounded-lg mx-auto"
-              style={{ height: `${percent}%` }}
+              className="bg-blue-300 w-10 rounded-lg mx-auto hover:bg-blue-400 cursor-pointer"
+              style={{ height: `${Number(percent) * 2}%` }}
             />
             </div>
             

@@ -21,3 +21,12 @@ export const usePaymentMethod = create<PaymentMethodType>((set) => ({
   modeOfPayment: null,
   setPaymentMethod: (modeOfPayment)=> set({modeOfPayment}),
 }))
+
+type amountHiddenType = {
+  isAmountHidden: boolean,
+  setIsAmountHidden: (isAmountHidden: boolean) => void
+}
+export const useAmountHidden = create<amountHiddenType>((set)=>({
+  isAmountHidden: localStorage.isAmountHidden === 'true',
+  setIsAmountHidden: (isAmountHidden)=> set({isAmountHidden}),
+}))
