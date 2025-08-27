@@ -23,11 +23,11 @@ const Header = () => {
         </div>
         
 
-        {user.id === '75eacadc-8e39-425a-adda-56712083d51a' 
+        {user?.id === '75eacadc-8e39-425a-adda-56712083d51a' 
             ? <span className='px-2 text-sm dark:text-white'>Demo Account</span>
             :  <>
-                <img src={user.user_metadata.avatar_url} className='w-10 rounded-full' alt="Profile" />
-                <span className='px-2 text-sm dark:text-white'>{user.user_metadata.full_name}</span>
+                <img src={user?.user_metadata?.avatar_url} className='w-10 rounded-full' alt="Profile" />
+                <span className='px-2 text-sm dark:text-white'>{user?.user_metadata?.full_name}</span>
               </>
         }
        

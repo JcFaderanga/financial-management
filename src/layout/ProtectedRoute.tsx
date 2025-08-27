@@ -64,7 +64,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     };
   }, [navigate, setUser, setSession]);
 
-  if (checking) return 'Loading...';
+  if (checking) return null;
 
   if (!session) return null;
 
