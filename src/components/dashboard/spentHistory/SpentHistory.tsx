@@ -47,7 +47,7 @@ const SpentHistory = () => {
 
   const handleEdit= useCallback((data: itemTypes)=>{
 
-    navigate(`/item/${data.id}`, {
+    navigate(`/record/${data.id}`, {
         state: { 
           backgroundLocation: location,
           data: data  

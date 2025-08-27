@@ -2,11 +2,11 @@ import { useEffect,useState } from 'react';
 import SpentCalendar from '@/components/dashboard/spendingAnalysis/SpentCalendar';
 //import SpentCalendar from '@/components/dashboard/SpentCalendar';
 import useDocumentTitle from '@/hooks/document/useDocTitle';
-import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding"
+import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpending"
 import MonthlyChart from '@/components/dashboard/spendingAnalysis/MonthlyChart';
 // import BarChart from '@/components/charts/BarChart';
 import { useAllSpendingData } from '@/store/useSpendingStore';
-import SpendingAnalysisSkeleton from './SpendingAnalysisSkeleton';
+import AnalyticsSkeleton from './AnalyticsSkeleton';
 const SpendingAnalysis = () => {
   const [isLoading,setLoading]= useState<boolean>(true);
   const { handleFetchAllSpendings } = useFetchAllSpending();
@@ -22,10 +22,10 @@ const SpendingAnalysis = () => {
       fetchData();
     }, [])
 
-    useDocumentTitle('Dashboard - Spent analysis | Finance Management');
- if(isLoading) return <SpendingAnalysisSkeleton/>;
+    useDocumentTitle('Analytics | Finance Management');
+ if(isLoading) return <AnalyticsSkeleton/>;
   return (
-    <div className='mx-auto max-w-7xl px-4 pb-20'>
+    <div className='px-4 pb-20'>
       
       <section className=''>
           <SpentCalendar/>

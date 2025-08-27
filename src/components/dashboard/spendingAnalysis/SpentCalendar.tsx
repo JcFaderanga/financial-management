@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { FaAngleRight } from "react-icons/fa6"
-import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding"
+import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpending"
 import { FormatDate } from '@/utils/DateFormat'
 import { useNavigate } from 'react-router-dom'
 import { useSpendings } from '@/store/useSpendingStore'
@@ -11,7 +11,7 @@ import {
 import DoughnutChart from "../../charts/Doughnut";
 import { useOverviewDateStore } from '@/store/useOverviewDate'
 import NumberFlowUI from '../../UI/NumberFlow'
-import { CalulateTotal,TotalPerDayAndMonth } from '@/utils/itemFormat'
+import { CalculateTotal,TotalPerDayAndMonth } from '@/utils/itemFormat'
 import { useAllSpendingData } from '@/store/useSpendingStore'
 import Calendar from './Calendar'
 import { useThisMonth } from '@/store/useCalendarStore'
@@ -38,7 +38,7 @@ const SpentCalendar = () => {
   }, [data, currentMonth])
 
   useEffect(() => {
-  const total = CalulateTotal(data)
+  const total = CalculateTotal(data)
   setAllTotal(total)
 }, [data])
 
@@ -47,7 +47,7 @@ const SpentCalendar = () => {
 
     const res = await handleFetchAllSpendings(date)
     setSpendItems(date === 'all' ? data : res || [])
-    navigate(`/dashboard/overview`)
+    navigate(`/`)
   },[handleFetchAllSpendings, setSpendItems, data, navigate])
  
   //handleMonthSelect function use to select current month data
@@ -67,8 +67,8 @@ const SpentCalendar = () => {
   //handleSelectAll function use to select all data
   const handleSelectAll = useCallback(()=>{
 
-    //first item in the array is the most reccent or last item
-    //data[0] select first index(most reccent or latest item inserted to DB)
+    //first item in the array is the most recent or last item
+    //data[0] select first index(most recent or latest item inserted to DB)
     const lastItem= data[0];
 
     //last item in the array is the first item

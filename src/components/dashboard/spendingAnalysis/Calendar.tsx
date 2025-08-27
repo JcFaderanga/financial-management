@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io"
 
-import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpeding"
+import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpending"
 import { FormatDate } from '@/utils/DateFormat'
 import { useNavigate } from 'react-router-dom'
 import { useSpendings } from '@/store/useSpendingStore'
@@ -86,7 +86,7 @@ const Calendar = () => {
    const setDate = useCallback(async(date: string | {})=>{
     const res = await handleFetchAllSpendings(date)
     setSpendItems(date === 'all' ? data : res || [])
-    navigate(`/dashboard/overview`)
+    navigate(`/`)
   },[handleFetchAllSpendings, setSpendItems, data, navigate])
  
   //handleDateSelect function use to select specific date

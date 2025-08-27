@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100..900;1,100..900&display=swap');
+
 @import "tailwindcss";
 
 /* ================================
@@ -21,12 +23,18 @@
           GLOBAL THEME
    ================================
 */
+
 *{
     font-family: "Plus Jakarta Sans", sans-serif;
+     /* font-family: 'Poppins', sans-serif; */
     font-optical-sizing: auto;
     box-sizing: border-box;
 }
 
+.gradient{
+  background: #DBEAFE;
+  background: linear-gradient(135deg, rgba(219, 234, 254, 1) 0%, rgba(224, 231, 255, 1) 20%,rgba(255, 255, 255, 1) 100%,  rgba(245, 243, 255, 1) 100%);
+}
 /* ================================
         CUSTOM BOX SHADOW
    ================================
