@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { PiHandDeposit } from 'react-icons/pi';
 // import { RiBankLine } from 'react-icons/ri';
