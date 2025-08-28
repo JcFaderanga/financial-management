@@ -3,9 +3,9 @@ import { ClipLoader } from "react-spinners";
 const Spinner = () => {
   return (
 
-     <div className='flex justify-center w-full h-screen py-20 dark:text-white'>
-        <span className='dark:hidden'><ClipLoader size={30} /></span>
-        <span className='hidden dark:block'><ClipLoader color={'#ffffff'} size={30} /></span>
+     <div className=' dark:text-white w-full '>
+        <span className='dark:hidden'><ClipLoader size={20} color="#f8fafc" className="text-blue-400"/></span>
+        <span className='hidden dark:block'><ClipLoader size={20} color={'#ffffff'} /></span>
       </div>
   ) 
 }

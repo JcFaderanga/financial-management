@@ -1,7 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io"
-
-import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpending"
 import { FormatDate } from '@/utils/DateFormat'
 import { useNavigate } from 'react-router-dom'
 import { useSpendings } from '@/store/useSpendingStore'
@@ -23,7 +21,6 @@ import { useFetchLoader } from '@/store/useSpendingStore'
 import CalendarSkeleton from './CalendarSkeleton'
 import millify from 'millify'
 const Calendar = () => {
-  const { handleFetchAllSpendings } = useFetchAllSpending();
   const {allSpentData: data} = useAllSpendingData();
   const {isLoading} = useFetchLoader();
   const { setSpendItems } = useSpendings()
@@ -33,21 +30,7 @@ const Calendar = () => {
   const [direction, setDirection] = useState<"left" | "right">("left")
   const {setDate: setStoreDate} = useOverviewDateStore()
   const navigate = useNavigate()
-
-  const date = new Date();
-  const start = startOfMonth(date);
-  const format1 = format(date,'MMMM-yyyy-dd');
-  const getDay1 = getDay(date);
-
-  useEffect(()=>{
-    console.log('start',start)
-  console.log('format1',format1)
-  console.log('getDay1',getDay1)
-  },[])
   
-
-
-  // console.log(JSON.stringify(spendingData,null,2))
   useEffect(() => {
     //Over all total
     const date = new TotalPerDayAndMonth( data, currentMonth );
@@ -83,17 +66,15 @@ const Calendar = () => {
     setTouchStartX(null)
   }
 
-   const setDate = useCallback(async(date: string | {})=>{
-    const res = await handleFetchAllSpendings(date)
-    setSpendItems(date === 'all' ? data : res || [])
-    navigate(`/`)
-  },[handleFetchAllSpendings, setSpendItems, data, navigate])
- 
   //handleDateSelect function use to select specific date
   const handleDateSelect = useCallback((date: string)=>{
-    setDate(FormatDate(date))
-    setStoreDate(FormatDate(date))
-  },[setDate, setStoreDate])
+
+    //set null to spending store to refresh list in records
+    setSpendItems(null);
+    setStoreDate(format(new Date(date), "yyyy-MM-dd"))
+    navigate(`/`)
+
+  },[ setStoreDate , setSpendItems])
 
   const days = eachDayOfInterval({
     start: startOfMonth(currentMonth),
@@ -117,11 +98,6 @@ const Calendar = () => {
       opacity: 0,
     }),
   }
-
-  // function formatNumberDisplay(num: number, value: string | number) {
-  //   const formatted = value.toLocaleString()
-  //   return formatted.length > num ? formatted.slice(0, num) + '...' : formatted
-  // }
 
   if(isLoading) return <CalendarSkeleton/>
 return(

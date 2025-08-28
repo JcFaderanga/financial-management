@@ -3,26 +3,9 @@ import SideBar from '../components/sideBar/SideBar';
 import { Outlet } from 'react-router-dom';
 import { useMenuStore } from '@/store/useMenuToggle';
 import  BottomTabBar  from '@/components/bottomTab/BottomTabBar';
-import { useEffect } from 'react';
-import useFetchAllSpending from '@/hooks/spend_items/useFetchAllSpending';
-import { useSpendings } from '@/store/useSpendingStore';
-import {format} from 'date-fns'
 import PageWrapper from '@/wrapper/PageWrapper';
 const HomeLayout = () => {
   const { isMenuActive } = useMenuStore();
-  const { handleFetchAllSpendings } = useFetchAllSpending();
-  const { setSpendItems, spendings } = useSpendings();
-  
-  useEffect(() => {
-      const fetchSpendings = async () => {
-        const res = await handleFetchAllSpendings(format(new Date(),"yyyy-MM-dd"));     //convert date to yyyy-mm-dd, e.g. 2025-08-01
-        if (res) {
-          setSpendItems?.(res);
-        }
-      };  
-      if (!spendings) fetchSpendings();
-  }, []);
-
 
   return (
     <>

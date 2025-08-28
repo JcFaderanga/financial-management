@@ -1,9 +1,11 @@
 import React from "react";
-const SubmitButton = ({title, onClick, disabled, className}:{
+import Spinner from "../UI/Spinner";
+const SubmitButton = ({title, onClick, disabled, className, spinner}:{
     title: string,
     className?: string,
     onClick: ()=> void,
-    disabled?: boolean
+    disabled?: boolean,
+    spinner?: boolean
 }) => {
   return (
     <button
@@ -13,7 +15,10 @@ const SubmitButton = ({title, onClick, disabled, className}:{
         ${disabled ?'bg-gray-300 ' :'bg-blue-500'}
         ${className}
              px-4 py-2 rounded-xl text-white font-bold`}
-    >{title}
+    >
+      {
+        !spinner ? title : <Spinner/> 
+      }
     </button>
   )
 }

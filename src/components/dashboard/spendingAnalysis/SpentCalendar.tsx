@@ -7,6 +7,7 @@ import { useSpendings } from '@/store/useSpendingStore'
 import {
   startOfMonth,
   endOfMonth,
+  format,
 } from 'date-fns'
 import DoughnutChart from "../../charts/Doughnut";
 import { useOverviewDateStore } from '@/store/useOverviewDate'
@@ -17,9 +18,8 @@ import Calendar from './Calendar'
 import { useThisMonth } from '@/store/useCalendarStore'
 
 const SpentCalendar = () => {
-  const { handleFetchAllSpendings } = useFetchAllSpending();
+  const {setSpendItems} = useSpendings();
   const {allSpentData: data} = useAllSpendingData();
-  const { setSpendItems } = useSpendings()
   const [allTotal, setAllTotal] = useState<number>(0)
   const [monthlyTotal, setMonthlyTotal] = useState<number>(0)
   const {currentMonth} = useThisMonth();
@@ -42,16 +42,10 @@ const SpentCalendar = () => {
   setAllTotal(total)
 }, [data])
 
-
-   const setDate = useCallback(async(date: string | {})=>{
-
-    const res = await handleFetchAllSpendings(date)
-    setSpendItems(date === 'all' ? data : res || [])
-    navigate(`/`)
-  },[handleFetchAllSpendings, setSpendItems, data, navigate])
  
   //handleMonthSelect function use to select current month data
   const handleMonthSelect = useCallback(()=>{
+    setSpendItems(null);
     const monthStart = FormatDate(startOfMonth(currentMonth))
     const monthEnd = FormatDate(endOfMonth(currentMonth))
 
@@ -61,12 +55,14 @@ const SpentCalendar = () => {
     }
 
     setStoreDate(date_range)
-    setDate(date_range)
+    navigate(`/`)
   },[currentMonth])
 
   //handleSelectAll function use to select all data
   const handleSelectAll = useCallback(()=>{
 
+    setSpendItems(null);
+    
     //first item in the array is the most recent or last item
     //data[0] select first index(most recent or latest item inserted to DB)
     const lastItem= data[0];
@@ -78,13 +74,13 @@ const SpentCalendar = () => {
     //select created_at col to get item date timestamp
     //only need for displaying first and last date
     setStoreDate({
-        startDate: firstItem.created_at,
-        endDate:  lastItem.created_at,
+        startDate: format(firstItem.created_at, "yyyy-MM-dd"),
+        endDate:  format(lastItem.created_at, "yyyy-MM-dd"),
     })
 
     //passing string arguments for conditional logic inside setDate
     //all means getting all data from DB
-    setDate('all');
+    navigate(`/`)
   },[]);
 
 

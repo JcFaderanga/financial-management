@@ -14,10 +14,10 @@ const useFetchAllSpending = () => {
   const { user } = useUserStore();
   const [data, setData] = useState<itemTypes[]>([]);
   const [error, setError] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean | null>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleFetchAllSpendings = async (targetDate?: TargetDate) => {
-
+    setLoading(true)
     try {
       let query = supabase
         .from('items')
@@ -44,6 +44,7 @@ const useFetchAllSpending = () => {
                 startDate,
                 startDate,
             );
+           
         }else if (startDate && endDate) {
             query = applyDateRange(
                 startDate,
@@ -55,28 +56,26 @@ const useFetchAllSpending = () => {
 
       } else if (typeof targetDate === 'string') {
         query = applyDateRange(targetDate, targetDate);
+        
       }
 
       const { data: result, error } = await query;
 
       if (error) {
-        //console.error('Error fetching spending data:', error);
         setError(error);
-        return;
+        throw new Error(error.message)
       }
 
-      if (!result?.length) return null;
+      // if (!result?.length) return null;
 
+      setLoading(false)
       setData(result);
       return result;
 
     } catch (err: any) {
       setError(err);
       throw new Error(err.message || 'Unknown error');
-    } finally {
-      setLoading(false)
-      
-    }
+    } 
   };
   return { data, error, loading, handleFetchAllSpendings };
 };

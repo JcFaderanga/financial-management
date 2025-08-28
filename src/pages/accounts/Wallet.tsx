@@ -93,7 +93,7 @@ const AccountProgress = ({ title, amount, value }: AccountProgressProps) => {
   const {isAmountHidden} = useAmountHidden();
   return(
     
-    <div className="border rounded-2xl px-4 py-3 border-gray-200 dark:bg-medium-dark dark:border-none my-2 w-full lg:max-w-[305px]">
+    <div className="border rounded-2xl px-4 py-3 border-gray-200 bg-slate-50 dark:bg-medium-dark dark:border-none my-2 w-full lg:max-w-[305px]">
       <Link to={`/account/${title}`} state={{backgroundLocation: location}}>
       <div className="flex justify-between font-bold">
         <label htmlFor="progress">{title}</label>

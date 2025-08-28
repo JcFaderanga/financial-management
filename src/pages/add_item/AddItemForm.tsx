@@ -28,7 +28,7 @@ const [isAddSubCategory, setAddSubCategory] = useState<boolean>(false)
 const [isAddTitle, setAddTitle] = useState<boolean>(false)
 const [priceError, setPriceError] = useState<boolean>(false);
 const [btnDisable, setBtnDisable] = useState<boolean>(true);
-const {handleSaveItem} = UseSaveItem();
+const {handleSaveItem, loading: saveLoading} = UseSaveItem();
 const {handleUniqueItem, fetchUniqueList, uniqueItem, loading} = useUniqueItemList()
 const {dateRange} = OverviewDate();
 const {fetchAccountData, account} = useFetchAllAccount();
@@ -120,7 +120,7 @@ const handleSave = useCallback(async()=>{
     setBtnDisable(false)
 
     //navigate back to records
-    navigate('/')
+   navigate('/')
 },[category, price, title ,subCategory, modeOfPayment])
 
  if(loading) return 'Loading...';
@@ -276,7 +276,8 @@ const handleSave = useCallback(async()=>{
                         }
                         <SubmitButton 
                             title='Save'
-                            onClick={handleSave} 
+                            onClick={handleSave}
+                            spinner = {saveLoading}
                             disabled={btnDisable}
                         />
                     </div>
