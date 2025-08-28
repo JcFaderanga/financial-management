@@ -68,10 +68,14 @@ const Calendar = () => {
 
   //handleDateSelect function use to select specific date
   const handleDateSelect = useCallback((date: string)=>{
+    
+    const selectedDate = new Date(date)
 
     //set null to spending store to refresh list in records
     setSpendItems(null);
-    setStoreDate(format(new Date(date), "yyyy-MM-dd"))
+    setStoreDate(format(selectedDate, "yyyy-MM-dd"))
+
+    //navigate to records to show list
     navigate(`/`)
 
   },[ setStoreDate , setSpendItems])

@@ -25,7 +25,7 @@ const Liabilities = () => {
     
   return (
     <div className='p-4'>
-        <div className='flex items-center justify-between h-14 px-4 my-2 dark:bg-light-dark rounded-xl'>
+        <div className='flex items-center justify-between h-14 px-4 my-2 bg-slate-100 dark:bg-light-dark rounded-xl'>
         <strong className='dark:text-white text-dark '>Dark Mode</strong>
             <div onClick={() => setDark(!dark)} className='flex px-1 py-1 bg-blue-100 cursor-pointer dark:bg-dark rounded-2xl'>
                 <span className='dark:opacity-0 bg-blue-50 rounded-full text-sm p-[1px] px-0.5'>☀️</span>
@@ -33,7 +33,7 @@ const Liabilities = () => {
             </div>
         </div>  
 
-        <div className='flex items-center justify-between h-14 px-4 my-2 dark:bg-light-dark rounded-xl'>
+        <div className='flex items-center justify-between h-14 px-4 my-2 bg-slate-100 dark:bg-light-dark rounded-xl'>
         <strong className='dark:text-white text-dark '>Sign Out</strong>
             <div onClick={() => signOut()} className='flex text-2xl dark:text-white cursor-pointer'>
                 <LuLogOut/>

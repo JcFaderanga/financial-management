@@ -14,6 +14,7 @@ import { IoCheckmark ,IoCloseOutline  } from "react-icons/io5";
 import useFetchAllAccount from '@/hooks/accountHooks/useFetchAllAccount'
 import { Link, useLocation } from 'react-router-dom'
 import { usePaymentMethod } from '@/store/useAccountStore';
+import PageWrapper from '@/wrapper/PageWrapper'
 const AddItemForm = () => {
 const { category } = useParams(); 
 const {setSpendItems, spendings} =useSpendings();
@@ -125,7 +126,7 @@ const handleSave = useCallback(async()=>{
 
  if(loading) return 'Loading...';
     return (
-        <div className="w-screen max-w-4xl mx-auto dark:text-white h-screen"> 
+        <PageWrapper className=" dark:text-white h-screen"> 
             <header className={` flex justify-between item-center p-4 cursor-pointer`}>
                 <p className=' text-dark dark:text-white'>
                     <span>{category}</span>
@@ -283,7 +284,7 @@ const handleSave = useCallback(async()=>{
                     </div>
                 </div>
             </div>
-        </div>
+        </PageWrapper>
 
   )
 }

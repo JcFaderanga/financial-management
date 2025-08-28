@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
 import { FaAngleRight } from "react-icons/fa6"
-import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpending"
 import { FormatDate } from '@/utils/DateFormat'
 import { useNavigate } from 'react-router-dom'
 import { useSpendings } from '@/store/useSpendingStore'
@@ -27,7 +26,6 @@ const SpentCalendar = () => {
   const {setDate: setStoreDate} = useOverviewDateStore()
   const navigate = useNavigate()
  
-  // console.log(JSON.stringify(spendingData,null,2))
   useEffect(() => {
     //Over all total
     const date = new TotalPerDayAndMonth( data, currentMonth );
@@ -61,6 +59,7 @@ const SpentCalendar = () => {
   //handleSelectAll function use to select all data
   const handleSelectAll = useCallback(()=>{
 
+    //set null to refresh spending list in records
     setSpendItems(null);
     
     //first item in the array is the most recent or last item
