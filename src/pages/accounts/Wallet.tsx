@@ -61,14 +61,14 @@ const ActionButton = () => {
 
   return (
     <div className="w-full dark:text-white flex gap-4">
-      <Link to="/account/deposit" state={{ backgroundLocation: location }}>
+      {/* <Link to="/account/deposit" state={{ backgroundLocation: location }}>
         <div className="flex flex-col items-center">
           <div className="text-xl p-4 bg-gray-300 dark:bg-light-dark rounded-full w-fit">
             <PiHandDeposit />
           </div>
           <span className="text-xs">Deposit</span>
         </div>
-      </Link>
+      </Link> */}
 
       {/* Uncomment if Accounts button is needed */}
       {/* <div className="flex flex-col items-center">
