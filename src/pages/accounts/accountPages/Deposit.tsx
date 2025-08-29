@@ -1,63 +1,57 @@
 import { useState } from 'react'
-import ModalWrapper from '@/wrapper/ModalWrapper'
-import { useNavigate } from 'react-router-dom'
-import CustomInputs from '@/components/inputs/CustomInputs'
-import CustomDropdown from '@/components/inputs/CustomDropdown'
-import { BankList, BankType } from '@/utils/BankList'
+import CustomInputV2 from '@/components/inputs/CustomInputV2'
 import SubmitButton from '@/components/button/SubmitButton'
-import useInsertAccount from '@/hooks/accountHooks/useInsertAccount'
 import { AccountType } from '@/types/AccountTypes'
-import { useUserStore } from '@/store/useUserStore'
 import { useAccountStore } from '@/store/useAccountStore'
+import CustomInputs from '@/components/inputs/CustomInputs'
+import supabase from '@/lib/supabase'
 
-const Deposit = ({account}:{account: AccountType}) => {
-const [bank, setBank] = useState<string>('');
-const [amount, setAmount] = useState<string>('');
-const {error, handleInsertAccount} = useInsertAccount();
-const navigate = useNavigate()
-const {user} = useUserStore()
-const {account: accountStore,setAccount} =useAccountStore();
 
-    const handleSubmit = async() =>{
-        const selectedBank: BankType = BankList.filter((b:BankType)=> b.name === bank)[0]
-        
-        const account: AccountType = {
-            account_name: selectedBank.name,
-            account_key: selectedBank.key,
-            account_code: selectedBank.code,
-            amount: Number(amount),
-            account_owner: user.id,
-        }
-        console.log(account)
-        const res = await handleInsertAccount(account);
+const Deposit = ({currentAccount, exit}:{currentAccount: AccountType, exit: ()=> void}) => {
+const [newAmount, setNewAmount] = useState<string>('');
+const [loading, setLoading] = useState<boolean>(false)
+const {account: accountStore} =useAccountStore();
 
-        const isExisting = accountStore.filter((acc)=> acc.account_code === selectedBank.code)
-        
-        if(isExisting.length > 0){
-            isExisting[0].amount += Number(amount);
-        } else{
-            setAccount([
-            ...accountStore, res
-            ])
+    async function updateAmount(){
+        setLoading(true)
+        const sumOfAmount = Number(currentAccount.amount) + Number(newAmount)
+
+        const updatedAccount = { 
+            ...currentAccount,
+             amount: sumOfAmount
         }
 
-        if(error) console.error(error);
-        navigate(-1);
+        const currentAccountStored = accountStore?.filter((acc)=> acc.account_code === currentAccount.account_code)[0];
+        currentAccountStored.amount = sumOfAmount;
+
+        await supabase
+            .from('accounts')
+            .update(updatedAccount)
+            .eq('account_code', currentAccount.account_code)
+            .eq('account_owner', currentAccount.account_owner )
+        setLoading(false)
+        exit();
     }
 
   return (
-    <div className='w-full rounded-xl px-4 bg-white  dark:bg-light-dark dark:text-white py-4'>
-        <strong>Deposit</strong>
-        {error}
-        {account.account_code}
+    <div className='w-full mx-auto pb-10 flex flex-col gap-2 rounded-t-2xl lg:rounded-xl px-4 bg-white  dark:bg-dark dark:text-white py-4'>
+        <div className='flex justify-between'>
+            <strong>DEPOSIT</strong>
+            <strong>{currentAccount.account_code}</strong>
+        </div>
+        
         <CustomInputs
-            value={amount}
-            onChange={(e)=>setAmount(e)}
+            value={newAmount}
+            onChange={(e)=>setNewAmount(e)}
             type='number'
+            placeholder='Enter deposit amount'
+            className='text-center'
             />
         <SubmitButton
-            onClick={handleSubmit}
-            title='Okay'
+            onClick={updateAmount}
+            spinner={loading}
+            disabled={loading}
+            title='Save'
         />
     </div>
   )

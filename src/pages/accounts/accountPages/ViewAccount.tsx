@@ -15,10 +15,12 @@ import { IoIosCloseCircle } from "react-icons/io";
 import { NoRecord } from '@/components/NoRecord';
 import CustomInputs from '@/components/inputs/CustomInputs';
 import { RiSearch2Fill } from "react-icons/ri";
+import { LuPencil } from 'react-icons/lu';
 import Deposit from './Deposit';
+import { Search } from '@/hooks/accountHooks/accountControls';
 const ViewAccount = () => {
     const navigate = useNavigate()
-    const [items, setItems] = useState<itemTypes[]>([]);
+    const [record, setRecord] = useState<itemTypes[]>([]);
     const {code} = useParams();
     const {account} = useAccountStore();
     const [amount, setAmount] = useState<string | number>(0);
@@ -26,16 +28,33 @@ const ViewAccount = () => {
     const location = useLocation();
     const [isInnerModal, setIsInnerModal] = useState<boolean>(false);
     const [modalType,setModalType] = useState<string>('')
+    const [search, setSearch] = useState<string>('');
     const {handleFetchItemByAccount, error, loading} = useFetchItemByAccount();
 
     useEffect(()=>{
         async function fetchByAcc(){
             const result: itemTypes[] = await handleFetchItemByAccount(code)
-            setItems(result)
+            setRecord(result)
         }
         fetchByAcc();
         
     },[])
+
+   useEffect(() => {
+    
+  const debounce = setTimeout(() => {
+    async function fetchSearch() {
+      
+        const result: any = await Search(code, search);
+        setRecord(result);
+    
+    }
+    fetchSearch();
+  }, 500);
+
+  return () => clearTimeout(debounce);
+}, [search, code]);
+
 
     const currentAccount: AccountType = account?.filter((acc)=> acc.account_code === code)[0];
 
@@ -71,6 +90,8 @@ const ViewAccount = () => {
     setIsInnerModal(!isInnerModal);
   }
 
+
+
   return (
     <ModalWrapper close={()=>navigate(-1)} classNameChild='h-full lg:py-10 fade-in'>
         <div className='bg-white dark:bg-dark lg:rounded-xl dark:text-white py-4 h-full'>
@@ -90,13 +111,14 @@ const ViewAccount = () => {
 
             {/* Content container */}
             <div className='h-[97%] px-4 overflow-y-scroll '>
-            <span className='text-red-900'>{error}</span>
+            {/* <span className='text-red-900'>{error}</span> */}
 
                 {/* Total Expenses Container */}
                 <div className='w-full p-5 text-center bg-slate-100 dark:bg-light-dark rounded-2xl my-4'>
                     <strong >
-                        <span className='text-2xl' onClick={()=>setIsAmountEdit(!isAmountEdit)}>
+                        <span className='text-2xl flex items-center justify-center gap-2 cursor-pointer' onClick={()=>setIsAmountEdit(!isAmountEdit)}>
                             <NumberFlow value={Number(currentAccount?.amount) || 0} style='currency' currency='php'/>
+                            <LuPencil size={18}/>
                         </span>
                         
                         {
@@ -124,9 +146,9 @@ const ViewAccount = () => {
                     <div className='flex items-center px-4 py-1 bg-slate-100 dark:bg-light-dark rounded-4xl'>
                         <RiSearch2Fill size={30} className='text-slate-400'/>
                         <CustomInputs 
-                            value={''} 
+                            value={search} 
                             placeholder='Search'
-                            onChange={(e)=>setAmount(Number(e))} 
+                            onChange={(e)=>setSearch(e)} 
                             type='text' 
                             disabled={false}
                             focus={false}
@@ -137,30 +159,54 @@ const ViewAccount = () => {
                     {/* Filter buttons */}
                     <div className='grid grid-cols-3 gap-2 my-3'>
                         <div>
-                            <button className='text-xs cursor-pointer py-3 w-full bg-slate-200 dark:bg-light-dark font-bold rounded-2xl'>Date</button>
+                            <button onClick={(()=>showModal('date'))} className='text-xs cursor-pointer py-3 w-full bg-slate-200 dark:bg-light-dark font-bold rounded-2xl'>Date</button>
                         </div>
                         <div>
-                            <button className='text-xs cursor-pointer py-3 w-full bg-slate-200 dark:bg-light-dark font-bold rounded-2xl'>Transaction</button>
+                            <button onClick={(()=>showModal('transaction'))} className='text-xs cursor-pointer py-3 w-full bg-slate-200 dark:bg-light-dark font-bold rounded-2xl'>Transaction</button>
                         </div>
                         <div>
-                            <button className='text-xs cursor-pointer py-3 w-full  bg-yellow-300 text-light-dark font-bold rounded-2xl'>Deposit</button>
+                            <button onClick={(()=>showModal('deposit'))} className='text-xs cursor-pointer py-3 w-full  bg-yellow-300 text-light-dark font-bold rounded-2xl'>Deposit</button>
                         </div>
                     </div>
                 </div>
 
                 {/* Expenses history list */}
                     <SpentTable 
-                    data={items}
+                    data={record || []}
                     loading={loading}
                     handleEdit={handleEdit}
                 />
                 {
-                    loading ? '' : (items.length > 0) ? '' : <NoRecord/>    
+                    loading ? '' : (record?.length > 0) ? '' : <NoRecord/>    
                 }
             </div>
         </div>
 
-   
+        {/* Inner modal */}
+        {
+            isInnerModal &&
+            <ModalWrapper close={()=> setIsInnerModal(!isInnerModal)} className='!items-end lg:!items-center' classNameChild='slide-up'>
+                <div className='lg:px-4 dark:text-white'>
+                    {
+                        modalType === "date" &&
+                        <div className='bg-white dark:bg-dark h-32 lg:rounded-2xl rounded-t-2xl text-center font-bold py-4'>
+                            This feature is not yet available.
+                        </div>
+                    }         
+                    {
+                        modalType === "transaction" &&
+                        <div className='bg-white dark:bg-dark h-32 rounded-t-2xl text-center font-bold py-4'>
+                            This feature is not yet available.
+                        </div>
+                    }    
+                    {
+                         modalType === "deposit" &&
+                        <Deposit currentAccount={currentAccount} exit={()=>setIsInnerModal(!isInnerModal)}/>    
+                    } 
+                </div>
+            </ModalWrapper>  
+        }
+          
 
     </ModalWrapper>
   )
