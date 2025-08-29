@@ -9,7 +9,7 @@ const ModalWrapper = ({
   children: React.ReactNode,
   className?:string,
   classNameChild?:string,
-  close: ()=> void
+  close?: ()=> void
 }) => {
 
     /* use navigate(-1) to close the modal */

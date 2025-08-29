@@ -9,7 +9,8 @@ import useInsertAccount from '@/hooks/accountHooks/useInsertAccount'
 import { AccountType } from '@/types/AccountTypes'
 import { useUserStore } from '@/store/useUserStore'
 import { useAccountStore } from '@/store/useAccountStore'
-const Deposit = () => {
+
+const Deposit = ({account}:{account: AccountType}) => {
 const [bank, setBank] = useState<string>('');
 const [amount, setAmount] = useState<string>('');
 const {error, handleInsertAccount} = useInsertAccount();
@@ -45,26 +46,20 @@ const {account: accountStore,setAccount} =useAccountStore();
     }
 
   return (
-    <ModalWrapper close={()=>navigate(-1)}>
-        <div className='w-full rounded-xl px-4 bg-white  dark:bg-light-dark dark:text-white py-4'>
-            <strong>Deposit</strong>
-            {error}
-            <CustomDropdown 
-                options={BankList?.map((i)=>i.name)}
-                onChange={(e)=>setBank(e)}
-                isActive={true}
+    <div className='w-full rounded-xl px-4 bg-white  dark:bg-light-dark dark:text-white py-4'>
+        <strong>Deposit</strong>
+        {error}
+        {account.account_code}
+        <CustomInputs
+            value={amount}
+            onChange={(e)=>setAmount(e)}
+            type='number'
             />
-            <CustomInputs
-                value={amount}
-                onChange={(e)=>setAmount(e)}
-                type='number'
-             />
-            <SubmitButton
-                onClick={handleSubmit}
-                title='Okay'
-            />
-        </div>
-    </ModalWrapper>
+        <SubmitButton
+            onClick={handleSubmit}
+            title='Okay'
+        />
+    </div>
   )
 }
 
