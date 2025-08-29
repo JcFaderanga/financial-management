@@ -29,7 +29,7 @@ const ViewAccount = () => {
     const [isInnerModal, setIsInnerModal] = useState<boolean>(false);
     const [modalType,setModalType] = useState<string>('')
     const [search, setSearch] = useState<string>('');
-    const {handleFetchItemByAccount, error, loading} = useFetchItemByAccount();
+    const {handleFetchItemByAccount, loading} = useFetchItemByAccount();
 
     useEffect(()=>{
         async function fetchByAcc(){
@@ -41,7 +41,7 @@ const ViewAccount = () => {
     },[])
 
    useEffect(() => {
-    
+
   const debounce = setTimeout(() => {
     async function fetchSearch() {
       

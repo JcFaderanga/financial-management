@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import CustomInputV2 from '@/components/inputs/CustomInputV2'
+// import CustomInputV2 from '@/components/inputs/CustomInputV2'
 import SubmitButton from '@/components/button/SubmitButton'
 import { AccountType } from '@/types/AccountTypes'
 import { useAccountStore } from '@/store/useAccountStore'
