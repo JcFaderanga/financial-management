@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { PiHandDeposit } from 'react-icons/pi';
+// import { PiHandDeposit } from 'react-icons/pi';
 // import { RiBankLine } from 'react-icons/ri';
 // import useDocumentTitle from '@/hooks/document/useDocTitle';
 import NumberFlow from '@/components/UI/NumberFlow';
@@ -57,7 +57,7 @@ const AvailableBalance = () => {
 };
 
 const ActionButton = () => {
-  const location = useLocation();
+  // const location = useLocation();
 
   return (
     <div className="w-full dark:text-white flex gap-4">
