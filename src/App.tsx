@@ -21,7 +21,8 @@ import AccountList from './pages/wallet/accountPages/AccountList';
 
 //WALLET SUB PAGES
 import ViewAccount from './pages/wallet/accountPages/ViewAccount';
-import AddNewAccount from '@/pages/wallet/accountPages/AddNewAccount'
+import AddNewAccount from '@/pages/wallet/accountPages/AddNewAccount';
+
 //MODAL PAGES
 import ModalViewItem from './components/modal/ModalViewItem';
 
