@@ -1,9 +1,9 @@
 import React from "react";
 import useDocumentTitle from "@/hooks/document/useDocTitle";
-import SpentHistory from "@/components/dashboard/spentHistory/SpentHistory";
-import ExpensesTotal from "@/components/dashboard/ExpensesTotal";
+import SpentHistory from "@/components/mainPages/spentHistory/SpentHistory";
+import ExpensesTotal from "@/components/mainPages/ExpensesTotal";
 import {FormattedUTCDate } from "@/utils/DateFormat";
-import SpentSummary from "@/components/dashboard/SpentSummary";
+import SpentSummary from "@/components/mainPages/SpentSummary";
 import OverviewDate from "@/hooks/OverviewDate";
 
 import { Link  } from "react-router-dom";

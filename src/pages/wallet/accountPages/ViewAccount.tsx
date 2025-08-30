@@ -10,7 +10,7 @@ import { IoCheckmark  } from "react-icons/io5";
 import supabase from '@/lib/supabase';
 import useFetchItemByAccount from '@/hooks/spend_items/useFetchItemByAccount';
 import { itemTypes } from '@/types/itemTypes';
-import SpentTable from '@/components/dashboard/spentHistory/SpentTable';
+import SpentTable from '@/components/mainPages/spentHistory/SpentTable';
 import { IoIosCloseCircle } from "react-icons/io";
 import { NoRecord } from '@/components/NoRecord';
 import CustomInputs from '@/components/inputs/CustomInputs';

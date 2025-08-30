@@ -1,12 +1,12 @@
 import { useEffect,useState } from 'react';
-import SpentCalendar from '@/components/dashboard/spendingAnalysis/SpentCalendar';
+import SpentCalendar from '@/components/mainPages/spendingAnalysis/SpentCalendar';
 //import SpentCalendar from '@/components/dashboard/SpentCalendar';
 import useDocumentTitle from '@/hooks/document/useDocTitle';
 import useFetchAllSpending from "@/hooks/spend_items/useFetchAllSpending"
-import MonthlyChart from '@/components/dashboard/spendingAnalysis/MonthlyChart';
+import MonthlyChart from '@/components/mainPages/spendingAnalysis/MonthlyChart';
 // import BarChart from '@/components/charts/BarChart';
 import { useAllSpendingData } from '@/store/useSpendingStore';
-import AnalyticsSkeleton from './AnalyticsSkeleton';
+import AnalyticsSkeleton from '@/pages/analytics/AnalyticsSkeleton';
 const SpendingAnalysis = () => {
   const [isLoading,setLoading]= useState<boolean>(true);
   const { handleFetchAllSpendings } = useFetchAllSpending();

@@ -2,13 +2,13 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 
 //AUTH PAGES
 import Login from '@/pages/auth/Login';
-import ProtectedRoute from './layout/ProtectedRoute';
+import ProtectedRoute from './router/ProtectedRoute';
 
 //MAIN PAGES
 import HomeLayout from '@/layout/HomeLayout';
-import Records from '@/pages/dashboard/Records';
-import Analytics from './pages/dashboard/Analytics';
-import Wallet from '@/pages/accounts/Wallet';
+import Records from '@/pages/records/Records';
+import Analytics from './pages/analytics/Analytics';
+import Wallet from '@/pages/wallet/Wallet';
 import More from '@/pages/more/More'
 
 //404 PAGE
@@ -17,16 +17,16 @@ import Page404 from '@/pages/Page404';
 //ADD RECORDS
 import CategorySelection from './pages/add_item/CategorySelection';
 import AddItemForm from './pages/add_item/AddItemForm';
-import AccountList from './pages/accounts/accountPages/AccountList';
+import AccountList from './pages/wallet/accountPages/AccountList';
 
 //WALLET SUB PAGES
-import ViewAccount from './pages/accounts/accountPages/ViewAccount';
+import ViewAccount from './pages/wallet/accountPages/ViewAccount';
 
 //MODAL PAGES
 import ModalViewItem from './components/modal/ModalViewItem';
 
 //UNUSED ROUTES, RESERVE FOR FUTURE FEATURES
-import SocialAccounts from './pages/accounts/SocialAccounts';
+import SocialAccounts from './pages/wallet/SocialAccounts';
 // import Settings from '@/pages/Settings/Settings';
 import Bills from '@/pages/bills/Bills';
 

@@ -1,4 +1,4 @@
-import CalendarSkeleton from '@/components/dashboard/spendingAnalysis/CalendarSkeleton';
+import CalendarSkeleton from '@/components/mainPages/spendingAnalysis/CalendarSkeleton';
 import SkeletonAnimationWrapper from '@/wrapper/SkeletonAnimationWrapper';
   
 const SpendingAnalysisSkeleton = () => {
