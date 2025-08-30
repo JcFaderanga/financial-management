@@ -9,7 +9,8 @@ import { BankAccount } from '@/utils/BankAccountFormula';
 import { AccountType } from '@/types/AccountTypes';
 import useFetchAllAccount from '@/hooks/accountHooks/useFetchAllAccount';
 import { FaEyeSlash, FaEye} from "react-icons/fa6";
-
+import { GoTrueAdminApi } from '@supabase/supabase-js';
+import WalletSkeleton from './WalletSkeleton';
 // ========================
 // Subcomponents
 // ========================
@@ -136,7 +137,7 @@ const Accounts = () => {
   
   const current = new BankAccount(storedAccount);
   
-  if(loading) return 'Loading...';
+  if(loading) return <WalletSkeleton/>;
   
   return (
       <main className=" p-4 pb-20 flex flex-col gap-2">

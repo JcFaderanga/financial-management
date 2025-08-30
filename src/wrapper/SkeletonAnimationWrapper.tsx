@@ -29,6 +29,7 @@ const SkeletonAnimationWrapper = ({children}:{children: ReactNode}) => {
   return (
     <div ref={fadeRef}>
       {children}
+      <div className="pointer-events-none absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white dark:from-dark to-transparent" />
     </div>
   )
 }
