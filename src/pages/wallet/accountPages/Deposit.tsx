@@ -4,7 +4,6 @@ import SubmitButton from '@/components/button/SubmitButton'
 import { AccountType } from '@/types/AccountTypes'
 import { useAccountStore } from '@/store/useAccountStore'
 import CustomInputs from '@/components/inputs/CustomInputs'
-import supabase from '@/lib/supabase'
 import { AccountBalance } from '@/hooks/accountHooks/accountControls'
 
 const Deposit = ({currentAccount, exit}:{currentAccount: AccountType, exit: ()=> void}) => {

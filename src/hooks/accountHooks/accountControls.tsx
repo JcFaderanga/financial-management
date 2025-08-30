@@ -1,7 +1,5 @@
 import supabase from "@/lib/supabase";
 import { AccountType } from "@/types/AccountTypes";
-import { useAccountStore } from '@/store/useAccountStore'
-import { LiaThSolid } from "react-icons/lia";
 
 export async function Search( payment_code: string|undefined, search: string) {
 
