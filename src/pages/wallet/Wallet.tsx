@@ -9,7 +9,6 @@ import { BankAccount } from '@/utils/BankAccountFormula';
 import { AccountType } from '@/types/AccountTypes';
 import useFetchAllAccount from '@/hooks/accountHooks/useFetchAllAccount';
 import { FaEyeSlash, FaEye} from "react-icons/fa6";
-import { GoTrueAdminApi } from '@supabase/supabase-js';
 import WalletSkeleton from './WalletSkeleton';
 // ========================
 // Subcomponents
