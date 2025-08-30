@@ -56,8 +56,7 @@ const ViewAccount = () => {
 }, [search, code]);
 
 
-    const currentAccount: AccountType = account?.filter((acc)=> acc.account_code === code)[0];
-
+    const currentAccount: AccountType = account?.filter((acc)=> acc?.account_code === code)[0];
     useEffect(()=>setAmount(currentAccount?.amount),[isAmountEdit])
 
     async function updateAmount(){

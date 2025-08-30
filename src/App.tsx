@@ -21,7 +21,7 @@ import AccountList from './pages/wallet/accountPages/AccountList';
 
 //WALLET SUB PAGES
 import ViewAccount from './pages/wallet/accountPages/ViewAccount';
-
+import AddNewAccount from './pages/wallet/accountPages/addNewAccount';
 //MODAL PAGES
 import ModalViewItem from './components/modal/ModalViewItem';
 
@@ -68,7 +68,8 @@ function AppRoutes() {
 
       {/* Modal routes (overlays on top) */}
       {state?.backgroundLocation && (
-        <Routes>AccountList
+        <Routes>
+          <Route path="/wallet/add_new_account" element={<ProtectedRoute children={<AddNewAccount/>}/> }/>
           <Route path="/account list" element={<ProtectedRoute children={<AccountList/>}/> }/>
           <Route path="/record/:id" element={<ProtectedRoute children={<ModalViewItem/>}/> }/>
           <Route path="/account/:code" element={<ProtectedRoute children={<ViewAccount/>}/> }/>

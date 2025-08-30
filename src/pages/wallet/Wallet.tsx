@@ -10,6 +10,7 @@ import { AccountType } from '@/types/AccountTypes';
 import useFetchAllAccount from '@/hooks/accountHooks/useFetchAllAccount';
 import { FaEyeSlash, FaEye} from "react-icons/fa6";
 import WalletSkeleton from './WalletSkeleton';
+import { MdOutlineAddCard } from "react-icons/md";
 // ========================
 // Subcomponents
 // ========================
@@ -57,26 +58,19 @@ const AvailableBalance = () => {
 };
 
 const ActionButton = () => {
-  // const location = useLocation();
+  const location = useLocation();
 
   return (
     <div className="w-full dark:text-white flex gap-4">
-      {/* <Link to="/account/deposit" state={{ backgroundLocation: location }}>
+      <Link to="/wallet/add_new_account" state={{ backgroundLocation: location }}>
         <div className="flex flex-col items-center">
           <div className="text-xl p-4 bg-gray-300 dark:bg-light-dark rounded-full w-fit">
-            <PiHandDeposit />
+            <MdOutlineAddCard />
           </div>
-          <span className="text-xs">Deposit</span>
+          {/* <span className="text-xs"></span> */}
         </div>
-      </Link> */}
+      </Link>
 
-      {/* Uncomment if Accounts button is needed */}
-      {/* <div className="flex flex-col items-center">
-        <div className="text-xl p-4 bg-gray-300 dark:bg-light-dark rounded-full w-fit">
-          <RiBankLine />
-        </div>
-        <span className="text-xs">Accounts</span>
-      </div> */}
     </div>
   );
 };

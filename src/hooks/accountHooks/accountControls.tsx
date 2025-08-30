@@ -1,18 +1,44 @@
 import supabase from "@/lib/supabase";
+import { AccountType } from "@/types/AccountTypes";
+import { useAccountStore } from '@/store/useAccountStore'
+import { LiaThSolid } from "react-icons/lia";
+
+export async function Search( payment_code: string|undefined, search: string) {
+
+const {data, error} = await supabase
+    .from("items")
+    .select("*")
+    .eq('mode_of_payment', payment_code)
+    .ilike('title', `%${search}%`)
+
+if(error) throw new Error(error.message)
+return data;
+}
 
 
-    export function query() {
-       return supabase.from("items");
+export class AccountBalance{
+    newAccountBalanceData: AccountType;
+    constructor(newAccountData: AccountType){
+        this.newAccountBalanceData = newAccountData;
     }
 
-    export async function Search( payment_code: string|undefined, search: string) {
- 
-    const {data, error} = await query()
-        .select("*")
-        .eq('mode_of_payment', payment_code)
-        .ilike('title', `%${search}%`)
-
-    if(error) throw new Error(error.message)
-    return data;
+    private query(){
+        return supabase.from('accounts') 
     }
 
+    async useDeposit(){
+        const {error, data} = await
+        this.query().insert(this.newAccountBalanceData)
+            .select()
+            .maybeSingle();
+        return {error, data};
+    }
+
+    async useUpdateBalance(currentAccount: AccountType){
+        const {error} = await 
+        this.query().update(this.newAccountBalanceData)
+            .eq('account_code', currentAccount.account_code)
+            .eq('account_owner', currentAccount.account_owner)
+        return {error};
+    }
+}
