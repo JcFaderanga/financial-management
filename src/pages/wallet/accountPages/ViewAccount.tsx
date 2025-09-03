@@ -18,6 +18,8 @@ import { RiSearch2Fill } from "react-icons/ri";
 import { LuPencil } from 'react-icons/lu';
 import Deposit from './Deposit';
 import { Search } from '@/hooks/accountHooks/accountControls';
+import { FaMoneyBillTransfer } from "react-icons/fa6";
+import { BiTransfer } from "react-icons/bi";
 const ViewAccount = () => {
     const navigate = useNavigate()
     const [record, setRecord] = useState<itemTypes[]>([]);
@@ -83,7 +85,7 @@ const ViewAccount = () => {
 
   },[])
 
-  const showModal = (modalType: "deposit" | "transaction" | "date") =>{
+  const showModal = (modalType: "deposit" | "transaction" | "date" | "transfer") =>{
 
     setModalType(modalType);
     setIsInnerModal(!isInnerModal);
@@ -102,9 +104,15 @@ const ViewAccount = () => {
                         <IoWallet size={30}/>
                         <strong className='text-xl'>{currentAccount?.account_code}</strong>
                     </div>
-                    <span className='text-gray-300' onClick={()=>navigate(-1)}>
+                    <div className='flex gap-2 items-center-safe'>
+                        <div className='flex items-center gap-2 py-1 px-4 cursor-pointer rounded-xl bg-slate-100 dark:bg-light-dark'> 
+                            <BiTransfer/><span>Transfer</span>
+                        </div>
+                        <span className='text-gray-300' onClick={()=>navigate(-1)}>
                         <IoIosCloseCircle size={30}/>
                     </span>
+                    </div>
+                    
                 </div>
             </div>
 
@@ -194,7 +202,7 @@ const ViewAccount = () => {
                     }         
                     {
                         modalType === "transaction" &&
-                        <div className='bg-white dark:bg-dark h-32 rounded-t-2xl text-center font-bold py-4'>
+                        <div className='bg-white dark:bg-dark h-32 lg:rounded-2xlrounded-t-2xl text-center font-bold py-4'>
                             This feature is not yet available.
                         </div>
                     }    
@@ -202,6 +210,7 @@ const ViewAccount = () => {
                          modalType === "deposit" &&
                         <Deposit currentAccount={currentAccount} exit={()=>setIsInnerModal(!isInnerModal)}/>    
                     } 
+                   
                 </div>
             </ModalWrapper>  
         }
