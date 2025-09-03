@@ -18,7 +18,6 @@ import { RiSearch2Fill } from "react-icons/ri";
 import { LuPencil } from 'react-icons/lu';
 import Deposit from './Deposit';
 import { Search } from '@/hooks/accountHooks/accountControls';
-import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { BiTransfer } from "react-icons/bi";
 const ViewAccount = () => {
     const navigate = useNavigate()
@@ -105,7 +104,7 @@ const ViewAccount = () => {
                         <strong className='text-xl'>{currentAccount?.account_code}</strong>
                     </div>
                     <div className='flex gap-2 items-center-safe'>
-                        <div className='flex items-center gap-2 py-1 px-4 cursor-pointer rounded-xl bg-slate-100 dark:bg-light-dark'> 
+                        <div onClick={(()=>showModal('transfer'))} className='flex items-center gap-2 py-1 px-4 cursor-pointer rounded-xl bg-slate-100 dark:bg-light-dark'> 
                             <BiTransfer/><span>Transfer</span>
                         </div>
                         <span className='text-gray-300' onClick={()=>navigate(-1)}>
@@ -210,7 +209,12 @@ const ViewAccount = () => {
                          modalType === "deposit" &&
                         <Deposit currentAccount={currentAccount} exit={()=>setIsInnerModal(!isInnerModal)}/>    
                     } 
-                   
+                    {
+                         modalType === "transfer" &&
+                        <div className='bg-white dark:bg-dark h-32 lg:rounded-2xl rounded-t-2xl text-center font-bold py-4'>
+                            This feature is not yet available.
+                        </div>    
+                    } 
                 </div>
             </ModalWrapper>  
         }
