@@ -2,12 +2,13 @@ import { useState } from 'react';
 import supabase from '@/lib/supabase';
 import type { itemTypes } from '@/types/itemTypes';
 import { useAccountStore } from '@/store/useAccountStore';
-
+import { useUserStore } from '@/store/useUserStore';
+import { BankList } from '@/utils/BankList';
 const useSaveItem = () => {
   const [spendings, setSpendings] = useState<itemTypes[] | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(false);
-
+  const {user} = useUserStore();
   const { account } = useAccountStore();
 
   const handleSaveItem = async (item: itemTypes) => {
@@ -27,7 +28,7 @@ const useSaveItem = () => {
         return null;
       }
 
-      // --- 2. Fetch account from DB ---
+      // --- 2. Fetch bank account from DB ---
       const accountQuery = supabase.from('accounts');
       const { data: existingAccount, error: fetchError } = await accountQuery
         .select('*')
@@ -66,7 +67,31 @@ const useSaveItem = () => {
         return null;
       }
 
-      // --- 5. Final state update ---
+      // --- 5. Record transaction ---
+      const bank = BankList.find((b:any)=> b.code === item?.mode_of_payment)
+      const transactionInfo = {
+          owner: user.id,
+          transaction_type: 'activity',
+          transaction_detail: {
+              prev_amount: existingAccount?.amount,
+              new_amount: updatedAmount,
+              delta_amount: Number(updatedAmount) - Number(existingAccount?.amount),
+              item_id: insertedItem.id,
+            },
+          bank_key: bank?.key,
+          created_at: item.created_at,
+      }
+
+      const {error: transactionError} = await supabase
+      .from('transaction')
+      .insert(transactionInfo);
+
+      if (transactionError) {
+        setError(transactionError);
+        throw new Error("error ngani")
+      }
+
+      // --- 6. Final state update ---
       setSpendings(insertedItem);
       return insertedItem;
 

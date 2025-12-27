@@ -255,7 +255,7 @@ const handleSave = useCallback(async()=>{
                     }
                 </div>
                 </div>
-                <div className='flex flex-col w-full lg:max-w-2/5 py-4 lg:dark:bg-light-dark rounded-2xl'>
+                <div className='flex flex-col w-full lg:max-w-2/5 py-4 lg:dark:bg-medium-dark rounded-2xl'>
                     <div className='mx-auto'>
                         {/* <CustomDropdown 
                             options={currentAccount?.map((i: string)=>i)}

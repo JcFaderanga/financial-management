@@ -94,7 +94,7 @@ const MonthlyChart = () => {
             </div>
               <div
               className="bg-blue-300 w-10 rounded-lg mx-auto hover:bg-blue-400 cursor-pointer"
-              style={{ height: `${Number(percent) * 2}%` }}
+              style={{ height: `${Number(percent) * 4}%` }}
             />
             </div>
             

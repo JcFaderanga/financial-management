@@ -25,12 +25,12 @@ const AccountList = () => {
             </div>
 
             {
-                location.state.account?.map((acc: AccountType)=>{
+                location.state.account?.map((acc: AccountType, index: any)=>{
 
                     const percent = current.getPercent(acc?.amount);
-                    console.log(percent)
                     return(
                         <div 
+                        key={index}
                         onClick={()=>{
                             setPaymentMethod(acc?.account_code);
                             navigate(-1);

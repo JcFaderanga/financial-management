@@ -5,13 +5,16 @@ import { AccountType } from '@/types/AccountTypes'
 import { useAccountStore } from '@/store/useAccountStore'
 import CustomInputs from '@/components/inputs/CustomInputs'
 import { AccountBalance } from '@/hooks/accountHooks/accountControls'
-
+import supabase from '@/lib/supabase'
+import { useUserStore } from '@/store/useUserStore'
+import { TransactionInfoType } from '@/types/AccountTypes'
+import TransactionDetails from '@/hooks/transactionHistory/transactionDetails'
 const Deposit = ({currentAccount, exit}:{currentAccount: AccountType, exit: ()=> void}) => {
 const [newAmount, setNewAmount] = useState<string>('');
 const [loading, setLoading] = useState<boolean>(false)
 const {account: accountStore, setAccount} =useAccountStore();
 const [error, setError] = useState<string>('');
-
+const {user} = useUserStore();
 
     async function updateAmount(){
 
@@ -26,6 +29,17 @@ const [error, setError] = useState<string>('');
             const sumOfAmount = Number(currentAccount.amount || 0) + Number(newAmount)
             const updatedAccount = { ...currentAccount, amount: sumOfAmount }
 
+            const transactionInfo: TransactionInfoType = TransactionDetails({
+                userId: user.id,
+                transaction_type: 'deposit',
+                transaction_detail: {
+                    prev_amount: currentAccount?.amount,
+                    new_amount: sumOfAmount,
+                    delta_amount: Number(sumOfAmount) - Number(currentAccount?.amount),
+                },
+                bank_key: currentAccount.account_key,
+            })
+
             const account = new AccountBalance(updatedAccount)
 
             if(currentAccount.amount || currentAccount.amount <= 0 ){
@@ -37,6 +51,17 @@ const [error, setError] = useState<string>('');
                     setError(error.message);
                     return;
                 } 
+                try{
+  
+                    const {error} = await supabase
+                    .from('transaction')
+                    .insert(transactionInfo)
+
+                    if(error) throw new Error(error.message); 
+                } catch(error: any){
+                    setError(error.message);
+                    throw new Error(error.message)
+                }
                
             }else{
                 const {error, data} = await account.useDeposit()
@@ -44,8 +69,11 @@ const [error, setError] = useState<string>('');
                     setError(error.message);
                     return;
                 } 
+
                 setAccount([...accountStore, data])
-            }            
+            }   
+            
+            
             
             setLoading(false)
             exit();

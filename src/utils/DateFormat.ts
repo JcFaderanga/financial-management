@@ -85,3 +85,9 @@ export function MonthToNumber(month: string): number | undefined {
   return index >= 0 ? index + 1 : undefined;
 }
 
+//08-2025
+export function getMonthAndYear(date: any) {
+const yearMonth = `${String(date.getMonth() + 1).padStart(2, "0")}-${date.getFullYear()}`;
+return yearMonth;
+}
+

@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { FaAngleRight } from "react-icons/fa6"
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { FormatDate } from '@/utils/DateFormat'
 import { useNavigate } from 'react-router-dom'
 import { useSpendings } from '@/store/useSpendingStore'
@@ -15,17 +16,31 @@ import { CalculateTotal,TotalPerDayAndMonth } from '@/utils/itemFormat'
 import { useAllSpendingData } from '@/store/useSpendingStore'
 import Calendar from './Calendar'
 import { useThisMonth } from '@/store/useCalendarStore'
-
+import { fetchMonthlyCashflow } from '@/hooks/accountHooks/useMonthlyCashFlow'
+import { useUserStore } from '@/store/useUserStore'
+import { getMonthAndYear } from '@/utils/DateFormat'
 const SpentCalendar = () => {
   const {setSpendItems} = useSpendings();
   const {allSpentData: data} = useAllSpendingData();
   const [allTotal, setAllTotal] = useState<number>(0)
   const [monthlyTotal, setMonthlyTotal] = useState<number>(0)
   const {currentMonth} = useThisMonth();
+  const [monthlyCashFlow, setMonthlyCashFlow] = useState<any>(null);
+  const {user} = useUserStore();
   // const [averageDaily, SetAverageDaily] = useState<number>(0)
   const {setDate: setStoreDate} = useOverviewDateStore()
   const navigate = useNavigate()
- 
+
+  useEffect(()=>{
+      async function fetchCashFlow(){
+          const result: any = await fetchMonthlyCashflow(user.id)
+          const calendarActiveMonth = result?.find((mon:any )=> mon?.month === getMonthAndYear(currentMonth));
+          setMonthlyCashFlow(calendarActiveMonth)
+      }
+      console.log(monthlyCashFlow)
+      fetchCashFlow();
+  },[currentMonth])
+  
   useEffect(() => {
     //Over all total
     const date = new TotalPerDayAndMonth( data, currentMonth );
@@ -85,44 +100,71 @@ const SpentCalendar = () => {
 
 return(
     <div className='pt-4 transition lg:flex dark:bg-dark'>
-      <div
-          onClick={()=>handleMonthSelect()}
-          className='flex items-center justify-between pb-5 mb-4 border-b border-gray-200 dark:border-light-dark cursor-pointer lg:ml-4 lg:hidden custom-black hover:bg-gray-50'>
-          <div>
-            <strong className='text-sm dark:text-white'>Total this month</strong>
-            <div className="text-[#eb4b6d] text-2xl font-bold">
-              <NumberFlowUI
-                  value={monthlyTotal}
-                  currency='PHP'
-                  style='currency'
-                />
-            </div>
-          </div>
-          {/* <div className='dark:text-white'>
-            <strong className='text-sm dark:text-white'>Daily Spent Average</strong>
-            <div className="text-[#eb4b6d] text-2xl font-bold">
-              <NumberFlowUI
-                  value={averageDaily}
-                  currency='PHP'
-                  style='currency'
-                />
-            </div>
-          </div> */}
+
+        <div
+          onClick={()=>handleMonthSelect()} 
+          className='border dark:border-none border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 lg:hidden flex dark:bg-medium-dark
+          justify-around items-center hover:bg-gray-50 dark:hover:!bg-light-dark cursor-pointer '>
           <div className='dark:text-white'>
-            <FaAngleRight size={18} />
+            <div className='flex items-center gap-1'><FaArrowUp className='text-[#eb4b6d]'/> Outflows</div>
+            <div className="text-[#eb4b6d] text-lg font-bold flex">
+              <NumberFlowUI
+                  value={monthlyCashFlow?.outgoing || 0}
+                  currency='PHP'
+                  style='currency'
+                />
+            </div>
           </div>
-      </div>
+          <div className='dark:text-white'>
+            <div className='flex items-center gap-1'><FaArrowDown className='text-green-500 '/> Inflows</div>
+            <div className="text-green-500 text-lg font-bold">
+              <NumberFlowUI
+                  value={monthlyCashFlow?.incoming || 0}
+                  currency='PHP'
+                  style='currency'
+                />
+            </div>
+          </div>
+        </div>
       <div className='w-full lg:max-w-2/3'>
           <Calendar/>
       </div>
       
       <div className="mt-1 text-sm font-semibold text-gray-600 lg:pt-11 lg:w-2/6">
+
+
+        <div
+          onClick={()=>handleMonthSelect()} 
+          className='border dark:border-none border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 hidden lg:flex dark:bg-medium-dark
+          justify-around items-center hover:bg-gray-50 dark:hover:!bg-light-dark cursor-pointer '>
+          <div className='dark:text-white'>
+            <div className='flex items-center gap-1'><FaArrowUp className='text-[#eb4b6d]'/> Outflows</div>
+            <div className="text-[#eb4b6d] text-lg font-bold flex">
+              <NumberFlowUI
+                  value={monthlyCashFlow?.outgoing || 0}
+                  currency='PHP'
+                  style='currency'
+                />
+            </div>
+          </div>
+          <div className='dark:text-white'>
+            <div className='flex items-center gap-1'><FaArrowDown className='text-green-500 '/> Inflows</div>
+            <div className="text-green-500 text-lg font-bold">
+              <NumberFlowUI
+                  value={monthlyCashFlow?.incoming || 0}
+                  currency='PHP'
+                  style='currency'
+                />
+            </div>
+          </div>
+        </div>
+
         <div
           onClick={()=>handleMonthSelect()} 
           className='border dark:border-none border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 hidden lg:flex dark:bg-medium-dark
           justify-between items-center hover:bg-gray-50 dark:hover:!bg-light-dark cursor-pointer '>
           <div className='dark:text-white'>
-            Total this month
+            Total spent this month
             <div className="text-[#eb4b6d] text-2xl font-bold">
               <NumberFlowUI
                   value={monthlyTotal}

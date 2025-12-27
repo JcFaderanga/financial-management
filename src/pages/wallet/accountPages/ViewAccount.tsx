@@ -1,88 +1,98 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import ModalWrapper from '@/wrapper/ModalWrapper'
-import { useNavigate, useParams,useLocation } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { IoWallet } from "react-icons/io5";
 import { useAccountStore } from '@/store/useAccountStore';
-import { AccountType } from '@/types/AccountTypes';
+import { AccountType, TransactionInfoType } from '@/types/AccountTypes';
 import NumberFlow from '@/components/UI/NumberFlow';
 import CustomInputV2 from '@/components/inputs/CustomInputV2';
 import { IoCheckmark  } from "react-icons/io5";
-import supabase from '@/lib/supabase';
-import useFetchItemByAccount from '@/hooks/spend_items/useFetchItemByAccount';
-import { itemTypes } from '@/types/itemTypes';
-import SpentTable from '@/components/mainPages/spentHistory/SpentTable';
 import { IoIosCloseCircle } from "react-icons/io";
-import { NoRecord } from '@/components/NoRecord';
 import CustomInputs from '@/components/inputs/CustomInputs';
 import { RiSearch2Fill } from "react-icons/ri";
 import { LuPencil } from 'react-icons/lu';
 import Deposit from './Deposit';
-import { Search } from '@/hooks/accountHooks/accountControls';
+import { UpdateAmount } from '@/hooks/accountHooks/accountControls';
 import { BiTransfer } from "react-icons/bi";
+import { useUserStore } from '@/store/useUserStore';
+import TransactionDetails from '@/hooks/transactionHistory/transactionDetails';
+import BankTransactionHistory from '@/components/histories/bankTransactionHistory';
+
 const ViewAccount = () => {
     const navigate = useNavigate()
-    const [record, setRecord] = useState<itemTypes[]>([]);
     const {code} = useParams();
     const {account} = useAccountStore();
     const [amount, setAmount] = useState<string | number>(0);
     const [isAmountEdit, setIsAmountEdit] = useState<boolean>(false);
-    const location = useLocation();
     const [isInnerModal, setIsInnerModal] = useState<boolean>(false);
     const [modalType,setModalType] = useState<string>('')
     const [search, setSearch] = useState<string>('');
-    const {handleFetchItemByAccount, loading} = useFetchItemByAccount();
+    const {user} = useUserStore();
+    const [updateAmtErr, setUpdateAmtErr] = useState<any>(null);
 
-    useEffect(()=>{
-        async function fetchByAcc(){
-            const result: itemTypes[] = await handleFetchItemByAccount(code)
-            setRecord(result)
-        }
-        fetchByAcc();
-        
-    },[])
 
-   useEffect(() => {
+//    useEffect(() => {
 
-  const debounce = setTimeout(() => {
-    async function fetchSearch() {
+//   const debounce = setTimeout(() => {
+//     async function fetchSearch() {
       
-        const result: any = await Search(code, search);
-        setRecord(result);
+//         const result: any = await Search(code, search, user?.id);
     
-    }
-    fetchSearch();
-  }, 500);
+//     }
+//     fetchSearch();
+//   }, 500);
 
-  return () => clearTimeout(debounce);
-}, [search, code]);
+//   return () => clearTimeout(debounce);
+// }, [search, code]);
 
 
     const currentAccount: AccountType = account?.filter((acc)=> acc?.account_code === code)[0];
     useEffect(()=>setAmount(currentAccount?.amount),[isAmountEdit])
 
     async function updateAmount(){
-        
-        currentAccount.amount = Number(amount);
 
-        await supabase
-            .from('accounts')
-            .update({ ...currentAccount, amount: amount || currentAccount?.amount})
-            .eq('account_code', currentAccount.account_code)
-            .eq('account_owner', currentAccount.account_owner )
+        try{
 
-        setIsAmountEdit(!isAmountEdit)
+            const transactionInfo: TransactionInfoType = TransactionDetails({
+                userId: user.id,
+                transaction_type: 'edit',
+                transaction_detail: {
+                    prev_amount: currentAccount?.amount ?? null,
+                    new_amount: Number(amount),
+                    delta_amount: Number(amount) - Number(currentAccount?.amount),
+                },
+                bank_key: currentAccount.account_key,
+            });
+
+            if(Number(currentAccount.amount) !== Number(amount)){
+
+                currentAccount.amount = Number(amount);
+                const result = await UpdateAmount(transactionInfo, currentAccount, amount);
+                
+                if(result?.error) {
+                    setUpdateAmtErr(result?.error.message)
+                    console.error(result?.error.message)
+                }
+            }
+
+            setIsAmountEdit(!isAmountEdit)
+        }
+        catch(e: any) {
+            setUpdateAmtErr(e.message)
+            console.error(e)
+        }
     }
 
-  const handleEdit= useCallback((data: itemTypes)=>{
+//   const handleEdit= useCallback((data: itemTypes)=>{
 
-    navigate(`/item/${data.id}`, {
-        state: { 
-          backgroundLocation: location,
-          data: data  
-        }
-      }, );
+//     navigate(`/item/${data.id}`, {
+//         state: { 
+//           backgroundLocation: location,
+//           data: data  
+//         }
+//       }, );
 
-  },[])
+//   },[])
 
   const showModal = (modalType: "deposit" | "transaction" | "date" | "transfer") =>{
 
@@ -129,19 +139,28 @@ const ViewAccount = () => {
                         
                         {
                         isAmountEdit &&
-                            <div className='flex items-center gap-2'>
-                                <CustomInputV2 
-                                    value={amount || ''} 
-                                    onChange={(e)=>setAmount(Number(e))} 
-                                    type='number' 
-                                    disabled={false}
-                                    className='text-center'
-                                />
-                                <div className={` p-3 bg-gray-200 dark:bg-dark rounded-xl w-fit`} onClick={updateAmount}>
-                                    <IoCheckmark/>
+                            <div>
+                                <div className='flex items-center gap-2'>
+                                    <CustomInputV2 
+                                        value={amount || ''} 
+                                        onChange={(e)=>setAmount(Number(e))} 
+                                        type='number' 
+                                        disabled={false}
+                                        className='text-center'
+                                    />
+                                    <div className={` p-3 bg-gray-200 dark:bg-dark rounded-xl w-fit cursor-pointer`} onClick={updateAmount}>
+                                        <IoCheckmark/>
+                                    </div>
                                 </div>
+                                {
+                                updateAmtErr && 
+                                    <div className='text-red-500 font-bold'>
+                                        Something went wrong, failed to update amount.
+                                    </div>
+                                }
                             </div>
                         }
+                       
                     </strong> 
                 </div>
                 
@@ -177,14 +196,17 @@ const ViewAccount = () => {
                 </div>
 
                 {/* Expenses history list */}
-                    <SpentTable 
+                <BankTransactionHistory
+                    bank_code={code || ""}
+                />
+                {/* <SpentTable 
                     data={record || []}
                     loading={loading}
                     handleEdit={handleEdit}
-                />
-                {
+                /> */}
+                {/* {
                     loading ? '' : (record?.length > 0) ? '' : <NoRecord/>    
-                }
+                } */}
             </div>
         </div>
 
@@ -201,7 +223,7 @@ const ViewAccount = () => {
                     }         
                     {
                         modalType === "transaction" &&
-                        <div className='bg-white dark:bg-dark h-32 lg:rounded-2xlrounded-t-2xl text-center font-bold py-4'>
+                        <div className='bg-white dark:bg-dark h-32 lg:rounded-2xl rounded-t-2xl text-center font-bold py-4'>
                             This feature is not yet available.
                         </div>
                     }    

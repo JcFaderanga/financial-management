@@ -19,9 +19,9 @@ const SpentTable = ({ data ,handleEdit, loading}: SpentTableProps) => {
 
   // Group items by date
   const groupedData = useMemo(() => {
-  return data.reduce((groups: Record<string, itemTypes[]>, item) => {
+  return data?.reduce((groups: Record<string, itemTypes[]>, item) => {
     // Format the date with date-fns
-    const formattedDate = format(new Date(item.created_at), 'MMMM d, yyyy');
+    const formattedDate = format(new Date(item?.created_at), 'MMMM d, yyyy');
 
     if (!groups[formattedDate]) {
       groups[formattedDate] = [];
