@@ -2,15 +2,16 @@ import { useState } from 'react';
 import supabase from '@/lib/supabase';
 import type { itemTypes } from '@/types/itemTypes';
 import { useAccountStore } from '@/store/useAccountStore';
-import { useUserStore } from '@/store/useUserStore';
+
 import { BankList } from '@/utils/BankList';
+import useTransactionDetails from '../transactionHistory/useTransactionDetails';
+
 const useSaveItem = () => {
   const [spendings, setSpendings] = useState<itemTypes[] | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(false);
-  const {user} = useUserStore();
   const { account } = useAccountStore();
-
+  const {setTransaction} = useTransactionDetails();
   const handleSaveItem = async (item: itemTypes) => {
     setLoading(true);
     setError(null);
@@ -69,8 +70,7 @@ const useSaveItem = () => {
 
       // --- 5. Record transaction ---
       const bank = BankList.find((b:any)=> b.code === item?.mode_of_payment)
-      const transactionInfo = {
-          owner: user.id,
+      const details = {
           transaction_type: 'activity',
           transaction_detail: {
               prev_amount: existingAccount?.amount,
@@ -82,18 +82,29 @@ const useSaveItem = () => {
           created_at: item.created_at,
       }
 
-      const {error: transactionError} = await supabase
-      .from('transaction')
-      .insert(transactionInfo);
+      const transactionInfo = setTransaction(details); 
 
+      const {data: recentTransaction, error: transactionError} = await supabase
+      .from('transaction')
+      .insert(transactionInfo)
+      .select()
+      .maybeSingle();
       if (transactionError) {
         setError(transactionError);
         throw new Error("error ngani")
       }
 
+      const fullData = {
+        ...recentTransaction,
+            transaction_detail: {
+                ...recentTransaction.transaction_detail,
+                item_details: insertedItem,
+            },
+      }
+
       // --- 6. Final state update ---
       setSpendings(insertedItem);
-      return insertedItem;
+      return fullData;
 
     } catch (err) {
       console.error('Unexpected error:', err);

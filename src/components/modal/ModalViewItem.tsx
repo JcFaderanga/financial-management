@@ -10,7 +10,7 @@ import SubmitButton from '../button/SubmitButton';
 import { CategoryIcon } from '@/utils/DropDownList';
 import { itemTypes } from '@/types/itemTypes';
 import supabase from '@/lib/supabase';
-import { useSpendings } from '@/store/useSpendingStore';
+import { useSpendingList } from '@/store/useSpendingStore';
 
 // =======================
 // Main Component
@@ -18,7 +18,7 @@ import { useSpendings } from '@/store/useSpendingStore';
 export default function ModalSpentEdit() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { setSpendItems, spendings } = useSpendings();
+  const { setSpendingTransactionList, transactions } = useSpendingList();
 
   const [isDelete, setIsDelete] = useState(false);
   const data: itemTypes | undefined = state?.data;
@@ -36,10 +36,10 @@ export default function ModalSpentEdit() {
       return;
     }
 
-    const latest = spendings.filter((item: itemTypes) => item.id !== data.id);
-    setSpendItems(latest);
+    const latest = transactions.filter((item: itemTypes) => item.id !== data.id);
+    setSpendingTransactionList(latest);
     navigate(-1);
-  }, [data, spendings, setSpendItems, navigate]);
+  }, [data, transactions, setSpendingTransactionList, navigate]);
 
   if (!data) {
     return (
@@ -113,7 +113,7 @@ function ItemRow({
   description: string | number | undefined;
   id: string | number | undefined;
 }) {
-  const { setSpendItems, spendings } = useSpendings();
+  const { setSpendingTransactionList, transactions } = useSpendingList();
   const [toEdit, setToEdit] = useState(false);
   const [value, setValue] = useState(
     description !== undefined ? String(description) : ''
@@ -149,17 +149,17 @@ function ItemRow({
 
     if (data && data.length > 0) {
       const updatedItem = data[0];
-      const updatedSpendings = spendings.map((spending: itemTypes) =>
+      const updatedSpendings = transactions.map((spending: itemTypes) =>
         spending.id === updatedItem.id ? updatedItem : spending
       );
-      setSpendItems(updatedSpendings);
+      setSpendingTransactionList(updatedSpendings);
 
       // Update stored original value so next edits compare correctly
       originalValueRef.current = value;
     }
 
     setToEdit(false);
-  }, [value, id, title, spendings, setSpendItems]);
+  }, [value, id, title, transactions, setSpendingTransactionList]);
 
   return (
     <div className="py-2 px-4 rounded-xl bg-gray-100 dark:bg-light-dark">

@@ -6,15 +6,15 @@ import { useAccountStore } from '@/store/useAccountStore'
 import CustomInputs from '@/components/inputs/CustomInputs'
 import { AccountBalance } from '@/hooks/accountHooks/accountControls'
 import supabase from '@/lib/supabase'
-import { useUserStore } from '@/store/useUserStore'
 import { TransactionInfoType } from '@/types/AccountTypes'
-import TransactionDetails from '@/hooks/transactionHistory/transactionDetails'
+import { useTransactionDetails } from '@/hooks/transactionHistory/useTransactionDetails'
 const Deposit = ({currentAccount, exit}:{currentAccount: AccountType, exit: ()=> void}) => {
 const [newAmount, setNewAmount] = useState<string>('');
 const [loading, setLoading] = useState<boolean>(false)
 const {account: accountStore, setAccount} =useAccountStore();
 const [error, setError] = useState<string>('');
-const {user} = useUserStore();
+
+const {setTransaction} = useTransactionDetails();
 
     async function updateAmount(){
 
@@ -29,8 +29,7 @@ const {user} = useUserStore();
             const sumOfAmount = Number(currentAccount.amount || 0) + Number(newAmount)
             const updatedAccount = { ...currentAccount, amount: sumOfAmount }
 
-            const transactionInfo: TransactionInfoType = TransactionDetails({
-                userId: user.id,
+            const details: TransactionInfoType = {
                 transaction_type: 'deposit',
                 transaction_detail: {
                     prev_amount: currentAccount?.amount,
@@ -38,8 +37,9 @@ const {user} = useUserStore();
                     delta_amount: Number(sumOfAmount) - Number(currentAccount?.amount),
                 },
                 bank_key: currentAccount.account_key,
-            })
+            }
 
+            const transactionInfo = setTransaction(details);
             const account = new AccountBalance(updatedAccount)
 
             if(currentAccount.amount || currentAccount.amount <= 0 ){

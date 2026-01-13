@@ -24,7 +24,7 @@ const BankTransactionHistory = ({bank_code}: {bank_code: string | number}) => {
         return bankHistory?.reduce((groups: Record<string, TransactionInfoType[]>, item) => {
            
             // Format the date with date-fns
-            const formattedDate = format(new Date(item?.created_at), 'MMMM d, yyyy');
+            const formattedDate = format(new Date(item?.created_at || ""), 'MMMM d, yyyy');
         
             if (!groups[formattedDate]) {
                 groups[formattedDate] = [];
@@ -41,7 +41,7 @@ const BankTransactionHistory = ({bank_code}: {bank_code: string | number}) => {
             isBankHistoryErr && <strong className='text-red-500'>Something went wrong while getting history.</strong>
         }
         {
-            Object.entries(groupedHistory || {})?.map(([date, items]) => (
+            [...Object.entries(groupedHistory || {})].reverse()?.map(([date, items]) => (
                 <div key={date} className="mb-4">
                     <h3 className="font-semibold">{date}</h3>
 

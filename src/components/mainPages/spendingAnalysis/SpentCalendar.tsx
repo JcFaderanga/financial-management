@@ -3,7 +3,7 @@ import { FaAngleRight } from "react-icons/fa6"
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { FormatDate } from '@/utils/DateFormat'
 import { useNavigate } from 'react-router-dom'
-import { useSpendings } from '@/store/useSpendingStore'
+import { useSpendingList } from '@/store/useSpendingStore'
 import {
   startOfMonth,
   endOfMonth,
@@ -12,35 +12,23 @@ import {
 import DoughnutChart from "../../charts/Doughnut";
 import { useOverviewDateStore } from '@/store/useOverviewDate'
 import NumberFlowUI from '../../UI/NumberFlow'
-import { CalculateTotal,TotalPerDayAndMonth } from '@/utils/itemFormat'
+import { CalculateTotal,CalendarTotalCalculator,TotalPerDayAndMonth } from '@/utils/itemFormat'
 import { useAllSpendingData } from '@/store/useSpendingStore'
 import Calendar from './Calendar'
 import { useThisMonth } from '@/store/useCalendarStore'
-import { fetchMonthlyCashflow } from '@/hooks/accountHooks/useMonthlyCashFlow'
-import { useUserStore } from '@/store/useUserStore'
-import { getMonthAndYear } from '@/utils/DateFormat'
+
 const SpentCalendar = () => {
-  const {setSpendItems} = useSpendings();
+  const {setSpendingTransactionList} = useSpendingList();
   const {allSpentData: data} = useAllSpendingData();
   const [allTotal, setAllTotal] = useState<number>(0)
   const [monthlyTotal, setMonthlyTotal] = useState<number>(0)
   const {currentMonth} = useThisMonth();
-  const [monthlyCashFlow, setMonthlyCashFlow] = useState<any>(null);
-  const {user} = useUserStore();
+  const {transactions} = useSpendingList();
+
   // const [averageDaily, SetAverageDaily] = useState<number>(0)
   const {setDate: setStoreDate} = useOverviewDateStore()
   const navigate = useNavigate()
 
-  useEffect(()=>{
-      async function fetchCashFlow(){
-          const result: any = await fetchMonthlyCashflow(user.id)
-          const calendarActiveMonth = result?.find((mon:any )=> mon?.month === getMonthAndYear(currentMonth));
-          setMonthlyCashFlow(calendarActiveMonth)
-      }
-      console.log(monthlyCashFlow)
-      fetchCashFlow();
-  },[currentMonth])
-  
   useEffect(() => {
     //Over all total
     const date = new TotalPerDayAndMonth( data, currentMonth );
@@ -58,7 +46,7 @@ const SpentCalendar = () => {
  
   //handleMonthSelect function use to select current month data
   const handleMonthSelect = useCallback(()=>{
-    setSpendItems(null);
+    setSpendingTransactionList(null);
     const monthStart = FormatDate(startOfMonth(currentMonth))
     const monthEnd = FormatDate(endOfMonth(currentMonth))
 
@@ -75,7 +63,7 @@ const SpentCalendar = () => {
   const handleSelectAll = useCallback(()=>{
 
     //set null to refresh spending list in records
-    setSpendItems(null);
+    setSpendingTransactionList(null);
     
     //first item in the array is the most recent or last item
     //data[0] select first index(most recent or latest item inserted to DB)
@@ -97,6 +85,20 @@ const SpentCalendar = () => {
     navigate(`/`)
   },[]);
 
+  const calculate = new CalendarTotalCalculator();
+  const outFlow = calculate.getMonthlyTotalOutFlow(transactions);
+
+  console.log("transactions", transactions)
+
+  // NOTE: transaction is on reversed decs ex. 100 -> 0 
+  // Reversion happened on "useTransactionHistory.tsx" 
+  // useTransactionHistory.tsx / FetchDaily() / History.order('created_at', { ascending: false })
+  const new_transactions_bal = transactions?.[0]?.transaction_detail?.new_available_balance;
+  const prev_transactions_bal = transactions?.[transactions.length - 1]?.transaction_detail?.prev_available_balance;
+
+  const saved = prev_transactions_bal < new_transactions_bal 
+      ? new_transactions_bal - prev_transactions_bal
+      : 0;
 
 return(
     <div className='pt-4 transition lg:flex dark:bg-dark'>
@@ -109,17 +111,17 @@ return(
             <div className='flex items-center gap-1'><FaArrowUp className='text-[#eb4b6d]'/> Outflows</div>
             <div className="text-[#eb4b6d] text-lg font-bold flex">
               <NumberFlowUI
-                  value={monthlyCashFlow?.outgoing || 0}
+                  value={outFlow || 0}
                   currency='PHP'
                   style='currency'
                 />
             </div>
           </div>
           <div className='dark:text-white'>
-            <div className='flex items-center gap-1'><FaArrowDown className='text-green-500 '/> Inflows</div>
-            <div className="text-green-500 text-lg font-bold">
+            <div className='flex items-center gap-1'><FaArrowDown className='text-green-500 '/> Saved</div>
+            <div className={`${Number(saved)> 0 ? 'text-green-500' : "text-[#eb4b6d]"}  text-lg font-bold`}>
               <NumberFlowUI
-                  value={monthlyCashFlow?.incoming || 0}
+                  value={saved || 0}
                   currency='PHP'
                   style='currency'
                 />
@@ -138,20 +140,20 @@ return(
           className='border dark:border-none border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 hidden lg:flex dark:bg-medium-dark
           justify-around items-center hover:bg-gray-50 dark:hover:!bg-light-dark cursor-pointer '>
           <div className='dark:text-white'>
-            <div className='flex items-center gap-1'><FaArrowUp className='text-[#eb4b6d]'/> Outflows</div>
+            <div className='flex items-center gap-1'><FaArrowDown className='text-[#eb4b6d] '/>Outflows</div>
             <div className="text-[#eb4b6d] text-lg font-bold flex">
               <NumberFlowUI
-                  value={monthlyCashFlow?.outgoing || 0}
+                  value={outFlow || 0}
                   currency='PHP'
                   style='currency'
                 />
             </div>
           </div>
           <div className='dark:text-white'>
-            <div className='flex items-center gap-1'><FaArrowDown className='text-green-500 '/> Inflows</div>
-            <div className="text-green-500 text-lg font-bold">
+            <div className='flex items-center gap-1'><FaArrowUp className=' text-green-500'/> Saved</div>
+            <div className={`${Number(saved)> 0 ? 'text-green-500' : "text-[#eb4b6d]"}  text-lg font-bold`}>
               <NumberFlowUI
-                  value={monthlyCashFlow?.incoming || 0}
+                  value={saved || 0}
                   currency='PHP'
                   style='currency'
                 />

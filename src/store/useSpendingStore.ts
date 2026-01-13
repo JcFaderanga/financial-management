@@ -1,14 +1,14 @@
 import { create } from "zustand";
 
 interface addItemState{
-    spendings: null | any,
-    setSpendItems: (spendings: any | null)=> void,
+    transactions: null | any,
+    setSpendingTransactionList: (transaction: any | null)=> void,
 }
 
 //use to select item or range of item
-export const useSpendings = create<addItemState>((set)=>({
-    spendings: null,
-    setSpendItems: (spendings)=> set({spendings})
+export const useSpendingList = create<addItemState>((set)=>({
+    transactions: null,
+    setSpendingTransactionList: (transactions)=> set({transactions})
 }))
 
 

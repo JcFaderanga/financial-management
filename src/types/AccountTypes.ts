@@ -16,16 +16,17 @@ export type TransactionDetailType = {
     prev_amount: number | null;
     new_amount: number;
     delta_amount: number;
-    
+    prev_available_balance?: number,
+    new_available_balance?: number,
 };
 
 
 export type TransactionInfoType = {
     id?: string | number,
-    owner: string; 
+    owner?: string; 
     transaction_type: string; 
     transaction_detail: TransactionDetailType;
-    bank_key: string | number;
-    created_at: string | Date;
+    bank_key: string | number | undefined;
+    created_at?: string | Date;
     
 };

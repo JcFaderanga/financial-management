@@ -1,6 +1,6 @@
 import {useState,useEffect, useCallback} from 'react'
 import CustomInput from '@/components/inputs/CustomInputs'
-import { useSpendings } from '@/store/useSpendingStore'
+import { useSpendingList } from '@/store/useSpendingStore'
 import SubmitButton from '@/components/button/SubmitButton'
 import UseSaveItem from '@/hooks/spend_items/useSaveItem'
 import { useUserStore } from '@/store/useUserStore'
@@ -17,7 +17,7 @@ import { usePaymentMethod } from '@/store/useAccountStore';
 import PageWrapper from '@/wrapper/PageWrapper'
 const AddItemForm = () => {
 const { category } = useParams(); 
-const {setSpendItems, spendings} =useSpendings();
+const {setSpendingTransactionList, transactions} =useSpendingList();
 const {modeOfPayment} = usePaymentMethod();
 const {user} = useUserStore();
 const [title, setTitle] = useState<string | undefined>('');
@@ -104,13 +104,11 @@ const handleSave = useCallback(async()=>{
       created_at: createdDate,
     };
 
- console.log('spent',spent)
-   
     //save item to db and fetch
     const spentRes = await handleSaveItem(spent);
 
     //save item as state using zustand
-    setSpendItems([...spendings || [], spentRes])
+    setSpendingTransactionList([...transactions || [], spentRes].reverse())
 
     //check if the item is existing then save to db if not.
     handleUniqueItem(spent);

@@ -1,43 +1,49 @@
-import  { useCallback, useEffect, useState } from 'react';
-import { useSpendings } from '@/store/useSpendingStore';
-import type { itemTypes } from '@/types/itemTypes';
-import SpentTable from './SpentTable';
+import  { useEffect, useState } from 'react';
+import { useSpendingList } from '@/store/useSpendingStore';
+import SpendingHistoryTable from './SpentTable';
 // import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
 import OverviewDate from '@/hooks/OverviewDate';
 import { NoRecord } from '@/components/NoRecord';
-import { useLocation, useNavigate } from 'react-router-dom';
-import useFetchAllSpending from '@/hooks/spend_items/useFetchAllSpending';
+// import { useLocation, useNavigate } from 'react-router-dom';
+// import useFetchAllSpending from '@/hooks/spend_items/useFetchAllSpending';
 import { useOverviewDateStore } from '@/store/useOverviewDate';
-
+import useTransactionHistory from '@/hooks/accountHooks/useTransactionHistory';
 const SpentHistory = () => {
-  const { spendings, setSpendItems } = useSpendings();
-  const { handleFetchAllSpendings, loading } = useFetchAllSpending();
+  const { transactions, setSpendingTransactionList } = useSpendingList();
+  const [loading, setLoading] = useState<boolean>(false);
   const {date} = useOverviewDateStore();
   const [spendingIsHidden] = useState<boolean>(false);
   const {dateRange, timeRange} = OverviewDate();
-  const navigate = useNavigate();
-  const location = useLocation();
-
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  const {FetchDailyHistory} = useTransactionHistory();
+  
   useEffect(()=>{
     async function fetch() {
-        const result = await handleFetchAllSpendings(date);
-        setSpendItems?.(result);
+        setLoading(true)
+          const res = await FetchDailyHistory(date);
+
+          if(res.success){
+            setSpendingTransactionList(res?.data || [])
+          }
+          
+        setLoading(false)
     };  
-    if(!spendings) fetch();
+    if(!transactions) fetch();
 
-  },[])
+  },[transactions])
 
 
-  const handleEdit= useCallback((data: itemTypes)=>{
+  // const handleEdit= useCallback((data: itemTypes)=>{
 
-    navigate(`/record/${data.id}`, {
-        state: { 
-          backgroundLocation: location,
-          data: data  
-        }
-      }, );
+  //   navigate(`/record/${data.id}`, {
+  //       state: { 
+  //         backgroundLocation: location,
+  //         data: data  
+  //       }
+  //     }, );
 
-  },[])
+  // },[])
 
   return (
     <div className={`${spendingIsHidden && 'bg-slate-100'}`}>
@@ -51,13 +57,9 @@ const SpentHistory = () => {
       <div className={`${spendingIsHidden && 'hidden'} w-full pb-10`}>
         <div className='h-full overflow-x-auto pt-4'>
           
-            <SpentTable 
-                loading={loading}
-                data={spendings || []}
-                handleEdit={handleEdit}
-            />
+            <SpendingHistoryTable />
             {
-                loading ? '' : (spendings?.length > 0) ? '' : <NoRecord/>    
+                loading ? 'LOADING...' : (transactions?.length > 0) ? '' : <NoRecord/>    
             }
         </div>
         {/* {

@@ -3,7 +3,7 @@ import useDocumentTitle from "@/hooks/document/useDocTitle";
 import SpentHistory from "@/components/mainPages/spentHistory/SpentHistory";
 import ExpensesTotal from "@/components/mainPages/ExpensesTotal";
 import {FormattedUTCDate } from "@/utils/DateFormat";
-import SpentSummary from "@/components/mainPages/SpentSummary";
+//import SpentSummary from "@/components/mainPages/SpentSummary";
 import OverviewDate from "@/hooks/OverviewDate";
 
 import { Link  } from "react-router-dom";
@@ -61,8 +61,8 @@ const OverView = () => {
           </div>
 
         {/* Mobile Summary */}
-        <div className="hidden p-4 bg-white border border-gray-300 lg:hidden dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl dark:bg-transparent" >
-          <SpentSummary />
+        <div className=" p-4 bg-white border h-96 border-gray-300 hidden dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl dark:bg-transparent" >
+          {/* <SpentSummary /> */}
         </div>
 
         {/* Spend History */}
@@ -73,12 +73,12 @@ const OverView = () => {
 
       {/* Right Column (Desktop Only) */} 
       <div className="sticky z-10 self-start hidden lg:block top-20 h-fit">
-        <section className="p-4 mb-4 bg-white border border-gray-300 dark:bg-dark dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl ">
+        <section className=" mb-4 bg-white border border-gray-300 dark:bg-dark dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl ">
           <ExpensesTotal />
         </section>
 
         <div className="p-4 bg-white border border-gray-300 dark:bg-dark dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl">
-          <SpentSummary />
+          {/* <SpentSummary /> */}
         </div>
       </div>
     </div>

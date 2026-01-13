@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io"
-import { FormatDate } from '@/utils/DateFormat'
+import { FormatDate, getMonthlyDateRange } from '@/utils/DateFormat'
 import { useNavigate } from 'react-router-dom'
-import { useSpendings } from '@/store/useSpendingStore'
+import { useSpendingList } from '@/store/useSpendingStore'
 import {
   startOfMonth,
   endOfMonth,
@@ -14,29 +14,46 @@ import {
 } from 'date-fns'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useOverviewDateStore } from '@/store/useOverviewDate'
-import { TotalPerDayAndMonth } from '@/utils/itemFormat'
+import { CalendarTotalCalculator, TotalPerDayAndMonth } from '@/utils/itemFormat'
 import { useAllSpendingData } from '@/store/useSpendingStore'
 import { useThisMonth } from '@/store/useCalendarStore'
 import { useFetchLoader } from '@/store/useSpendingStore'
 import CalendarSkeleton from './CalendarSkeleton'
 import millify from 'millify'
+import useTransactionHistory from '@/hooks/accountHooks/useTransactionHistory'
+
 const Calendar = () => {
   const {allSpentData: data} = useAllSpendingData();
   const {isLoading} = useFetchLoader();
-  const { setSpendItems } = useSpendings()
+  const { transactions, setSpendingTransactionList } = useSpendingList()
   const [spendingData, setSpendingData] = useState<Record<string, number>>({})
+
   const {currentMonth, setCurrentMonth} = useThisMonth();
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
   const [direction, setDirection] = useState<"left" | "right">("left")
-  const {setDate: setStoreDate} = useOverviewDateStore()
+  const {setDate: setStoreDate} = useOverviewDateStore();
+  const { FetchMonthlyHistory } = useTransactionHistory();
   const navigate = useNavigate()
   
+
   useEffect(() => {
     //Over all total
     const date = new TotalPerDayAndMonth( data, currentMonth );
     setSpendingData(date.getTotalPerDay())
 
   }, [data, currentMonth])
+
+  useEffect(() => {
+    
+    async function fetch(){
+      const {monthStart, monthEnd} = getMonthlyDateRange(currentMonth);
+      const MonthlyData = await FetchMonthlyHistory(monthStart, monthEnd )
+      setSpendingTransactionList(MonthlyData)
+    }
+    
+    fetch();
+  }, [data, currentMonth])
+  
 
   const handlePrev = () => {
     setDirection("right")
@@ -71,14 +88,21 @@ const Calendar = () => {
     
     const selectedDate = new Date(date)
 
+    const data = new CalendarTotalCalculator();
+    const grouped = data.groupByDate(transactions);
+
+   const filterDate = grouped.get(format(selectedDate, "yyyy-MM-dd"))
+  console.log("grouped",grouped)
+  console.log("filterDate",filterDate)
     //set null to spending store to refresh list in records
-    setSpendItems(null);
+
+    setSpendingTransactionList(filterDate);
     setStoreDate(format(selectedDate, "yyyy-MM-dd"))
 
     //navigate to records to show list
     navigate(`/`)
 
-  },[ setStoreDate , setSpendItems])
+  },[ setStoreDate , setSpendingTransactionList])
 
   const days = eachDayOfInterval({
     start: startOfMonth(currentMonth),
@@ -159,9 +183,13 @@ return(
                 </div>
               ))}
               {daysWithOffset.map((date, idx) => {
-                const dateKey = date ? format(date, 'yyyy-MM-dd') : null
+                const dateKey = date ? format(date, 'yyyy-MM-dd') : ""
                 const amount = dateKey && spendingData[dateKey]
 
+                const calculate = new CalendarTotalCalculator();
+                const dailyTotal = calculate.getDailyTotal(transactions);
+                const newAmt = dailyTotal.get(dateKey);
+                  
                 return (
                   <div
                     onClick={() => date && handleDateSelect(date)}
@@ -183,8 +211,8 @@ return(
                     {amount && (
                       <div className="text-[#eb4b6d] font-semibold py-1 text-[8px] md:text-sm">
                         <span className='hidden md:inline-block'></span>
-                        <span className='sm:hidden '>₱{String(millify(amount))}</span>
-                        <span className='hidden sm:inline'>₱{millify(amount)}</span>
+                        <span className='sm:hidden '>₱{millify(newAmt?.outFlow ?? amount)}</span>
+                        <span className='hidden sm:inline'>₱{millify(newAmt?.outFlow ?? amount)}</span>
                       </div>
                     )}
                     <div className='hidden h-5 md:block'></div>

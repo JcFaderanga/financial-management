@@ -4,6 +4,8 @@ import {
   endOfMonth,
   format,
 } from 'date-fns'
+import { getDateOnly } from "./DateFormat";
+import { TransactionInfoType } from "@/types/AccountTypes";
 
 type GroupedItem = {
   type: string;
@@ -81,7 +83,7 @@ export class TotalPerDayAndMonth{
 
     /**
     * this function format date from 2025-08-01 04:53:29.122000+00 to 2025-08-01(yyyy-mm-dd)
-    * This return object with primative value
+    * This return object with primitive value
     * Ex. return {2025-08-01, 2025-08-01}
     * first one return Date type second return String type
     **/
@@ -94,7 +96,7 @@ export class TotalPerDayAndMonth{
 
     /**
     * this function compute total for month and per day
-    * This return object with primative value
+    * This return object with primitive value
     * Ex. {200, 1900}
     **/
     private getTotals(){
@@ -128,7 +130,6 @@ export class TotalPerDayAndMonth{
     getDailySpentAverage() {
         const { totalsByDate } = this.getTotals();
         return Number(calculateSmartAverage(totalsByDate));
-        
     }
 
 
@@ -156,3 +157,67 @@ export function calculateSmartAverage(spendingData: Record<string, number>): Num
 
   return average;
 }
+
+export class CalendarTotalCalculator {
+
+    groupByDate(data: TransactionInfoType[]){
+        const groupedByDate = new Map<string, TransactionInfoType[]>();
+
+        data?.forEach((d) => {
+            if (!d.created_at) return;
+            const {dateString} = getDateOnly(d.created_at); 
+
+            const list = groupedByDate.get(dateString) ?? [];
+            list.push(d);
+            groupedByDate.set(dateString, list);
+        });
+        return groupedByDate;
+    }
+
+    getDailyTotal(data: TransactionInfoType[]) {
+        // Step 1: group transactions by date
+        const groupedByDate = this.groupByDate(data)
+
+        // Step 2: calculate totals per date
+        const totalPerDateList = new Map<string, { inFlow: number; outFlow: number }>();
+
+        for (const [date, transactions] of groupedByDate.entries()) {
+            // Total from "activity" transactions
+            const spendingActivityTotal = transactions
+                .filter((t) => t.transaction_type === "activity")
+                .reduce((sum, t) => sum + Number(t.transaction_detail.item_details?.price || 0), 0);
+
+            // Calculate inflow/outflow based on balances
+            const firstTransaction = transactions[0];
+            const lastTransaction = transactions[transactions.length - 1];
+
+            const newBalance = firstTransaction?.transaction_detail?.new_available_balance ?? 0;
+            const prevBalance = lastTransaction?.transaction_detail?.prev_available_balance ?? 0;
+
+            const inFlow = newBalance > prevBalance ? newBalance - prevBalance : 0;
+            const outFlow = newBalance < prevBalance ? prevBalance - newBalance : spendingActivityTotal;
+
+            totalPerDateList.set(date, { inFlow, outFlow });
+        }
+
+        return totalPerDateList;
+    }
+
+    getMonthlyTotalOutFlow(data: TransactionInfoType[]){
+        const dailyFlow = this.getDailyTotal(data)
+
+        const monthTotal = [...dailyFlow.values()].reduce((sum, daily) => ({
+                inFlow: sum.inFlow + daily.inFlow,
+                outFlow: sum.outFlow + daily.outFlow,
+            }),
+            { inFlow: 0, outFlow: 0 }
+        );
+
+        return monthTotal?.outFlow;
+    }
+}
+
+
+
+    
+

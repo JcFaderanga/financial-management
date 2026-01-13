@@ -6,6 +6,7 @@ import NumberFlow from "../UI/NumberFlow";
 import { MdModeEdit } from "react-icons/md";
 import { CategoryIcon } from '@/utils/DropDownList';
 import { useCategoryColors } from '@/store/useCatogoryColors';
+import { BankList } from "@/utils/BankList";
 const TransactionCard = ({
     transaction_data
 }:{
@@ -13,14 +14,21 @@ const TransactionCard = ({
 }) => {
 
     const { colors: categoryColors } = useCategoryColors();
+    const bank_name = BankList.find((b)=> b.key == transaction_data?.bank_key)?.code;
 
     const Deposit =()=>{
 
         return(
-            <div className="flex items-center justify-between py-4">
-                <div className="flex items-center gap-1">
-                    <FaArrowDown className="text-green-500"/>
-                    DEPOSIT
+            <div className="flex items-center justify-between">
+                <div className="dark:text-white flex items-center py-4">
+                        <span className="text-2xl font-bold text-white px-1 rounded-full mr-2">
+                            <FaArrowDown className="text-green-500"/>
+                        </span>
+                    <div className="flex flex-col">
+                        
+                        <p className="text-sm font-semibold md:text-base">DEPOSIT</p>
+                        <p className="text-xs leading-2.5 text-gray-400 font-semibold md:text-base">{bank_name}</p>
+                    </div>
                 </div>
                 <div>
                     <strong className="text-green-500">+{transaction_data.transaction_detail.delta_amount}</strong>
@@ -43,8 +51,8 @@ const TransactionCard = ({
         return(
             <div key={data?.id}
                 className={`
-                    cursor-pointer hover:bg-slate-50 dark:hover:bg-light-dark dark:border-light-dark
-                    border-b border-gray-100 flex justify-between w-full
+                    cursor-pointer hover:bg-slate-50 dark:hover:bg-light-dark 
+                    flex justify-between w-full
                     
                 `}>
                     <div className="dark:text-white flex items-center py-4">
@@ -61,7 +69,7 @@ const TransactionCard = ({
                         </div>
                     </div>
 
-                <div className="text-right dark:text-white">
+                <div className="text-right dark:text-white flex items-center">
                     <p className="text-sm font-semibold text-red-500 md:text-base">
                         -₱{data?.price?.toLocaleString()}
                     </p>
@@ -76,10 +84,17 @@ const TransactionCard = ({
         if(prev_amt < new_amt) null;
         
         return(
-            <div className="flex items-center justify-between py-4">
-                <div className="flex items-center gap-1">
-                    <MdModeEdit className="text-orange-500"/>
-                    EDIT
+            <div className="flex items-center justify-between ">
+                
+                <div className="dark:text-white flex items-center py-4">
+                        <span className="text-2xl font-bold text-white px-1 rounded-full mr-2">
+                            <MdModeEdit className="text-orange-500"/>
+                        </span>
+                    <div className="flex flex-col">
+                        
+                        <p className="text-sm font-semibold md:text-base">EDIT</p>
+                        <p className="text-xs leading-2.5 text-gray-400 font-semibold md:text-base">{bank_name}</p>
+                    </div>
                 </div>
                 <div className="">      
                     <div className="flex w-full justify-end">

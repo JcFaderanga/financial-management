@@ -1,4 +1,10 @@
-import { format } from "date-fns";
+import { 
+  format,
+  startOfMonth, 
+  endOfMonth,
+  startOfDay,
+  endOfDay
+ } from "date-fns";
 
 //2025-08-01 
 export const FormatDate=(date: any)=>{
@@ -91,3 +97,36 @@ const yearMonth = `${String(date.getMonth() + 1).padStart(2, "0")}-${date.getFul
 return yearMonth;
 }
 
+
+/**
+  * this function format date from 2025-08-01 04:53:29.122000+00 to 2025-08-01(yyyy-mm-dd format)
+  * This return object with primitive value
+  * Ex. return {2025-08-01, 2025-08-01}
+  * first one return Date type second return String type
+**/
+export function getDateOnly(created_at: Date | string ){
+ 
+  const dateString: string = format(new Date(created_at), 'yyyy-MM-dd')
+  const date: Date = new Date(dateString)
+
+  return {date,dateString};
+}
+
+
+export function getMonthlyDateRange(date: Date | string){
+        
+    const RawDateStart = startOfMonth(date)
+    const RawMonthEnd = endOfMonth(date)
+
+    const monthStart = FormattedUTCDate(RawDateStart)
+    const monthEnd = FormattedUTCDate(RawMonthEnd)
+    return {monthStart, monthEnd}
+}
+
+export function getDailyDateRange(date: Date | string){
+        
+    const dayStart = startOfDay(date)
+    const dayEnd = endOfDay(date)
+
+    return {dayStart, dayEnd}
+}

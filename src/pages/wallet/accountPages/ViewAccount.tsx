@@ -14,8 +14,7 @@ import { LuPencil } from 'react-icons/lu';
 import Deposit from './Deposit';
 import { UpdateAmount } from '@/hooks/accountHooks/accountControls';
 import { BiTransfer } from "react-icons/bi";
-import { useUserStore } from '@/store/useUserStore';
-import TransactionDetails from '@/hooks/transactionHistory/transactionDetails';
+import { useTransactionDetails } from '@/hooks/transactionHistory/useTransactionDetails';
 import BankTransactionHistory from '@/components/histories/bankTransactionHistory';
 
 const ViewAccount = () => {
@@ -27,10 +26,8 @@ const ViewAccount = () => {
     const [isInnerModal, setIsInnerModal] = useState<boolean>(false);
     const [modalType,setModalType] = useState<string>('')
     const [search, setSearch] = useState<string>('');
-    const {user} = useUserStore();
     const [updateAmtErr, setUpdateAmtErr] = useState<any>(null);
-
-
+    const {setTransaction} = useTransactionDetails();
 //    useEffect(() => {
 
 //   const debounce = setTimeout(() => {
@@ -49,12 +46,11 @@ const ViewAccount = () => {
     const currentAccount: AccountType = account?.filter((acc)=> acc?.account_code === code)[0];
     useEffect(()=>setAmount(currentAccount?.amount),[isAmountEdit])
 
-    async function updateAmount(){
+    async function HandleUpdateAmount(){
 
-        try{
+        try{   
 
-            const transactionInfo: TransactionInfoType = TransactionDetails({
-                userId: user.id,
+            const details: TransactionInfoType = {
                 transaction_type: 'edit',
                 transaction_detail: {
                     prev_amount: currentAccount?.amount ?? null,
@@ -62,12 +58,18 @@ const ViewAccount = () => {
                     delta_amount: Number(amount) - Number(currentAccount?.amount),
                 },
                 bank_key: currentAccount.account_key,
-            });
+            }
+
+            const transactionInfo: TransactionInfoType = setTransaction(details);
 
             if(Number(currentAccount.amount) !== Number(amount)){
 
                 currentAccount.amount = Number(amount);
-                const result = await UpdateAmount(transactionInfo, currentAccount, amount);
+                const result = await UpdateAmount(
+                    transactionInfo,
+                    currentAccount,
+                    amount,
+                );
                 
                 if(result?.error) {
                     setUpdateAmtErr(result?.error.message)
@@ -148,7 +150,7 @@ const ViewAccount = () => {
                                         disabled={false}
                                         className='text-center'
                                     />
-                                    <div className={` p-3 bg-gray-200 dark:bg-dark rounded-xl w-fit cursor-pointer`} onClick={updateAmount}>
+                                    <div className={` p-3 bg-gray-200 dark:bg-dark rounded-xl w-fit cursor-pointer`} onClick={HandleUpdateAmount}>
                                         <IoCheckmark/>
                                     </div>
                                 </div>
