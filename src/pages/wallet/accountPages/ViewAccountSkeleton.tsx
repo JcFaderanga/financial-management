@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState  } from 'react'
 import ModalWrapper from '@/wrapper/ModalWrapper'
-import { useNavigate, useParams,useLocation } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { IoWallet } from "react-icons/io5";
 import { useAccountStore } from '@/store/useAccountStore';
 import { AccountType } from '@/types/AccountTypes';
@@ -21,7 +21,6 @@ const ViewAccountSkeleton = () => {
     const {account} = useAccountStore();
     const [amount, setAmount] = useState<string | number>(0);
     const [isAmountEdit, setIsAmountEdit] = useState<boolean>(false);
-    const location = useLocation();
     const {handleFetchItemByAccount, error, loading} = useFetchItemByAccount();
 
     useEffect(()=>{
@@ -50,16 +49,6 @@ const ViewAccountSkeleton = () => {
         setIsAmountEdit(!isAmountEdit)
     }
 
-  const handleEdit= useCallback((data: itemTypes)=>{
-
-    navigate(`/item/${data.id}`, {
-        state: { 
-          backgroundLocation: location,
-          data: data  
-        }
-      }, );
-
-  },[])
 
 
   return (
@@ -106,13 +95,10 @@ const ViewAccountSkeleton = () => {
 
             {
                 items.length > 0
-                ?   <SpentTable 
-                        data={items}
-                        handleEdit={handleEdit}
-                    />
+                ?   <SpentTable />
                 :   <NoRecord/>
             }
-            
+        
         </div>
     </ModalWrapper>
   )
