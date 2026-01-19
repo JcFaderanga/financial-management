@@ -7,12 +7,11 @@ import { useSpendingList } from '@/store/useSpendingStore'
 import {
   startOfMonth,
   endOfMonth,
-  format,
 } from 'date-fns'
-import DoughnutChart from "../../charts/Doughnut";
+//import DoughnutChart from "../../charts/Doughnut";
 import { useOverviewDateStore } from '@/store/useOverviewDate'
 import NumberFlowUI from '../../UI/NumberFlow'
-import { CalculateTotal,CalendarTotalCalculator,TotalPerDayAndMonth } from '@/utils/itemFormat'
+import { CalendarTotalCalculator,TotalPerDayAndMonth } from '@/utils/itemFormat'
 import { useAllSpendingData } from '@/store/useSpendingStore'
 import Calendar from './Calendar'
 import { useThisMonth } from '@/store/useCalendarStore'
@@ -20,7 +19,7 @@ import { useThisMonth } from '@/store/useCalendarStore'
 const SpentCalendar = () => {
   const {setSpendingTransactionList} = useSpendingList();
   const {allSpentData: data} = useAllSpendingData();
-  const [allTotal, setAllTotal] = useState<number>(0)
+  //const [allTotal, setAllTotal] = useState<number>(0)
   const [monthlyTotal, setMonthlyTotal] = useState<number>(0)
   const {currentMonth} = useThisMonth();
   const {transactions} = useSpendingList();
@@ -38,10 +37,10 @@ const SpentCalendar = () => {
 
   }, [data, currentMonth])
 
-  useEffect(() => {
-  const total = CalculateTotal(data)
-  setAllTotal(total)
-}, [data])
+//   useEffect(() => {
+//   const total = CalculateTotal(data)
+//   setAllTotal(total)
+// }, [data])
 
  
   //handleMonthSelect function use to select current month data
@@ -60,30 +59,30 @@ const SpentCalendar = () => {
   },[currentMonth])
 
   //handleSelectAll function use to select all data
-  const handleSelectAll = useCallback(()=>{
+  // const handleSelectAll = useCallback(()=>{
 
-    //set null to refresh spending list in records
-    setSpendingTransactionList(null);
+  //   //set null to refresh spending list in records
+  //   setSpendingTransactionList(null);
     
-    //first item in the array is the most recent or last item
-    //data[0] select first index(most recent or latest item inserted to DB)
-    const lastItem= data[0];
+  //   //first item in the array is the most recent or last item
+  //   //data[0] select first index(most recent or latest item inserted to DB)
+  //   const lastItem= data[0];
 
-    //last item in the array is the first item
-    //data[data.length - 1] select last index(very first item inserted to DB)
-    const firstItem= data[data.length - 1];
+  //   //last item in the array is the first item
+  //   //data[data.length - 1] select last index(very first item inserted to DB)
+  //   const firstItem= data[data.length - 1];
 
-    //select created_at col to get item date timestamp
-    //only need for displaying first and last date
-    setStoreDate({
-        startDate: format(firstItem.created_at, "yyyy-MM-dd"),
-        endDate:  format(lastItem.created_at, "yyyy-MM-dd"),
-    })
+  //   //select created_at col to get item date timestamp
+  //   //only need for displaying first and last date
+  //   setStoreDate({
+  //       startDate: format(firstItem.created_at, "yyyy-MM-dd"),
+  //       endDate:  format(lastItem.created_at, "yyyy-MM-dd"),
+  //   })
 
-    //passing string arguments for conditional logic inside setDate
-    //all means getting all data from DB
-    navigate(`/`)
-  },[]);
+  //   //passing string arguments for conditional logic inside setDate
+  //   //all means getting all data from DB
+  //   navigate(`/`)
+  // },[]);
 
   const calculate = new CalendarTotalCalculator();
   const outFlow = calculate.getMonthlyTotalOutFlow(transactions);
@@ -190,7 +189,7 @@ return(
           </div>
         </div>
 
-        <div className='transition border-t border-gray-300 lg:ml-4 lg:border lg:rounded-xl dark:border-none dark:lg:bg-medium-dark'>
+        {/* <div className='transition border-t border-gray-300 lg:ml-4 lg:border lg:rounded-xl dark:border-none dark:lg:bg-medium-dark'>
           <div 
             onClick={()=> handleSelectAll()}
             className=' px-4 py-4 custom-black flex justify-between items-center hover:bg-gray-50 dark:hover:!bg-light-dark cursor-pointer'>
@@ -217,9 +216,7 @@ return(
         
           }
           
-        </div>
-
-        
+        </div> */}        
       </div>
     </div>
   )

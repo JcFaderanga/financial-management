@@ -30,13 +30,32 @@ const TransactionCard = ({
                         <p className="text-xs leading-2.5 text-gray-400 font-semibold md:text-base">{bank_name}</p>
                     </div>
                 </div>
-                <div>
-                    <strong className="text-green-500">+{transaction_data.transaction_detail.delta_amount}</strong>
-                    {/* <div className="flex items-center text-sm gap-2">
-                        <span>{transaction_data.transaction_detail.prev_amount}</span>
+                <div className="">      
+                    <div className="flex w-full justify-end">
+                        <strong className={ `text-green-500`}>
+                            <NumberFlow
+                                value={Number(transaction_data.transaction_detail.delta_amount)}
+                                currency='PHP'
+                                style='currency'
+                            />
+                        </strong>
+                    </div>                  
+                    
+                    
+                    <div className="flex items-center text-sm gap-2">
+                        <NumberFlow
+                            value={Number(transaction_data.transaction_detail.prev_amount)}
+                            currency='PHP'
+                            style='currency'
+                        />
+
                         <FaArrowRightLong/>
-                        <span>{transaction_data.transaction_detail.new_amount}</span>
-                    </div> */}
+                        <NumberFlow
+                            value={Number(transaction_data.transaction_detail.new_amount)}
+                            currency='PHP'
+                            style='currency'
+                        />
+                    </div>
                 </div>
                 
             </div>
@@ -74,6 +93,7 @@ const TransactionCard = ({
                         -₱{data?.price?.toLocaleString()}
                     </p>
                 </div>
+                
             </div>
         )
     }
