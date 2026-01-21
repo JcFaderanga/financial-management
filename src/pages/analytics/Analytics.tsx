@@ -7,6 +7,7 @@ import MonthlyChart from '@/components/mainPages/spendingAnalysis/MonthlyChart';
 // import BarChart from '@/components/charts/BarChart';
 import { useAllSpendingData } from '@/store/useSpendingStore';
 import AnalyticsSkeleton from '@/pages/analytics/AnalyticsSkeleton';
+import PredictionAnalyst from '@/components/mainPages/spendingAnalysis/PredictionAnalyst';
 const SpendingAnalysis = () => {
   const [isLoading,setLoading]= useState<boolean>(true);
   const { handleFetchAllSpendings } = useFetchAllSpending();
@@ -30,11 +31,17 @@ const SpendingAnalysis = () => {
       <section className=''>
           <SpentCalendar/>
       </section>  
-      <section className='lg:mt-10'>
+      <section className='mt-5 lg:mt-10'>
          <strong className="dark:text-white">
               Spending Analysis
           </strong>
           <MonthlyChart/>
+      </section>
+      <section className='mt-5 lg:mt-10'>
+         <strong className="dark:text-white">
+              Prediction Analysis
+          </strong>
+          <PredictionAnalyst/>
       </section>
     </div>
   )
