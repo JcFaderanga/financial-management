@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { useMenuStore } from '@/store/useMenuToggle';
 import  BottomTabBar  from '@/components/bottomTab/BottomTabBar';
 import PageWrapper from '@/wrapper/PageWrapper';
+
 const HomeLayout = () => {
   const { isMenuActive } = useMenuStore();
 

@@ -112,22 +112,9 @@ const AccountProgress = ({ title, amount, value }: AccountProgressProps) => {
 // ========================
 
 const Accounts = () => {
-  const { setAccount, account: accountStore } = useAccountStore();
-  const { account, fetchAccountData, loading } = useFetchAllAccount();
-
-  useEffect(() => {
-      const fetchAccounts = async () =>{
-        if(accountStore.length <= 0){
-            const res = await fetchAccountData();
-            setAccount(res ?? []);
-        }
-      }
-      fetchAccounts();
-      
-    }, [account]);
 
   const { account: storedAccount } = useAccountStore();
-  
+  const { loading } = useFetchAllAccount();
   const current = new BankAccount(storedAccount);
   
   if(loading) return <WalletSkeleton/>;
