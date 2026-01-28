@@ -19,7 +19,7 @@ const TransactionCard = ({
     const Deposit =()=>{
 
         return(
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between px-2">
                 <div className="dark:text-white flex items-center py-4">
                         <span className="text-2xl font-bold text-white px-1 rounded-full mr-2">
                             <FaArrowDown className="text-green-500"/>
@@ -71,7 +71,7 @@ const TransactionCard = ({
             <div key={data?.id}
                 className={`
                     cursor-pointer hover:bg-slate-50 dark:hover:bg-light-dark 
-                    flex justify-between w-full
+                    flex justify-between w-full px-2
                     
                 `}>
                     <div className="dark:text-white flex items-center py-4">
@@ -104,7 +104,7 @@ const TransactionCard = ({
         if(prev_amt < new_amt) null;
         
         return(
-            <div className="flex items-center justify-between ">
+            <div className="flex items-center justify-between px-2">
                 
                 <div className="dark:text-white flex items-center py-4">
                         <span className="text-2xl font-bold text-white px-1 rounded-full mr-2">

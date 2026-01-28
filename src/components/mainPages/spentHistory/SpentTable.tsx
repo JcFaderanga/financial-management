@@ -30,7 +30,7 @@ const SpendingHistoryTable = () => {
                     <h3 className="font-semibold">{date}</h3>
 
                     {[...items].map((tx) => (
-                        <div key={tx?.id} className="px-4">
+                        <div key={tx?.id} className=" ">
                         {/* Replace with your transaction row component */}
                         <TransactionCard
                             transaction_data = {tx}
