@@ -87,8 +87,6 @@ const SpentCalendar = () => {
   const calculate = new CalendarTotalCalculator();
   const outFlow = calculate.getMonthlyTotalOutFlow(transactions);
 
-  console.log("transactions", transactions)
-
   // NOTE: transaction is on reversed decs ex. 100 -> 0 
   // Reversion happened on "useTransactionHistory.tsx" 
   // useTransactionHistory.tsx / FetchDaily() / History.order('created_at', { ascending: false })

@@ -28,7 +28,7 @@ const Calendar = () => {
   const { transactions, setSpendingTransactionList } = useSpendingList()
 
   const [spendingData, setSpendingData] = useState<Record<string, number>>({})
-
+  const [touchStartX, setTouchStartX] = useState<number | null>(null)
   const { currentMonth, setCurrentMonth } = useThisMonth()
   const { setDate: setStoreDate } = useOverviewDateStore()
   const { FetchMonthlyHistory } = useTransactionHistory()
@@ -74,6 +74,23 @@ const Calendar = () => {
     [transactions]
   )
 
+    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchStartX(e.changedTouches[0].clientX)
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartX === null) return
+    const endX = e.changedTouches[0].clientX
+    const diff = touchStartX - endX
+
+    if (diff > 50) {
+      handleNext()
+    } else if (diff < -50) {
+      handlePrev()
+    }
+
+    setTouchStartX(null)
+  }
   /* ----------------------------------
      CALENDAR DATA
   ---------------------------------- */
@@ -137,7 +154,10 @@ const Calendar = () => {
       </div>
 
       {/* CALENDAR GRID */}
-      <div className="overflow-hidden md:h-auto">
+      <div 
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      className="overflow-hidden md:h-auto">
         <AnimatePresence custom="left" mode="wait">
           <motion.div
             key={currentMonth.toString()}
