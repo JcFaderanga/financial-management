@@ -160,34 +160,53 @@ export function calculateSmartAverage(spendingData: Record<string, number>): Num
 
 export class CalendarTotalCalculator {
 
-    groupByDate(data: TransactionInfoType[]){
+    groupByDate(data: TransactionInfoType[]) {
         const groupedByDate = new Map<string, TransactionInfoType[]>();
 
         data?.forEach((d) => {
             if (!d.created_at) return;
-            const {dateString} = getDateOnly(d.created_at); 
 
+            const { dateString } = getDateOnly(d.created_at);
             const list = groupedByDate.get(dateString) ?? [];
+
             list.push(d);
             groupedByDate.set(dateString, list);
         });
+
         return groupedByDate;
     }
 
-    getDailyTotal(data: TransactionInfoType[]) {
-        // Step 1: group transactions by date
-        const groupedByDate = this.groupByDate(data)
+    groupByMonth(data: TransactionInfoType[]) {
+        const groupedByMonth = new Map<string, TransactionInfoType[]>();
 
-        // Step 2: calculate totals per date
+        data?.forEach((d) => {
+            if (!d.created_at) return;
+
+            const date = new Date(d.created_at);
+            const monthString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+
+            const list = groupedByMonth.get(monthString) ?? [];
+
+            list.push(d);
+            groupedByMonth.set(monthString, list);
+        });
+
+        return groupedByMonth;
+    }
+
+    getDailyTotal(data: TransactionInfoType[]) {
+        const groupedByDate = this.groupByDate(data);
         const totalPerDateList = new Map<string, { inFlow: number; outFlow: number }>();
 
         for (const [date, transactions] of groupedByDate.entries()) {
-            // Total from "activity" transactions
+
             const spendingActivityTotal = transactions
                 .filter((t) => t.transaction_type === "activity")
-                .reduce((sum, t) => sum + Number(t.transaction_detail.item_details?.price || 0), 0);
+                .reduce(
+                    (sum, t) => sum + Number(t.transaction_detail.item_details?.price || 0),
+                    0
+                );
 
-            // Calculate inflow/outflow based on balances
             const firstTransaction = transactions[0];
             const lastTransaction = transactions[transactions.length - 1];
 
@@ -203,10 +222,40 @@ export class CalendarTotalCalculator {
         return totalPerDateList;
     }
 
-    getMonthlyTotalOutFlow(data: TransactionInfoType[]){
-        const dailyFlow = this.getDailyTotal(data)
+    // ✅ NEW: same logic as getDailyTotal but grouped by month
+    getMonthlyTotal(data: TransactionInfoType[]) {
+        const groupedByMonth = this.groupByMonth(data);
+        const totalPerMonthList = new Map<string, { inFlow: number; outFlow: number }>();
 
-        const monthTotal = [...dailyFlow.values()].reduce((sum, daily) => ({
+        for (const [month, transactions] of groupedByMonth.entries()) {
+
+            const spendingActivityTotal = transactions
+                .filter((t) => t.transaction_type === "activity")
+                .reduce(
+                    (sum, t) => sum + Number(t.transaction_detail.item_details?.price || 0),
+                    0
+                );
+
+            const firstTransaction = transactions[0];
+            const lastTransaction = transactions[transactions.length - 1];
+
+            const newBalance = firstTransaction?.transaction_detail?.new_available_balance ?? 0;
+            const prevBalance = lastTransaction?.transaction_detail?.prev_available_balance ?? 0;
+
+            const inFlow = newBalance > prevBalance ? newBalance - prevBalance : 0;
+            const outFlow = newBalance < prevBalance ? prevBalance - newBalance : spendingActivityTotal;
+
+            totalPerMonthList.set(month, { inFlow, outFlow });
+        }
+
+        return totalPerMonthList;
+    }
+
+    getMonthlyTotalOutFlow(data: TransactionInfoType[]) {
+        const dailyFlow = this.getDailyTotal(data);
+
+        const monthTotal = [...dailyFlow.values()].reduce(
+            (sum, daily) => ({
                 inFlow: sum.inFlow + daily.inFlow,
                 outFlow: sum.outFlow + daily.outFlow,
             }),
