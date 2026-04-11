@@ -75,8 +75,8 @@ const MonthlyChart = () => {
             ? ((e.total / totalAll) * 100).toFixed(2)
             : 0;
           
-          const mock_percent_bar1 = Math.random() * 100; // Mock percentage for testing
-          const mock_percent_bar2 = Math.random() * 100; 
+          // const mock_percent_bar1 = Math.random() * 100; // Mock percentage for testing
+          // const mock_percent_bar2 = Math.random() * 100; 
           if (e.total)
             return (
               <div className="" key={e.month}>
