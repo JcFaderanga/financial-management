@@ -75,37 +75,58 @@ const MonthlyChart = () => {
             ? ((e.total / totalAll) * 100).toFixed(2)
             : 0;
           
-          // const mock_percent_bar1 = Math.random() * 100; // Mock percentage for testing
-          // const mock_percent_bar2 = Math.random() * 100; 
+          const mock_percent_bar1 = Math.random() * 100; // Mock percentage for testing
+          const mock_percent_bar2 = Math.random() * 100; 
           if (e.total)
             return (
-              <div key={e.month} className="h-60 flex flex-col justify-end items-center">
-                
-                <div className="h-60 flex flex-col justify-end ">
-                  <div className="text-[10px] dark:text-white">
-                  
-                    <NumberFlowUI
-                      value={e.total}
-                      currency="PHP"
-                      style="currency"
-                    />
+              <div className="" key={e.month}>
+
+                <div className="h-60 flex gap-2 items-end">
+                <div className="flex flex-col justify-end items-center">
+                    <div className="h-60 flex flex-col justify-end ">
+                      <div className="text-[10px] dark:text-white">
+                      
+                        <NumberFlowUI
+                          value={e.total}
+                          currency="PHP"
+                          style="currency"
+                        />
+                      </div>
+
+                      <div
+                        className="bg-blue-300 w-10 rounded-lg mx-auto hover:bg-blue-400 cursor-pointer"
+                        style={{ height: `${Number(percent) * 3}%` }}
+                      />
+
+                    </div>
                   </div>
 
-                
-                  <div
-                    className="bg-blue-300 w-10 rounded-lg mx-auto hover:bg-blue-400 cursor-pointer"
-                    style={{ height: `${Number(percent) * 3}%` }}
-                  />
-
-                </div>
-
-                <div className="text-center text-sm mt-2 dark:text-white">
-                  {e.month.charAt(0).toUpperCase() + e.month.slice(1)}
-                </div>
-                
+                  {/*==== SEPERATOR ====*/}
+                  <div className="flex flex-col justify-end items-center">
+                    <div className="h-60 flex flex-col justify-end ">
+                      <div className="text-[10px] dark:text-white opacity-0">
+                        <NumberFlowUI
+                          value={e.total}
+                          currency="PHP"
+                          style="currency"
+                        />
+                      </div>
+                      <div
+                        className="bg-blue-300 opacity-20 w-7 rounded-lg mx-auto hover:bg-blue-400 cursor-pointer"
+                        style={{ height: `${Number(percent) * 3}%` }}
+                      />
+                    </div>  
+                  </div>
+                  
+                  </div>
+                  <div className="text-center text-sm mt-2 dark:text-white">
+                      {e.month.charAt(0).toUpperCase() + e.month.slice(1)}
+                  </div>
               </div>
+              
             );
         })}
+        
       </div>
     </section>
   );
