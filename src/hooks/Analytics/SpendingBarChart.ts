@@ -2,13 +2,12 @@ import { useState } from 'react'
 import supabase from '@/lib/supabase'
 import { useUserStore } from '@/store/useUserStore'
 import {CalendarTotalCalculator} from '@/utils/itemFormat'
+
 const useFetchAllTransactions = () => {
     const { user } = useUserStore();
     const [data, setData] = useState<any>([]);
     const [error, setError] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
-        
-
 // const GroupItemsByMonth = (data: any)=>{
 //     return Object.values(
 //         data?.reduce((acc: any, item: any) => {
@@ -41,6 +40,7 @@ const useFetchAllTransactions = () => {
             //     throw new Error(error_recorded_data.message || 'Unknown error');
             // }
 
+            
             let query = supabase
             .from('transaction')
             .select('*')
@@ -48,7 +48,6 @@ const useFetchAllTransactions = () => {
             .gte('created_at', `${targetYear}-01-01T00:00:00+00`)
             .lte('created_at', `${targetYear}-12-31T23:59:59+00`)
             .order('created_at', { ascending: false });
-
             const { data: data_transaction, error: error_transaction } = await query;
              if (error_transaction) {
                 setError(error_transaction);
@@ -56,9 +55,12 @@ const useFetchAllTransactions = () => {
             }
 
             const calculate = new CalendarTotalCalculator();
-            const MonthlyOutFlow = calculate.getMonthlyTotal(data_transaction);
-            console.log("data_transaction", MonthlyOutFlow);
-            setData(MonthlyOutFlow);
+            const groupByMonth = calculate.getMonthlyOutFlowFromGrouped(data_transaction);
+            
+            const groupTransByMonth = calculate.getTransactionsGroupedByMonth(data_transaction);
+  
+            console.log("data_transaction",groupTransByMonth);
+            setData(groupByMonth);
             setLoading(false);
         } catch (err: any) {
             setError(err);

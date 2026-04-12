@@ -22,7 +22,7 @@ const SpentCalendar = () => {
   //const [allTotal, setAllTotal] = useState<number>(0)
   const [monthlyTotal, setMonthlyTotal] = useState<number>(0)
   const {currentMonth} = useThisMonth();
-
+  
   // const [averageDaily, SetAverageDaily] = useState<number>(0)
   const {setDate: setStoreDate} = useOverviewDateStore()
   const navigate = useNavigate()
@@ -84,7 +84,8 @@ const SpentCalendar = () => {
 
   const calculate = new CalendarTotalCalculator();
   const outFlow = calculate.getMonthlyTotalOutFlow(transactions);
-  console.log("transactions",transactions)
+  console.log("sentcalendar - transactions",transactions)
+  
   // NOTE: transaction is on reversed decs ex. 100 -> 0 
   // Reversion happened on "useTransactionHistory.tsx" 
   // useTransactionHistory.tsx / FetchDaily() / History.order('created_at', { ascending: false })

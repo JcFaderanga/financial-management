@@ -70,6 +70,23 @@ export function FormattedUTCDate(date: string | Date) {
 
   return formatedDate;
 }
+//2025-08-01 04:53:29.122000+00
+export function FormattedDateDefaultTimeRange(
+  date: string | Date,
+  type: 'start' | 'end' = 'start'
+) {
+  const selectedDate = FormatDate(date);
+
+  if (selectedDate === "NaN-NaN-NaN") return 'invalid date';
+
+  const formatedDate =
+    type === 'start'
+      ? `${selectedDate} 00:00:00.000000+00`
+      : `${selectedDate} 23:59:59.999999+00`;
+
+  return formatedDate;
+}
+
 
 //2025-08-01 04:53:29.122000+00
 export function getCurrentLocalTime() {
@@ -118,8 +135,8 @@ export function getMonthlyDateRange(date: Date | string){
     const RawDateStart = startOfMonth(date)
     const RawMonthEnd = endOfMonth(date)
 
-    const monthStart = FormattedUTCDate(RawDateStart)
-    const monthEnd = FormattedUTCDate(RawMonthEnd)
+    const monthStart = FormattedDateDefaultTimeRange(RawDateStart, 'start')
+    const monthEnd = FormattedDateDefaultTimeRange(RawMonthEnd, 'end')
     return {monthStart, monthEnd}
 }
 

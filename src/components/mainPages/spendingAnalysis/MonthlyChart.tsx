@@ -31,36 +31,34 @@ const MonthlyChart = () => {
     fetchData();
   }, []);
 
-  // Transform Map → UI format
-  useEffect(() => {
+useEffect(() => {
     if (!data || !(data instanceof Map)) {
-      setMonthlyTotal(
-        months.map((month) => ({
-          month,
-          total: 0,
-        }))
-      );
-      return;
+        setMonthlyTotal(
+            months.map((month) => ({
+                month,
+                total: 0,
+            }))
+        );
+        return;
     }
 
     const totalsMap: Record<string, number> = {};
 
     data.forEach((value, key) => {
-      // key format: "2026-04"
-      const monthIndex = new Date(key).getMonth();
-      const monthKey = months[monthIndex];
+        // key is already "2026-04"
+        const monthIndex = Number(key.split("-")[1]) - 1;
+        const monthKey = months[monthIndex];
 
-      // Use outFlow as total
-      totalsMap[monthKey] = value.outFlow;
+        totalsMap[monthKey] = value;
     });
 
     const totals = months.map((month) => ({
-      month,
-      total: totalsMap[month] || 0,
+        month,
+        total: totalsMap[month] || 0,
     }));
 
     setMonthlyTotal(totals);
-  }, [data]);
+}, [data]);
 
   // ✅ Total based on transformed data (correct source)
   const totalAll = monthlyTotal.reduce((sum, m) => sum + m.total, 0);

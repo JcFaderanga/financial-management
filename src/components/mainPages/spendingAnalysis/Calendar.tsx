@@ -50,6 +50,8 @@ const Calendar = () => {
     async function fetch() {
       const { monthStart, monthEnd } = getMonthlyDateRange(currentMonth)
       const monthlyData = await FetchMonthlyHistory(monthStart, monthEnd)
+      console.log("monthStart", monthStart);
+       console.log("monthEnd", monthEnd);
       setSpendingTransactionList(monthlyData)
     }
     fetch()

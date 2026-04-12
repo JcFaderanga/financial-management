@@ -176,13 +176,13 @@ export class CalendarTotalCalculator {
         return groupedByDate;
     }
 
-    groupByMonth(data: TransactionInfoType[]) {
+    groupByMonth(data: any) {
         const groupedByMonth = new Map<string, TransactionInfoType[]>();
 
-        data?.forEach((d) => {
+        data?.forEach((d: any) => {
             if (!d.created_at) return;
 
-            const date = new Date(d.created_at);
+            const date = new Date(d.key);
             const monthString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 
             const list = groupedByMonth.get(monthString) ?? [];
@@ -222,35 +222,6 @@ export class CalendarTotalCalculator {
         return totalPerDateList;
     }
 
-    // ✅ NEW: same logic as getDailyTotal but grouped by month
-    getMonthlyTotal(data: TransactionInfoType[]) {
-        const groupedByMonth = this.groupByMonth(data);
-        const totalPerMonthList = new Map<string, { inFlow: number; outFlow: number }>();
-
-        for (const [month, transactions] of groupedByMonth.entries()) {
-
-            const spendingActivityTotal = transactions
-                .filter((t) => t.transaction_type === "activity")
-                .reduce(
-                    (sum, t) => sum + Number(t.transaction_detail.item_details?.price || 0),
-                    0
-                );
-
-            const firstTransaction = transactions[0];
-            const lastTransaction = transactions[transactions.length - 1];
-
-            const newBalance = firstTransaction?.transaction_detail?.new_available_balance ?? 0;
-            const prevBalance = lastTransaction?.transaction_detail?.prev_available_balance ?? 0;
-
-            const inFlow = newBalance > prevBalance ? newBalance - prevBalance : 0;
-            const outFlow = newBalance < prevBalance ? prevBalance - newBalance : spendingActivityTotal;
-
-            totalPerMonthList.set(month, { inFlow, outFlow });
-        }
-
-        return totalPerMonthList;
-    }
-
     getMonthlyTotalOutFlow(data: TransactionInfoType[]) {
         const dailyFlow = this.getDailyTotal(data);
 
@@ -263,6 +234,51 @@ export class CalendarTotalCalculator {
         );
 
         return monthTotal?.outFlow;
+    }
+
+    getTransactionsGroupedByMonth(data: any) {
+        const result = new Map<string, TransactionInfoType[]>();
+
+        for (const item of data) {
+            if (!item.created_at) continue;
+
+            const monthKey = item.created_at.slice(0, 7); // YYYY-MM
+
+            const existing = result.get(monthKey) || [];
+
+            existing.push(item);
+
+            result.set(monthKey, existing);
+        }
+
+        return result;
+    }
+    getMonthlyOutFlowFromGrouped(data: TransactionInfoType[]) {
+        const grouped = this.getTransactionsGroupedByMonth(data);
+        const result = new Map<string, number>();
+
+        for (const [month, transactions] of grouped) {
+
+            // const duplicated:any = [];
+
+            // transactions.forEach((dup, i) => {
+            //     const sameDate = transactions.filter(
+            //         (t, j) =>
+            //             i !== j &&
+            //             t.created_at === dup.created_at
+            //     );
+
+            //     if (sameDate.length > 0) {
+            //         duplicated.push([dup, ...sameDate]);
+            //     }
+            // });
+
+            const outFlow = this.getMonthlyTotalOutFlow(transactions);
+
+            result.set(month, outFlow);
+        }
+
+        return result;
     }
 }
 
