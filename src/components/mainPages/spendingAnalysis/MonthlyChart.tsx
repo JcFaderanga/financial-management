@@ -100,7 +100,7 @@ useEffect(() => {
                   </div>
 
                   {/*==== SEPERATOR ====*/}
-                  <div className="flex flex-col justify-end items-center">
+                  {/* <div className="flex flex-col justify-end items-center">
                     <div className="h-60 flex flex-col justify-end ">
                       <div className="text-[10px] dark:text-white opacity-0">
                         <NumberFlowUI
@@ -114,7 +114,7 @@ useEffect(() => {
                         style={{ height: `${Number(percent) * 3}%` }}
                       />
                     </div>  
-                  </div>
+                  </div> */}
                   
                   </div>
                   <div className="text-center text-sm mt-2 dark:text-white">
