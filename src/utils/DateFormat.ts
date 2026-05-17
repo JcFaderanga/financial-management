@@ -33,7 +33,14 @@ export const FormatDate=(date: any)=>{
   }
 
   //August 7, 2025
-  export const LongDateFormat = (date: any) => {
+  export const LongDateFormat = (inputDate: any) => {
+
+     if (!inputDate) {
+      return "Date not valid";
+    }
+
+    const date = new Date(inputDate);
+
     return date ? date.toLocaleDateString('en-US', { 
       timeZone: 'UTC',
       year: 'numeric', 

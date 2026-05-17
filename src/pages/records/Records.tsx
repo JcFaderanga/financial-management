@@ -2,14 +2,17 @@ import React from "react";
 import useDocumentTitle from "@/hooks/document/useDocTitle";
 import SpentHistory from "@/components/mainPages/spentHistory/SpentHistory";
 import ExpensesTotal from "@/components/mainPages/ExpensesTotal";
-import {FormattedUTCDate } from "@/utils/DateFormat";
+import {FormattedUTCDate, LongDateFormat } from "@/utils/DateFormat";
 //import SpentSummary from "@/components/mainPages/SpentSummary";
 import OverviewDate from "@/hooks/OverviewDate";
-
+import NumberFlowUI from "@/components/UI/NumberFlow"
 import { Link  } from "react-router-dom";
+import { useSpendingList } from "@/store/useSpendingStore";
+
 const OverView = () => {
   
   const { dateRange,timeRange } = OverviewDate();
+    const { transactions } = useSpendingList();
 
   useDocumentTitle("Records | Finance Management");
 
@@ -25,7 +28,25 @@ const OverView = () => {
           <div className={`${dateRange.includes('-') ? 'block' : 'hidden'} lg:hidden mt-2 py-1 text-center border-t border-gray-300 dark:border-light-dark`}>
               <p className='text-sm text-gray-400'>{dateRange}</p>
               <p className='text-sm text-gray-400'>{timeRange}</p>
-        </div>
+          </div>
+          <div
+            className='border dark:border-none border-gray-300 rounded-xl custom-black flex dark:bg-medium-dark mt-2
+            items-center hover:bg-gray-50 dark:hover:!bg-light-dark cursor-pointer p-4'>
+            <div className='dark:text-white flex justify-between w-full items-center'>
+              <div className='flex flex-col gap-1'>
+                <strong>Available balance</strong>
+                <i className={`text-sm`}>{LongDateFormat(transactions?.[0]?.created_at)}</i>
+              </div>
+          
+              <div className="text-green-500 text-xl font-bold">
+                <NumberFlowUI
+                    value={transactions?.[0]?.transaction_detail.new_available_balance || 0}
+                    currency='PHP'
+                    style='currency'
+                  />
+              </div>
+            </div>
+          </div>  
         </section>
         
 
@@ -43,7 +64,7 @@ const OverView = () => {
               </Link>
             
             
-            <button className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:hover:bg-light-dark cursor-pointer dark:bg-dark dark:text-white mx-1">
+            {/* <button className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:hover:bg-light-dark cursor-pointer dark:bg-dark dark:text-white mx-1">
               Today
             </button>
 
@@ -57,7 +78,7 @@ const OverView = () => {
 
             <button className="px-6 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:hover:bg-light-dark cursor-pointer dark:bg-dark dark:text-white mx-1">
               60 Days
-            </button>
+            </button> */}
           </div>
 
         {/* Mobile Summary */}
@@ -77,8 +98,23 @@ const OverView = () => {
           <ExpensesTotal />
         </section>
 
-        <div className="p-4 bg-white border border-gray-300 dark:bg-dark dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl">
-          {/* <SpentSummary /> */}
+        <div
+          className='border dark:border-none border-gray-300 rounded-xl custom-black flex dark:bg-medium-dark
+          items-center hover:bg-gray-50 dark:hover:!bg-light-dark cursor-pointer p-4'>
+          <div className='dark:text-white flex justify-between w-full items-center'>
+            <div className='flex flex-col gap-1'>
+              <strong>Available balance</strong>
+              <i className={`text-sm`}>{LongDateFormat(transactions?.[0]?.created_at)}</i>
+            </div>
+         
+            <div className="text-green-500 text-xl font-bold">
+              <NumberFlowUI
+                  value={transactions?.[0]?.transaction_detail.new_available_balance || 0}
+                  currency='PHP'
+                  style='currency'
+                />
+            </div>
+          </div>
         </div>
       </div>
     </div>
