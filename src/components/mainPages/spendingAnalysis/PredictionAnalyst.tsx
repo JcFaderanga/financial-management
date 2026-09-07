@@ -5,7 +5,8 @@ import { LongDateFormat } from '@/utils/DateFormat'
 import NumberFlow from '@/components/UI/NumberFlow'
 const PredictionCard = ({balance}:{balance: number}) => {
 
-  const balanceExhaustIn =  addDays(new Date(), balance / 300)
+  const allocation = 200;
+  const balanceExhaustIn =  addDays(new Date(), balance / allocation)
   
   return (
     <div className='dark:text-white dark:bg-medium-dark rounded-2xl'>
@@ -23,7 +24,7 @@ const PredictionCard = ({balance}:{balance: number}) => {
         <span>Daily allocated spending</span>
         <strong>
           <NumberFlow
-            value={300}
+            value={allocation}
             currency='php'
             style='currency'
           />
@@ -31,7 +32,7 @@ const PredictionCard = ({balance}:{balance: number}) => {
       </div>
       <div className='w-full flex justify-between p-4'>
         <span>Days until funds run out </span>
-        <strong>{Math.floor(balance / 300)} day/s</strong>
+        <strong>{Math.floor(balance / allocation)} day/s</strong>
       </div>
       <div className='w-full flex justify-between p-4'>
         <span>Funds last until</span>

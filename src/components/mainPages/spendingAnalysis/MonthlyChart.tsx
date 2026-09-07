@@ -67,7 +67,7 @@ useEffect(() => {
     <section className="lg:flex">
       {/* <div className="lg:w-2/6"></div> */}
 
-      <div className="flex py-4 gap-4 rounded-xl lg:w-2/3 overflow-x-scroll lg:overflow-auto">
+      <div className="flex py-4 gap-4 rounded-xl overflow-x-scroll lg:overflow-auto w-full">
         {monthlyTotal.map((e) => {
           const percent = totalAll
             ? ((e.total / totalAll) * 100).toFixed(2)

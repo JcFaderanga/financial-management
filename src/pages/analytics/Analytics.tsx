@@ -31,18 +31,27 @@ const SpendingAnalysis = () => {
       <section className=''>
           <SpentCalendar/>
       </section>  
-      <section className='mt-5 lg:mt-10'>
+      <section className='mt-5 lg:mt-10 '>
          <strong className="dark:text-white">
               Spending Analysis
           </strong>
-          <MonthlyChart/>
+          <div className="grid gap-4 grid-cols-[30%_70%]">
+            <div className=''>
+              <PredictionAnalyst/>
+            </div>
+            <div className=''>
+              <MonthlyChart />
+            </div>
+                        
+        </div>
+          
       </section>
-      <section className='mt-5 lg:mt-10'>
+      {/* <section className='mt-5 lg:mt-10'>
          <strong className="dark:text-white">
               Prediction Analysis
           </strong>
           <PredictionAnalyst/>
-      </section>
+      </section> */}
     </div>
   )
 }
