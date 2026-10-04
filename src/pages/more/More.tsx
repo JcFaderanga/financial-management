@@ -1,27 +1,9 @@
 import useDocumentTitle from '@/hooks/document/useDocTitle'
-import { useState, useEffect } from 'react';
 import { signOut } from '@/utils/authService'
 import { LuLogOut } from "react-icons/lu";
 
 const Liabilities = () => {
   useDocumentTitle('Liabilities | Finance Management')
-
-  const [dark, setDark] = useState(() => {
-    return localStorage.theme === 'dark';
-  });
-
-  useEffect(() => {
-      const html = document.documentElement;
-      if (dark) {
-        html.classList.add('dark');
-        document.body.style.backgroundColor = '#121212';
-        localStorage.setItem('theme', 'dark');
-      } else {
-        html.classList.remove('dark');
-        document.body.style.backgroundColor = 'transparent';
-        localStorage.setItem('theme', 'light');
-      }
-    }, [dark]);
     
   return (
     <div className='p-4'>
