@@ -7,7 +7,7 @@ import MonthlyChart from '@/components/mainPages/spendingAnalysis/MonthlyChart';
 // import BarChart from '@/components/charts/BarChart';
 import { useAllSpendingData } from '@/store/useSpendingStore';
 import AnalyticsSkeleton from '@/pages/analytics/AnalyticsSkeleton';
-import PredictionAnalyst from '@/components/mainPages/spendingAnalysis/PredictionAnalyst';
+
 const SpendingAnalysis = () => {
   const [isLoading,setLoading]= useState<boolean>(true);
   const { handleFetchAllSpendings } = useFetchAllSpending();
