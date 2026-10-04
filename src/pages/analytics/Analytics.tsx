@@ -35,15 +35,8 @@ const SpendingAnalysis = () => {
          <strong className="dark:text-white">
               Spending Analysis
           </strong>
-          <div className="grid gap-4 grid-cols-[30%_70%]">
-            <div className=''>
-              <PredictionAnalyst/>
-            </div>
-            <div className=''>
-              <MonthlyChart />
-            </div>
-                        
-        </div>
+          <MonthlyChart />
+
           
       </section>
       {/* <section className='mt-5 lg:mt-10'>

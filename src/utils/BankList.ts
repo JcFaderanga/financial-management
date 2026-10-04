@@ -21,7 +21,7 @@ export const BankList = [
   { key: 13, name: "ShopeePay", code: "SHOPEEPAY" },
   { key: 14, name: "Lazada Wallet", code: "LAZWALLET" },
   { key: 15, name: "GrabPay", code: "GRABPAY" },
-  { key: 16, name: "SeaBank Philippines", code: "SEABANK" },
+  { key: 16, name: "MariBank Philippines", code: "MARIBANK" },
   { key: 17, name: "RCBC Digital", code: "RCBC" },
   { key: 18, name: "Land Bank of the Philippines", code: "LANDBANK" },
   { key: 19, name: "China Bank", code: "CHINABANK" },

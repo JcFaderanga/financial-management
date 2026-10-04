@@ -6,13 +6,16 @@ import NumberFlow from '@/components/UI/NumberFlow'
 const PredictionCard = ({balance}:{balance: number}) => {
 
   const allocation = 200;
+  const fundsLastUntil = Math.floor(balance / allocation);
   const balanceExhaustIn =  addDays(new Date(), balance / allocation)
   
+  const fundsLastUntilColor = fundsLastUntil > 30 ? 'text-green-600' : 'text-orange-600';
+  
   return (
-    <div className='dark:text-white dark:bg-medium-dark rounded-2xl'>
+    <div className='dark:text-white border dark:border-gray-800 rounded-2xl px-2 py-4'>
       <div className='w-full flex justify-between p-4'>
         <span>Available Balance</span>
-        <strong>
+        <strong className='text-green-600'>
           <NumberFlow
             value={balance}
             currency='php'
@@ -32,11 +35,15 @@ const PredictionCard = ({balance}:{balance: number}) => {
       </div>
       <div className='w-full flex justify-between p-4'>
         <span>Days until funds run out </span>
-        <strong>{Math.floor(balance / allocation)} day/s</strong>
+        <strong className={fundsLastUntilColor}>
+          {fundsLastUntil} day/s
+        </strong>
       </div>
       <div className='w-full flex justify-between p-4'>
         <span>Funds last until</span>
-        <strong>{String(LongDateFormat(balanceExhaustIn))}</strong>
+        <strong className={fundsLastUntilColor}>
+          {String(LongDateFormat(balanceExhaustIn))}
+        </strong>
       </div>
     </div>
   )
@@ -50,7 +57,7 @@ const PredictionSection = () => {
 
 
   return (
-    <div className='py-2'>
+    <div className='lg:py-0 py-4'>
       <PredictionCard
         balance={currentBalance || 0}
       />
