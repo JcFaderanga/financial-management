@@ -1,37 +1,28 @@
 import Header from '../components/header/Header';
 import SideBar from '../components/sideBar/SideBar';
 import { Outlet } from 'react-router-dom';
-import { useMenuStore } from '@/store/useMenuToggle';
-import  BottomTabBar  from '@/components/bottomTab/BottomTabBar';
 import PageWrapper from '@/wrapper/PageWrapper';
-
+import  BottomTabBar  from '@/components/bottomTab/BottomTabBar';
 const HomeLayout = () => {
-  const { isMenuActive } = useMenuStore();
+    return (
+        <section className="h-screen flex overflow-hidden">
+            <SideBar />
 
-  return (
-    <>
-      <section className="flex transition-all dark:bg-dark bg-[--color-gradient]">
-        <div className={'relative z-50 hidden lg:block'}>
-          <SideBar />
-        </div>
+            <div className="flex-1 min-w-0 h-screen flex flex-col overflow-hidden">
+                <Header />
 
-        <div className={`w-full h-screen ${isMenuActive ? 'lg:ml-16' : 'lg:ml-[14%]'} transition-all`}>
-          <div className={'relative z-40 hidden lg:block transition-all'}>
-            <Header />
-          </div>
+                <main className="flex-1 min-h-0 min-w-0 overflow-auto">
+                    <PageWrapper>
+                        <Outlet />
+                    </PageWrapper>
+                </main>
+            </div>
 
-          <div className="relative z-10 h-[calc(100% - 64px)] lg:mt-16 dark:bg-dark">
-            <PageWrapper>
-              <Outlet />
-            </PageWrapper>
-          </div>
-        </div>
-        <div className={'relative z-50 lg:hidden'}>
-          <BottomTabBar />
-        </div>
-      </section>
-    </>
-  );
+            <div className='lg:hidden'>
+                <BottomTabBar />
+            </div>
+        </section>
+    );
 };
 
 export default HomeLayout;
