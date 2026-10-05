@@ -52,6 +52,7 @@ const icon:any = {
             key={item.id}
             to={item.path}
             onClick={menuToggle}
+            title={item.label}
             aria-current={isActive ? "page" : undefined}
             className={` py-1.5 text-sm rounded-lg transition-colors text-medium-dark dark:text-white ${
               isActive ? "!text-yellow-500 " : "hover:bg-gray-100 dark:hover:bg-light-dark"
