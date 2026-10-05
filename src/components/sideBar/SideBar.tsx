@@ -13,7 +13,7 @@ const Sidebar = () => {
     setMenuIsActive(!isMenuActive)
   }
   return (
-    <section className={`w-40 min-h-screen bg-white text-white p-4 border-r border-gray-300
+    <section className={`hidden lg:w-40 min-h-screen bg-white text-white p-4 border-r border-gray-300
     dark:bg-dark dark:border-medium-dark overflow-hidden
     ${isMenuActive ? '!w-16' : 'hidden lg:block lg:w-60'}
     `}>
