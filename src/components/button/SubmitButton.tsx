@@ -14,7 +14,7 @@ const SubmitButton = ({title, onClick, disabled, className, spinner}:{
         className={`cursor-pointer w-full
         ${disabled ?'bg-gray-300 ' :'bg-blue-500'}
         ${className}
-             px-4 py-2 rounded-xl text-white font-bold`}
+             px-4 py-2 rounded-xl text-white`}
     >
       {
         !spinner ? title : <Spinner/> 
