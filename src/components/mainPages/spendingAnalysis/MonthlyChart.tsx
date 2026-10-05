@@ -1,133 +1,102 @@
-import { useEffect, useState } from "react";
 import NumberFlowUI from "@/components/UI/NumberFlow";
-import useFetchAllTransactions from "@/hooks/Analytics/SpendingBarChart";
+import useMonthlyCashFlow from "@/hooks/Analytics/useMonthlyCashFlow";
 
-// Define the shape of each month's data
 interface MonthlyData {
-  month: string;
-  total: number;
+    month: string;
+    total_outgoing: number;
 }
 
-// Month labels
-const months = [
-  'jan', 'feb', 'mar', 'apr', 'may', 'jun',
-  'jul', 'aug', 'sep', 'oct', 'nov', 'dec',
-];
+const months: Record<string, string> = {
+    "1": "Jan",
+    "2": "Feb",
+    "3": "Mar",
+    "4": "Apr",
+    "5": "May",
+    "6": "Jun",
+    "7": "Jul",
+    "8": "Aug",
+    "9": "Sep",
+    "10": "Oct",
+    "11": "Nov",
+    "12": "Dec",
+};
 
 const MonthlyChart = () => {
-  const [monthlyTotal, setMonthlyTotal] = useState<MonthlyData[]>([]);
-  const { data, fetchYearlyRecordedSpendings } = useFetchAllTransactions();
+    const { monthlyCashFlow, loading, error } = useMonthlyCashFlow();
 
-  // Fetch yearly grouped data
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await fetchYearlyRecordedSpendings();
-      } catch (error) {
-        console.error("Error fetching yearly recorded spendings:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-useEffect(() => {
-    if (!data || !(data instanceof Map)) {
-        setMonthlyTotal(
-            months.map((month) => ({
-                month,
-                total: 0,
-            }))
+    if (loading) {
+        return (
+            <section className="lg:flex">
+                <div className="flex py-4 gap-4 rounded-xl overflow-x-scroll lg:overflow-auto w-full">
+                    Loading...
+                </div>
+            </section>
         );
-        return;
     }
 
-    const totalsMap: Record<string, number> = {};
+    if (error) {
+        return (
+            <section className="lg:flex">
+                <div className="flex py-4 gap-4 rounded-xl overflow-x-scroll lg:overflow-auto w-full">
+                    Failed to load monthly cash flow.
+                </div>
+            </section>
+        );
+    }
 
-    data.forEach((value, key) => {
-        // key is already "2026-04"
-        const monthIndex = Number(key.split("-")[1]) - 1;
-        const monthKey = months[monthIndex];
+    const monthlyData: MonthlyData[] = monthlyCashFlow ?? [];
 
-        totalsMap[monthKey] = value;
-    });
+    const maxOutgoing = Math.max(
+        ...monthlyData.map((month) => month.total_outgoing),
+        0
+    );
 
-    const totals = months.map((month) => ({
-        month,
-        total: totalsMap[month] || 0,
-    }));
+    return (
+        <section className="lg:flex">
+            <div className="flex py-4 gap-4 rounded-xl overflow-x-scroll lg:overflow-auto w-full">
+                {monthlyData.map((e) => {
+                    const barHeight =
+                        maxOutgoing > 0
+                            ? (e.total_outgoing / maxOutgoing) * 100
+                            : 0;
 
-    setMonthlyTotal(totals);
-}, [data]);
+                    const monthNumber = String(
+                        Number(e.month.slice(0, 2))
+                    );
 
-  // ✅ Total based on transformed data (correct source)
-  const totalAll = monthlyTotal.reduce((sum, m) => sum + m.total, 0);
+                    return (
+                        <div
+                            className="min-w-14"
+                            key={e.month}
+                        >
+                            <div className="h-60 flex items-end justify-center">
+                                <div className="flex flex-col justify-end items-center h-full">
+                                    <div className="text-[10px] dark:text-white mb-1">
+                                        <NumberFlowUI
+                                            value={e.total_outgoing}
+                                            currency="PHP"
+                                            style="currency"
+                                        />
+                                    </div>
 
-  return (
-    <section className="lg:flex">
-      {/* <div className="lg:w-2/6"></div> */}
+                                    <div
+                                        className="bg-orange-400 w-10 rounded-lg hover:bg-orange-500 cursor-pointer transition-all"
+                                        style={{
+                                            height: `${barHeight}%`,
+                                        }}
+                                    />
+                                </div>
+                            </div>
 
-      <div className="flex py-4 gap-4 rounded-xl lg:w-2/3 overflow-x-scroll lg:overflow-auto">
-        {monthlyTotal.map((e) => {
-          const percent = totalAll
-            ? ((e.total / totalAll) * 100).toFixed(2)
-            : 0;
-          
-          // const mock_percent_bar1 = Math.random() * 100; // Mock percentage for testing
-          // const mock_percent_bar2 = Math.random() * 100; 
-          if (e.total)
-            return (
-              <div className="" key={e.month}>
-
-                <div className="h-60 flex gap-2 items-end">
-                <div className="flex flex-col justify-end items-center">
-                    <div className="h-60 flex flex-col justify-end ">
-                      <div className="text-[10px] dark:text-white">
-                      
-                        <NumberFlowUI
-                          value={e.total}
-                          currency="PHP"
-                          style="currency"
-                        />
-                      </div>
-
-                      <div
-                        className="bg-blue-300 w-10 rounded-lg mx-auto hover:bg-blue-400 cursor-pointer"
-                        style={{ height: `${Number(percent) * 3}%` }}
-                      />
-
-                    </div>
-                  </div>
-
-                  {/*==== SEPERATOR ====*/}
-                  {/* <div className="flex flex-col justify-end items-center">
-                    <div className="h-60 flex flex-col justify-end ">
-                      <div className="text-[10px] dark:text-white opacity-0">
-                        <NumberFlowUI
-                          value={e.total}
-                          currency="PHP"
-                          style="currency"
-                        />
-                      </div>
-                      <div
-                        className="bg-blue-300 opacity-20 w-7 rounded-lg mx-auto hover:bg-blue-400 cursor-pointer"
-                        style={{ height: `${Number(percent) * 3}%` }}
-                      />
-                    </div>  
-                  </div> */}
-                  
-                  </div>
-                  <div className="text-center text-sm mt-2 dark:text-white">
-                      {e.month.charAt(0).toUpperCase() + e.month.slice(1)}
-                  </div>
-              </div>
-              
-            );
-        })}
-        
-      </div>
-    </section>
-  );
+                            <div className="text-center text-sm mt-2 dark:text-white">
+                                {months[monthNumber]}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </section>
+    );
 };
 
 export default MonthlyChart;

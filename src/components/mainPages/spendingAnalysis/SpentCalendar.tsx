@@ -15,7 +15,7 @@ import { CalendarTotalCalculator,TotalPerDayAndMonth } from '@/utils/itemFormat'
 import { useAllSpendingData } from '@/store/useSpendingStore'
 import Calendar from './Calendar'
 import { useThisMonth } from '@/store/useCalendarStore'
-
+import PredictionAnalyst from './PredictionAnalyst'
 const SpentCalendar = () => {
   const {setSpendingTransactionList, transactions} = useSpendingList();
   const {allSpentData: data} = useAllSpendingData();
@@ -159,7 +159,7 @@ return(
 
         <div
           onClick={()=>handleMonthSelect()} 
-          className='border dark:border-none border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 hidden lg:flex dark:bg-medium-dark
+          className=' border dark:border-none border-gray-300 px-4 py-7 lg:ml-4 rounded-xl custom-black mb-4 hidden lg:flex dark:bg-medium-dark
           justify-between items-center hover:bg-gray-50 dark:hover:!bg-light-dark cursor-pointer '>
           <div className='dark:text-white'>
             Total spent this month
@@ -186,6 +186,10 @@ return(
           </div>
         </div>
 
+        <div className="lg:pl-4">
+          <PredictionAnalyst/>
+        </div>
+      
         {/* <div className='transition border-t border-gray-300 lg:ml-4 lg:border lg:rounded-xl dark:border-none dark:lg:bg-medium-dark'>
           <div 
             onClick={()=> handleSelectAll()}
