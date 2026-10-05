@@ -40,6 +40,24 @@ export const signInWithGoogle = async (): Promise<void> => {
   }
 };
 
+export const signInWithCredentials = async (email: string, password: string): Promise<void> => {
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const signUpWithCredentials = async (email: string, password: string): Promise<boolean> => {
+  const { data, error } = await supabase.auth.signUp({ email, password });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return Boolean(data.session);
+};
+
 export const signOut = async () => {
   try {
     const { error } = await supabase.auth.signOut();
