@@ -28,7 +28,7 @@ const Header = () => {
 
   return (
     <header className={`border-b border-gray-300 w-full bg-white dark:border-medium-dark dark:bg-dark h-16 flex items-center justify-between px-4
-    ${isMenuActive ? 'hidden lg:flex' : ''}
+    ${isMenuActive ? ' lg:flex' : ''}
     `}>
       <div className='flex items-center'>
         <div className='hidden lg:flex'>
