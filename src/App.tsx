@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 
 //AUTH PAGES
 import Login from '@/pages/auth/Login';
+import SignUp from '@/pages/auth/SignUp';
+import ForgotPassword from '@/pages/auth/ForgotPassword';
 import ProtectedRoute from './router/ProtectedRoute';
 
 //MAIN PAGES
@@ -42,6 +44,8 @@ function AppRoutes() {
       <Routes location={state?.backgroundLocation || location}>
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Protected Routes */}
         <Route
