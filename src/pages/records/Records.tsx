@@ -93,7 +93,7 @@ const OverView = () => {
       </div>
 
       {/* Right Column (Desktop Only) */} 
-      <div className="sticky z-10 self-start hidden lg:block top-20 h-fit">
+      <div className="sticky z-10 self-start hidden lg:block h-fit">
         <section className=" mb-4 bg-white border border-gray-300 dark:bg-dark dark:border-medium-dark dark:lg:bg-medium-dark rounded-xl ">
           <ExpensesTotal />
         </section>
