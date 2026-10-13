@@ -6,7 +6,12 @@ interface MonthlyData {
     total_outgoing: number;
 }
 
-const months: Record<string, string> = {
+interface PendingBills {
+    month: string;
+    totalOutgoing: number;
+}
+
+const MONTH_LABELS: Record<string, string> = {
     "1": "Jan",
     "2": "Feb",
     "3": "Mar",
@@ -21,13 +26,32 @@ const months: Record<string, string> = {
     "12": "Dec",
 };
 
+const PENDING_BILLS: PendingBills = {
+    month: "10-2026",
+    totalOutgoing: 2766.00
+,
+};
+
+const getMonthLabel = (monthValue: string) => {
+    const monthNumber = String(Number(monthValue.slice(0, 2)));
+    return MONTH_LABELS[monthNumber] ?? monthValue;
+};
+
+const getBarHeight = (value: number, maxValue: number) => {
+    if (maxValue <= 0) {
+        return 0;
+    }
+
+    return (value / maxValue) * 100;
+};
+
 const MonthlyChart = () => {
     const { monthlyCashFlow, loading, error } = useMonthlyCashFlow();
 
     if (loading) {
         return (
             <section className="lg:flex">
-                <div className="flex py-4 gap-4 rounded-xl overflow-x-scroll lg:overflow-auto w-full">
+                <div className="flex w-full gap-4 overflow-x-scroll rounded-xl py-4 lg:overflow-auto">
                     Loading...
                 </div>
             </section>
@@ -37,7 +61,7 @@ const MonthlyChart = () => {
     if (error) {
         return (
             <section className="lg:flex">
-                <div className="flex py-4 gap-4 rounded-xl overflow-x-scroll lg:overflow-auto w-full">
+                <div className="flex w-full gap-4 overflow-x-scroll rounded-xl py-4 lg:overflow-auto">
                     Failed to load monthly cash flow.
                 </div>
             </section>
@@ -45,42 +69,60 @@ const MonthlyChart = () => {
     }
 
     const monthlyData: MonthlyData[] = monthlyCashFlow ?? [];
-
-    const maxOutgoing = Math.max(
-        ...monthlyData.map((month) => month.total_outgoing),
-        0
-    );
+    const maxOutgoing = Math.max(...monthlyData.map((entry) => entry.total_outgoing), 0);
 
     return (
         <section className="lg:flex">
-            <div className="flex py-4 gap-4 rounded-xl overflow-x-scroll lg:overflow-auto w-full">
-                {monthlyData.map((e) => {
-                    const barHeight =
-                        maxOutgoing > 0
-                            ? (e.total_outgoing / maxOutgoing) * 100
-                            : 0;
+            <div className="flex w-full gap-4 overflow-x-scroll rounded-xl py-4 lg:overflow-auto">
+                {monthlyData.map((entry) => {
+                    const hasPendingBills = entry.month === PENDING_BILLS.month && PENDING_BILLS.totalOutgoing > 0;
+                    const monthlyOutgoingTotal = hasPendingBills
+                        ? entry.total_outgoing + PENDING_BILLS.totalOutgoing
+                        : entry.total_outgoing;
 
-                    const monthNumber = String(
-                        Number(e.month.slice(0, 2))
+                    const barHeight = getBarHeight(entry.total_outgoing, maxOutgoing);
+                    const barHeightWithPendingBills = getBarHeight(
+                        monthlyOutgoingTotal,
+                        maxOutgoing
                     );
 
+                    const pendingBillHeight =
+                        hasPendingBills && monthlyOutgoingTotal > 0
+                            ? (PENDING_BILLS.totalOutgoing / monthlyOutgoingTotal) *
+                              barHeightWithPendingBills
+                            : 0;
+
                     return (
-                        <div
-                            className="min-w-14"
-                            key={e.month}
-                        >
-                            <div className="h-60 flex items-end justify-center">
-                                <div className="flex flex-col justify-end items-center h-full">
-                                    <div className="text-[10px] dark:text-white mb-1">
+                        <div className="min-w-14" key={entry.month}>
+                            <div className="flex h-60 items-end justify-center">
+                                <div className="flex h-full flex-col items-center justify-end">
+                                    <div className="mb-1 text-[10px] dark:text-white">
                                         <NumberFlowUI
-                                            value={e.total_outgoing}
+                                            value={monthlyOutgoingTotal}
                                             currency="PHP"
                                             style="currency"
                                         />
                                     </div>
 
+                                    {hasPendingBills && (
+                                        <div
+                                            title={`₱${PENDING_BILLS.totalOutgoing.toLocaleString(undefined, {
+                                                minimumFractionDigits: 2,
+                                            })}`}
+                                            className="w-10 rounded-t bg-orange-300 opacity-30 transition-all hover:bg-orange-500 cursor-pointer"
+                                            style={{
+                                                height: `${pendingBillHeight}%`,
+                                            }}
+                                        />
+                                    )}
+
                                     <div
-                                        className="bg-orange-400 w-10 rounded-lg hover:bg-orange-500 cursor-pointer transition-all"
+                                        title={`₱${entry.total_outgoing.toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                        })}`}
+                                        className={`w-10 bg-orange-400 transition-all hover:bg-orange-500 cursor-pointer ${
+                                            hasPendingBills ? "rounded-b" : "rounded"
+                                        }`}
                                         style={{
                                             height: `${barHeight}%`,
                                         }}
@@ -88,8 +130,8 @@ const MonthlyChart = () => {
                                 </div>
                             </div>
 
-                            <div className="text-center text-sm mt-2 dark:text-white">
-                                {months[monthNumber]}
+                            <div className="mt-2 text-center text-sm dark:text-white">
+                                {getMonthLabel(entry.month)}
                             </div>
                         </div>
                     );
