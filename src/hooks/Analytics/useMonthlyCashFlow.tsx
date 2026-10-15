@@ -2,10 +2,9 @@ import React from 'react'
 import supabase from '@/lib/supabase'
 import { useUserStore } from '@/store/useUserStore'
 
-type MonthlyCashFlow = {
-    email: string
+export type MonthlyCashFlow = {
     month: string
-    total_incoming: number
+    savings_increase: number
     total_outgoing: number
 }
 
