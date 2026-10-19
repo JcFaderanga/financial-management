@@ -25,7 +25,7 @@ export const navItems: NavType[] = [
     //     { id: "socials", label: "Socials Account", path: "/accounts/socials", category: "homePage" },
     //   ],
     // },
-    // { id: "bills", label: "Bills", path: "/bills", category: "homePage" },
+    { id: "bills", label: "Bills", path: "/bills", category: "homePage" },
     // { id: "liabilities", label: "Liabilities", path: "/liabilities", category: "homePage" },
     // { id: "transactions", label: "Transactions", path: "/transaction", category: "homePage" },
   ];

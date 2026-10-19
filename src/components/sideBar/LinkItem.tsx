@@ -6,6 +6,7 @@ import { IoSettings } from "react-icons/io5";
 import { FaChartPie ,FaWallet } from "react-icons/fa";
 import { RiFileList3Fill } from "react-icons/ri";
 import { HiMenuAlt3 } from "react-icons/hi";
+import { IoCard } from "react-icons/io5";
 
 const LinkItem = ({
   slice,
@@ -31,7 +32,8 @@ const icon:any = {
   analytics: <FaChartPie/>,
   wallet: <FaWallet/>,
   settings: <IoSettings/>,
-  more: <HiMenuAlt3/>
+  more: <HiMenuAlt3/>,
+  bills: <IoCard/>,
 };
   
 
