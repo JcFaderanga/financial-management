@@ -10,7 +10,7 @@ import useUpdateBill from '@/hooks/bills/useUpdateBill';
 import type { BillInsert, BillRecord, BillUpdate } from '@/hooks/bills/types';
 import { AccountType } from '@/types/AccountTypes';
 import { useAccountStore, useAmountHidden } from '@/store/useAccountStore';
-import { BankAccount } from '@/utils/BankAccountFormula';
+// import { BankAccount } from '@/utils/BankAccountFormula';
 import BillFormModal from './modals/BillFormModal';
 import DeleteBillModal from './modals/DeleteBillModal';
 import PaymentModal from './modals/PaymentModal';
@@ -182,7 +182,7 @@ const [paymentChoice, setPaymentChoice] = useState<string | null>(null);
 const [customMethodInput, setCustomMethodInput] = useState('');
 const [paymentError, setPaymentError] = useState('');
 const selectAllRef = useRef<HTMLInputElement>(null);
-const wallet = new BankAccount(account);
+// const wallet = new BankAccount(account);
 
 useEffect(() => {
     let timeoutId: number;
