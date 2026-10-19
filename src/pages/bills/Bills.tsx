@@ -665,12 +665,12 @@ return (
                     {isAmountHidden ? '*****' : <NumberFlow value={selectedMonthTotals.unpaid} style="currency" currency="php" />}
                 </div>
             </div>   
-            <div>
+            {/* <div>
                 <p className="text-xs uppercase tracking-wide text-orange-600 dark:text-red-400">Wallet Balance</p>
                 <div className="mt-2 text-xl font-bold text-orange-600 dark:text-red-400">
                     {isAmountHidden ? '*****' : <NumberFlow value={Number((wallet.getAvailableBalance()) || 0) - selectedMonthTotals.totalAmount} style="currency" currency="php" />}
                 </div>
-            </div>      
+            </div>*/}
         </div>  
     </div>
 
