@@ -1,6 +1,7 @@
 // src/utils/session.ts
 import supabase from "@/lib/supabase";
 import { useSession } from "@/store/useSession";
+import { apiFetch } from "@/lib/api";
 
 export const getAndStoreSession = async () => {
   const { setSession } = useSession.getState(); 
@@ -41,7 +42,19 @@ export const signInWithGoogle = async (): Promise<void> => {
 };
 
 export const signInWithCredentials = async (email: string, password: string): Promise<void> => {
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { session } = await apiFetch<{
+    session: {
+      access_token: string;
+      refresh_token: string;
+    };
+  }>('/api/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+  });
+  const { error } = await supabase.auth.setSession({
+    access_token: session.access_token,
+    refresh_token: session.refresh_token,
+  });
 
   if (error) {
     throw new Error(error.message);
