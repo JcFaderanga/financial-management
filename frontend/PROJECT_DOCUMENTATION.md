@@ -19,14 +19,14 @@ The codebase is oriented around daily personal finance tracking:
 - categorizing where money is spent;
 - balancing account amounts when a transaction is added;
 - consolidating monthly and daily spending totals for review;
-- making account information visible in the same app without a dedicated backend service layer.
+- providing account information in the app, with finance data accessed directly through Supabase and selected API functionality handled by the backend service.
 
 ### Target users
 The app appears intended for individuals managing personal budgets rather than a multi-tenant business product. The user model is tied to a Supabase auth user and each record is filtered by `owner` and `account_owner` values.
 
 ### Main features and capabilities
 Confirmed features from the actual implementation include:
-- user authentication with email/password and Google OAuth via Supabase;
+- user authentication with email/password and Google OAuth through the backend API and Supabase Auth;
 - protected routing requiring a valid session;
 - wallet/account management with add-account flow and available-balance summary;
 - expense entry form with category, subcategory, title, price, and payment method;
@@ -38,44 +38,65 @@ Confirmed features from the actual implementation include:
 - installable web-app metadata (`manifest.json`) and a simple service worker registration.
 
 ### Current implementation status
-The project is a working frontend application backed by Supabase, with the main flows implemented around records, wallet tracking, analytics, and authentication. It is not a fully isolated backend service: the app reads from and writes to Supabase directly from the front end. Several routes and UI elements are present but partially commented out or clearly reserved for future features, which suggests the project is in active but not complete production refinement.
+The project includes a React frontend backed by Supabase and a separate Express backend service. The frontend accesses Supabase directly for much of its finance data, while the backend provides API routes for authentication and bills. The frontend is deployed on Vercel and the backend is deployed on Render. Several routes and UI elements are present but partially commented out or clearly reserved for future features, which suggests the project is in active but not complete production refinement.
 
 ---
 
 ## 2. Technology Stack
 
-| Technology | Category | Version | Purpose | Usage in Project |
-|---|---|---:|---|---|
-| React | Frontend framework | 19.1.0 | UI rendering | Used as the primary UI library in `src/App.tsx`, pages, and components |
-| TypeScript | Language | ~5.8.3 | Static typing and TSX support | Used throughout the codebase with strict compiler settings |
-| Vite | Build tool / dev server | 7.0.0 | Local dev server and production bundling | Defined in `package.json` and `vite.config.ts` |
-| Tailwind CSS | Styling | 4.1.11 | Utility-first design system | Imported in `src/index.css` via `@import "tailwindcss"`; Vite plugin enabled in `vite.config.ts` |
-| @tailwindcss/vite | Build integration | 4.1.11 | Tailwind processing in Vite | Enabled in `vite.config.ts` |
-| React Router DOM | Routing | 7.6.3 | Application navigation and protected routes | Used for `BrowserRouter`, `Routes`, `Route`, `Navigate`, `useLocation`, `useNavigate`, `useParams` |
-| Zustand | State management | 5.0.6 | Local app state and stores | Used for session, user, account, menu, calendar, spending, and modal state |
-| Supabase JS | Backend / auth / data layer | 2.102.1 | Interaction with PostgreSQL, auth, and RPCs | Used in `src/lib/supabase.ts` and all data hooks |
-| Chart.js | Charts | 4.5.0 | Data visualization primitives | Registered in bar and doughnut chart components |
-| react-chartjs-2 | React wrapper | 5.3.0 | React components for Chart.js | Used in `src/components/charts/BarChart.tsx` and `Doughnut.tsx` |
-| date-fns | Date utilities | 4.1.0 | Formatting and date-range logic | Heavy use across transaction, calendar, and analytics logic |
-| react-icons | Icons | 5.5.0 | Icon imports | Used across the app for navigation, actions, wallet UI, and auth flows |
-| framer-motion | Animation | 12.23.11 | Motion effects | Used in the calendar component for animated transitions |
-| FullCalendar | Calendar UI | 6.1.18 | Monthly calendar display | Used in the `@fullcalendar/react` + `@fullcalendar/daygrid` integration |
-| @number-flow/react | Number animation | 0.5.10 | Animated monetary display | Used by `src/components/UI/NumberFlow.tsx` |
-| number-flow | Underlying numeric animation library | 0.5.8 | Provides NumberFlow functionality | Referenced through the React wrapper package |
-| react-spinners | Loading indicators | 0.17.0 | Spinner components | Present in the UI but not heavily used in the inspected active code |
-| millify | Numeric compact formatting | 6.1.0 | Compact output for totals | Used in the spending analysis calendar to shorten large currency values |
-| Vitest | Testing | 3.2.4 | Unit testing | Used for date and item-format utilities |
-| ESLint | Linting | 9.30.0 | Static analysis and style enforcement | Configured via `eslint.config.js` |
-| Vercel | Deployment hosting | Unknown | Static hosting / SPA rewrite | `vercel.json` config exists for single-page routes |
-| Express | Backend framework | 5.1.0 | Node HTTP server | Present in `package.json` but not used in the app source discovered in this project |
-| react-scan | Diagnostics / app inspection | 0.4.3 | Runtime scanning / debugging aid | Imported in `src/main.tsx` and enabled globally |
+Versions below are the declared versions or ranges in the corresponding package manifest.
+
+### Frontend stack
+
+| Technology | Version | Purpose and usage |
+|---|---:|---|
+| React | ^19.1.0 | UI rendering throughout `src/App.tsx`, pages, and components |
+| TypeScript | ~5.8.3 | Static typing and TSX support |
+| Vite | ^7.0.0 | Development server and production bundling |
+| Tailwind CSS / `@tailwindcss/vite` | ^4.1.11 | Utility-first styling and Vite integration |
+| React Router DOM | ^7.6.3 | Application navigation and protected routes |
+| Zustand | ^5.0.6 | Local state for sessions, accounts, spending, and UI |
+| `@supabase/supabase-js` | ^2.118.0 | Direct frontend access to Supabase auth, PostgreSQL, and RPCs |
+| Axios | ^1.20.0 | HTTP client for calls to the backend API |
+| Chart.js / `react-chartjs-2` | ^4.5.1 / ^5.3.1 | Financial charts and their React components |
+| date-fns | ^4.1.0 | Date formatting and date-range logic |
+| react-icons | ^5.5.0 | Icons across navigation, wallet, and auth UI |
+| framer-motion | ^12.23.11 | UI animations |
+| FullCalendar (`@fullcalendar/react`, `@fullcalendar/daygrid`) | ^6.1.18 | Monthly calendar display |
+| `@number-flow/react` / `number-flow` | ^0.5.10 / ^0.5.8 | Animated monetary values |
+| react-spinners | ^0.17.1 | Loading indicators |
+| millify | ^6.1.0 | Compact formatting for large totals |
+| Vitest | ^3.2.4 | Unit testing |
+| ESLint | ^9.30.0 | Static analysis and style enforcement |
+| react-scan | ^0.4.3 | Runtime diagnostics, enabled from `src/main.tsx` |
+
+### Backend stack
+
+| Technology | Version | Purpose and usage |
+|---|---:|---|
+| Node.js | Not pinned in `backend/package.json` | Runtime for the backend service |
+| Express | ^5.3.0 | HTTP server and API routing |
+| `@supabase/supabase-js` | ^2.118.0 | Backend access to Supabase |
+| cors | ^2.8.6 | Configured cross-origin access |
+| dotenv | ^18.0.8 | Loads environment variables |
+| helmet | ^8.3.0 | HTTP security headers |
+| express-rate-limit | ^8.7.1 | Request rate limiting dependency |
+| Zod | ^4.6.7 | Request data validation |
+| nodemon (development) | ^3.1.14 | Restarts the backend during local development |
+
+### Deployment
+
+| Application | Platform | Configuration |
+|---|---|---|
+| Frontend | Vercel | Root `vercel.json` installs and builds the frontend and serves its Vite output with SPA rewrites |
+| Backend | Render | The Express API service is deployed on Render; its package start script runs `node src/server.js` |
 
 ### Observed technology usage notes
-- The project is a React + TypeScript + Vite front-end, not a separate Express server application.
-- The app depends on Supabase for both authentication and persistence, and uses database RPC functions for analytics.
+- The project has separate React + TypeScript + Vite frontend and Node.js + Express backend applications.
+- The frontend and backend both use Supabase; the frontend also queries Supabase directly for finance data and analytics RPCs.
+- The Express backend mounts authentication and bills API routes.
 - Tailwind v4 is active via the Vite plugin and custom theme tokens defined in `src/index.css`.
-- `Express` appears in dependencies but was not found in source files as an active server or API layer.
-- `vercel.json` indicates deployment hosting on Vercel, with rewrite rules for SPA routes.
+- The frontend is hosted on Vercel and the backend is deployed on Render.
 
 ---
 
@@ -135,7 +156,7 @@ import { create } from "zustand";
 ```
 
 ### API communication and database access
-The project does not use a local REST or GraphQL layer in the source tree. Instead, the app interacts directly with Supabase through `@supabase/supabase-js`.
+The frontend interacts directly with Supabase through `@supabase/supabase-js` for finance data and analytics. It also uses Axios to call the Express backend in `../backend` for authentication and bills. The backend uses Supabase for its data and authentication operations.
 
 Representative usage:
 ```ts
@@ -151,7 +172,7 @@ Observed database operations include:
 - calling RPC `get_monthly_cash_flow` to compute monthly analytics
 
 ### Authentication
-Authentication is handled by Supabase and stored in the session store.
+Authentication is provided through backend API endpoints and Supabase Auth. The frontend stores the resulting Supabase session in its session store and listens for Supabase auth-state changes.
 
 Representative imports and patterns:
 ```ts
@@ -160,13 +181,11 @@ import { useSession } from '@/store/useSession';
 ```
 
 Actual auth flows include:
-- `signInWithPassword`
-- `signInWithOAuth({ provider: 'google' })`
-- `signOut`
-- `signUp`
-- `resetPasswordForEmail`
-- `updateUser({ password })`
-- demo login via `signInDemo`
+- email/password login and signup through the backend API, then session establishment through Supabase Auth;
+- Google OAuth URL creation through the backend API;
+- sign-out through the backend API and local Supabase session;
+- password reset and password update through Supabase Auth;
+- demo login through the same backend credentials endpoint.
 
 ### Styling
 Styling is handled primarily by Tailwind utility classes with custom theme colors defined in `src/index.css`:
@@ -288,7 +307,7 @@ Examples:
 - `useSaveItem` inserts an item, updates the related account balance, and writes a transaction record
 
 ### API and service layer
-There is no dedicated `services/` or `api/` folder with a generic REST client; the service layer is effectively the Supabase client plus custom hooks. Data access logic is distributed across hooks such as:
+For frontend finance data, the service layer is the Supabase client plus custom hooks rather than a generic REST client. Separately, the Express backend organizes its API into routes, controllers, services, and middleware. Frontend data access logic is distributed across hooks such as:
 - `src/hooks/spend_items/useFetchAllSpending.tsx`
 - `src/hooks/accountHooks/useFetchAllAccount.tsx`
 - `src/hooks/Analytics/useMonthlyCashFlow.tsx`
@@ -353,6 +372,8 @@ flowchart TD
     M --> N[Supabase client]
     N --> O[(PostgreSQL / Supabase)]
     N --> P[Supabase Auth]
+    M --> Q[Express API: auth and bills]
+    Q --> O
 ```
 
 ---
@@ -399,19 +420,24 @@ These use Vitest and cover date formatting and category aggregation.
 The project expects these Supabase variables from environment configuration:
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
+- `VITE_API_URL` (optional; defaults to `http://localhost:3000` for backend API calls)
 
 These are loaded in `src/lib/supabase.ts` and used to initialize the client. The code explicitly throws an error if they are missing.
 
+The backend requires `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY`. It also accepts `PORT` and `CORS_ORIGIN`; the latter defaults to the local Vite development origin.
+
 ### Deployment / hosting
-A `vercel.json` file is present and contains SPA rewrite rules:
+The frontend is deployed on Vercel. The root `vercel.json` installs and builds the frontend from `frontend/`, serves `frontend/dist`, and rewrites SPA routes:
 ```json
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ]
+  "installCommand": "cd frontend && npm install",
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
 ```
-This strongly suggests the app is intended to be deployed to Vercel as a single-page application.
+
+The backend is deployed on Render. Its `backend/package.json` start script runs `node src/server.js`.
 
 ### Packaging and generated artifacts
 - `dist/` exists and is generated output from the Vite build.
@@ -460,7 +486,6 @@ This indicates a project that is still evolving rather than a static finalized p
 ### Unverified or unknown areas
 The following items could not be verified with confidence from the source code alone:
 - exact production database schema beyond the tables and RPC function referenced in code;
-- whether the `Express` dependency is used in a hidden server or deployment pipeline not present in the repo;
 - whether all “More”, “Bills”, or “Social Accounts” routes are implemented beyond the code structure shown.
 
 When the code did not provide enough evidence, this documentation labels those items as unknown or unverified.
@@ -469,7 +494,7 @@ When the code did not provide enough evidence, this documentation labels those i
 
 ## 7. Summary
 
-This project is a personal finance and expense tracking application implemented as a React + TypeScript + Vite front-end that relies on Supabase for both authentication and persisted data. It provides a complete record-entry workflow, account and wallet tracking, monthly analytics, and a responsive dashboard layout. The code follows a direct, hook-driven architecture with Zustand state stores and Supabase native queries, and the project is clearly configured for Vercel deployment and modern frontend tooling.
+This project is a personal finance and expense tracking application with a React + TypeScript + Vite frontend and a Node.js + Express backend. The frontend relies on Supabase for authentication and much of its persisted finance data, while backend API routes serve authentication and bills functionality. The frontend is deployed on Vercel and the backend on Render. The app provides a record-entry workflow, account and wallet tracking, monthly analytics, and a responsive dashboard layout, using Zustand stores, custom hooks, and Supabase queries.
 
 The repository is a practical example of a finance-tracking app that combines:
 - direct database access through Supabase,
