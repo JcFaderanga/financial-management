@@ -1,7 +1,8 @@
 // src/utils/session.ts
+import type { Session } from '@supabase/supabase-js';
 import supabase from "@/lib/supabase";
 import { useSession } from "@/store/useSession";
-import { apiFetch } from "@/lib/api";
+import api from "@/lib/api";
 
 export const getAndStoreSession = async () => {
   const { setSession } = useSession.getState(); 
@@ -10,7 +11,7 @@ export const getAndStoreSession = async () => {
   return session;
 };
 
-export const subscribeToAuthChanges = (callback?: (session: any) => void) => {
+export const subscribeToAuthChanges = (callback?: (session: Session | null) => void) => {
   const { setSession } = useSession.getState();
 
   const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -26,31 +27,20 @@ export const subscribeToAuthChanges = (callback?: (session: any) => void) => {
 
 
 export const signInWithGoogle = async (): Promise<void> => {
-  try {
-    const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: window.location.origin, // important for local vs prod
-    },
-});
-  if (error) {
-    console.error('Error during Google sign-in:', error.message);
+  const { data } = await api.post<{ url: string }>('/api/auth/oauth/google');
+  if (!data.url) {
+    throw new Error('Authentication service did not return a Google sign-in URL.');
   }
-  } catch (error: any) {
-    console.log(error.message)
-  }
+  window.location.assign(data.url);
 };
 
 export const signInWithCredentials = async (email: string, password: string): Promise<void> => {
-  const { session } = await apiFetch<{
+  const { data: { session } } = await api.post<{
     session: {
       access_token: string;
       refresh_token: string;
     };
-  }>('/api/auth/login', {
-    method: 'POST',
-    body: JSON.stringify({ email, password }),
-  });
+  }>('/api/auth/login', { email, password });
   const { error } = await supabase.auth.setSession({
     access_token: session.access_token,
     refresh_token: session.refresh_token,
@@ -62,39 +52,31 @@ export const signInWithCredentials = async (email: string, password: string): Pr
 };
 
 export const signUpWithCredentials = async (email: string, password: string): Promise<boolean> => {
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const { data } = await api.post<{
+    session: {
+      access_token: string;
+      refresh_token: string;
+    } | null;
+  }>('/api/auth/signup', { email, password });
 
-  if (error) {
-    throw new Error(error.message);
+  if (data.session) {
+    const { error } = await supabase.auth.setSession(data.session);
+    if (error) {
+      throw new Error(error.message);
+    }
   }
 
   return Boolean(data.session);
 };
 
-export const signOut = async () => {
-  try {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.log(error.message)
-    }
-  } catch (error: any) {
-    console.log('catch', error.message)
+export const signOut = async (): Promise<void> => {
+  await api.post('/api/auth/logout');
+
+  const { error } = await supabase.auth.signOut({ scope: 'local' });
+  if (error) {
+    throw new Error(error.message);
   }
-}
+};
 
-export const signInDemo = async (): Promise<void>=>{
-
-   try {
-    const {error} =await supabase.auth.signInWithPassword({
-            email: "demo@example.com",
-            password: "demo123",
-    })
-
-    if(error) throw new Error(error.message);
-
-    window.location.href = "/"; 
-  } catch (error: any) {
-    console.error('catch', error.message)
-  }
-    
-}
+export const signInDemo = (): Promise<void> =>
+  signInWithCredentials('demo@example.com', 'demo123');

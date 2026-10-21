@@ -1,3 +1,6 @@
+import axios from 'axios';
+import supabase from '@/lib/supabase';
+
 export class ApiError extends Error {
   status: number;
   code: string;
@@ -17,44 +20,41 @@ type ApiErrorBody = {
   };
 };
 
-const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:3000').replace(/\/$/, '');
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+});
 
-export const apiFetch = async <T>(
-  path: string,
-  options: RequestInit = {},
-): Promise<T> => {
-  const headers = new Headers(options.headers);
-  headers.set('Accept', 'application/json');
-  headers.set('Content-Type', 'application/json');
+api.interceptors.request.use(async (config) => {
+  const { data, error } = await supabase.auth.getSession();
+  if (error) {
+    throw new Error(error.message);
+  }
 
-  const normalizedPath = path.replace(/^\//, '');
-  const response = await fetch(`${apiUrl}/${normalizedPath}`, {
-    ...options,
-    headers,
-  });
-  const responseText = await response.text();
-  let body: unknown;
+  if (data.session?.access_token) {
+    config.headers.set('Authorization', `Bearer ${data.session.access_token}`);
+  }
 
-  if (responseText) {
-    try {
-      body = JSON.parse(responseText);
-    } catch {
-      if (response.ok) {
-        throw new ApiError('Server returned an invalid response', response.status, 'INVALID_RESPONSE');
-      }
+  return config;
+});
+
+api.interceptors.response.use(
+  (response) => response,
+  (cause: unknown) => {
+    if (!axios.isAxiosError<ApiErrorBody>(cause) || !cause.response) {
+      throw cause;
     }
-  } else if (response.ok) {
-    throw new ApiError('Server returned an empty response', response.status, 'INVALID_RESPONSE');
-  }
 
-  if (!response.ok) {
-    const errorBody = body && typeof body === 'object' ? (body as ApiErrorBody) : undefined;
+    const { error } = cause.response.data ?? {};
     throw new ApiError(
-      errorBody?.error?.message ?? `Request failed with status ${response.status}`,
-      response.status,
-      errorBody?.error?.code ?? 'UNKNOWN_ERROR',
+      error?.message ?? cause.message,
+      cause.response.status,
+      error?.code ?? 'UNKNOWN_ERROR',
     );
-  }
+  },
+);
 
-  return body as T;
-};
+export default api;

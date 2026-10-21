@@ -1,4 +1,4 @@
-import supabase from '@/lib/supabase';
+import api from '@/lib/api';
 import { useUserStore } from '@/store/useUserStore';
 import { useCallback, useRef, useState } from 'react';
 import type { BillRecord } from './types';
@@ -38,19 +38,12 @@ const useFetchBills = () => {
                 nextMonth.getDate(),
             );
 
-            const { data, error: fetchError } = await supabase
-                .from('bills')
-                .select('*')
-                .eq('user_id', user.id)
-                .gte('bill_group_date', startDate)
-                .lt('bill_group_date', nextMonthStart);
-
-            if (fetchError) {
-                throw fetchError;
-            }
+            const { data } = await api.get<BillRecord[]>('/api/bills', {
+                params: { startDate, endDate: nextMonthStart },
+            });
 
             if (currentRequestId === requestId.current) {
-                setBills(data ?? []);
+                setBills(data);
             }
 
             return data;

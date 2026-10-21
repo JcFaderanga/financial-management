@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import supabase from '@/lib/supabase';
+import api from '@/lib/api';
 import { useUserStore } from '@/store/useUserStore';
 
 const useDeleteBill = () => {
@@ -20,22 +20,10 @@ const useDeleteBill = () => {
                 throw new Error('At least one bill must be provided for deletion.');
             }
 
-            const { data, error: deleteError } = await supabase
-                .from('bills')
-                .delete()
-                .in('id', billIds)
-                .eq('user_id', user.id)
-                .select('id');
-
-            if (deleteError) {
-                throw new Error(deleteError.message);
-            }
-
-            if (!data || data.length !== billIds.length) {
-                throw new Error('One or more bills could not be deleted.');
-            }
-
-            return data.map((bill: { id: number }) => bill.id);
+            const { data } = await api.delete<number[]>('/api/bills', {
+                data: { ids: billIds },
+            });
+            return data;
         } catch (cause) {
             const message = cause instanceof Error ? cause.message : 'Failed to delete bill.';
             setError(message);

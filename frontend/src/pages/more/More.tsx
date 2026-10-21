@@ -12,8 +12,22 @@ const More = () => {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
+    const [signOutError, setSignOutError] = useState('')
+    const [isSigningOut, setIsSigningOut] = useState(false)
 
     useDocumentTitle('More | Finance Management')
+
+    const handleSignOut = async () => {
+        setSignOutError('')
+        setIsSigningOut(true)
+        try {
+            await signOut()
+        } catch (cause) {
+            setSignOutError(cause instanceof Error ? cause.message : 'Unable to sign out.')
+        } finally {
+            setIsSigningOut(false)
+        }
+    }
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -122,7 +136,8 @@ const More = () => {
             <section className="rounded-xl bg-slate-100 p-4 dark:bg-light-dark">
                 <button
                     type="button"
-                    onClick={() => signOut()}
+                    onClick={() => void handleSignOut()}
+                    disabled={isSigningOut}
                     className="flex h-14 w-full items-center justify-between rounded-xl px-4 text-left transition-colors hover:bg-slate-200 dark:hover:bg-slate-700"
                 >
                     <strong className="text-dark dark:text-white">
@@ -131,6 +146,11 @@ const More = () => {
 
                     <LuLogOut className="text-2xl text-dark dark:text-white" />
                 </button>
+                {signOutError && (
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">
+                        {signOutError}
+                    </p>
+                )}
             </section>
         </main>
     )

@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import supabase from '@/lib/supabase';
+import api from '@/lib/api';
 import { useUserStore } from '@/store/useUserStore';
 
 type BillMonthOption = {
@@ -23,13 +23,7 @@ const useFetchBillMonths = () => {
                 throw new Error('User is not authenticated.');
             }
 
-            const { data, error: fetchError } = await supabase.rpc('get_bill_month_options');
-
-            if (fetchError) {
-                throw fetchError;
-            }
-
-            const options = (data ?? []) as BillMonthOption[];
+            const { data: options } = await api.get<BillMonthOption[]>('/api/bills/month-options');
             const availableMonths = Array.from(new Set<string>(
                 options
                     .map((bill) => bill.month_key)

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import supabase from '@/lib/supabase';
+import api from '@/lib/api';
 import { useUserStore } from '@/store/useUserStore';
 
 export type MonthlyBillTotals = {
@@ -33,12 +33,8 @@ const useMonthlyBillTotals = () => {
         setError(null);
 
         try {
-            const { data, error: fetchError } = await supabase.rpc('get_monthly_bill_totals');
-            if (fetchError) {
-                throw fetchError;
-            }
-
-            setMonthlyBillTotals(((data ?? []) as MonthlyBillTotalsRecord[]).map((record) => ({
+            const { data } = await api.get<MonthlyBillTotalsRecord[]>('/api/bills/monthly-totals');
+            setMonthlyBillTotals(data.map((record) => ({
                 month: record.month_key,
                 totalAmount: Number(record.total_amount) || 0,
                 paid: Number(record.paid) || 0,

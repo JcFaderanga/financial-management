@@ -15,13 +15,18 @@ export default function Login() {
 
   useDocumentTitle('Itrack Money | Login');
 
-  const handleLogin = async () => {
+  const handleLogin = async (
+    authenticate: () => Promise<void> = () => signInWithCredentials(email, password),
+    redirectAfterSuccess = true,
+  ) => {
     setError('');
     setIsSubmitting(true);
 
     try {
-      await signInWithCredentials(email, password);
-      window.location.href = '/';
+      await authenticate();
+      if (redirectAfterSuccess) {
+        window.location.href = '/';
+      }
     } catch (loginError) {
       setError(loginError instanceof Error ? loginError.message : 'Unable to sign in. Please try again.');
     } finally {
@@ -108,7 +113,8 @@ export default function Login() {
           <button
             type="button"
             className="cursor-pointer flex w-full items-center justify-center gap-3 rounded-lg border border-gray-300 px-4 py-2.5 font-medium hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-medium-dark"
-            onClick={() => void signInWithGoogle()}
+            disabled={isSubmitting}
+            onClick={() => void handleLogin(signInWithGoogle, false)}
           >
             <FcGoogle size={22} />
             <span>Sign in with Google</span>
@@ -116,7 +122,8 @@ export default function Login() {
           <button
             type="button"
             className="cursor-pointer w-full rounded-lg border border-gray-300 px-4 py-2.5 font-medium hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-medium-dark"
-            onClick={() => void signInDemo()}
+            disabled={isSubmitting}
+            onClick={() => void handleLogin(signInDemo)}
           >
             Try Demo Account
           </button>

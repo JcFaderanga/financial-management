@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import supabase from '@/lib/supabase';
+import api from '@/lib/api';
 import { useUserStore } from '@/store/useUserStore';
 import type { BillInsert, BillRecord } from './types';
 
@@ -17,17 +17,8 @@ const useInsertBill = () => {
                 throw new Error('User is not authenticated.');
             }
 
-            const { data, error: insertError } = await supabase
-                .from('bills')
-                .insert({ ...bill, user_id: user.id })
-                .select('*')
-                .single();
-
-            if (insertError) {
-                throw new Error(insertError.message);
-            }
-
-            return data as BillRecord;
+            const { data } = await api.post<BillRecord>('/api/bills', bill);
+            return data;
         } catch (cause) {
             const message = cause instanceof Error ? cause.message : 'Failed to create bill.';
             setError(message);

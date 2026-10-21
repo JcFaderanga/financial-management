@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import supabase from '@/lib/supabase';
+import api from '@/lib/api';
 import { useUserStore } from '@/store/useUserStore';
 import type { BillRecord, BillUpdate } from './types';
 
@@ -25,22 +25,11 @@ const useUpdateBill = () => {
                 throw new Error('At least one bill must be provided for update.');
             }
 
-            const { data, error: updateError } = await supabase
-                .from('bills')
-                .update(updates)
-                .in('id', billIds)
-                .eq('user_id', user.id)
-                .select('*');
-
-            if (updateError) {
-                throw new Error(updateError.message);
-            }
-
-            if (!data || data.length !== billIds.length) {
-                throw new Error('One or more bills could not be updated.');
-            }
-
-            return data as BillRecord[];
+            const { data } = await api.patch<BillRecord[]>('/api/bills', {
+                ids: billIds,
+                updates,
+            });
+            return data;
         } catch (cause) {
             const message = cause instanceof Error ? cause.message : 'Failed to update bill.';
             setError(message);
