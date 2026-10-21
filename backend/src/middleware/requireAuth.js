@@ -1,4 +1,4 @@
-import { createSupabaseClient } from '../config/supabase.js';
+import { supabase } from '../config/supabase.js';
 import { AppError } from '../utils/AppError.js';
 
 export const requireAuth = async (req, _res, next) => {
@@ -10,7 +10,7 @@ export const requireAuth = async (req, _res, next) => {
   }
 
   const accessToken = match[1];
-  const { data, error } = await createSupabaseClient().auth.getUser(accessToken);
+  const { data, error } = await supabase.auth.getUser(accessToken);
 
   if (error || !data.user) {
     throw new AppError('Authentication required', 401, 'UNAUTHORIZED');
